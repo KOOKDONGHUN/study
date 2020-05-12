@@ -6,7 +6,7 @@ for i in range(50001):
     ls.append(i)
 
 
-train_list = ls[0:49991]
+train_list = ls[0:49990]
 test_list = ls[49990:50001]
 
 # print(train_list)
@@ -33,10 +33,10 @@ model.summary()
 
 # 3. 훈련
 model.compile(loss = 'mse', optimizer='adam',metrics=['accuracy'])
-model.fit(x_train, y_train, epochs=200, batch_size=100, validation_data=(x_train, y_train))
+model.fit(x_train, y_train, epochs=200, batch_size=20, validation_data=(x_train, y_train))
 
 # 4. 평가 예측
-los, acc = model.evaluate(x_test, y_test, batch_size =100) #머신에게 훈련 데이터와 평가 데이터를 나눠서 학습과 평가를 하기 위함
+los, acc = model.evaluate(x_test, y_test, batch_size =20) #머신에게 훈련 데이터와 평가 데이터를 나눠서 학습과 평가를 하기 위함
 
 print("loss : " ,los )
 print("acc : " ,acc )

@@ -6,7 +6,7 @@ y = np.array([1,2,3,4,5,6,7,8,9,10])
 
 
 # 2.모델구성
-from keras.models import Sequential # 층을 구성하는 인풋아서 아웃풋으로 바로갈수 없으므로 중간을 거쳐 간다는 의미
+from keras.models import Sequential # 층을 구성하는 인풋에서 아웃풋으로 바로갈수 없으므로 중간을 거쳐 간다는 의미 계층구조
 from keras.layers import Dense
 
 model = Sequential()
