@@ -1,15 +1,18 @@
+# 1.데이터 생성 
 import numpy as np
-# 데이터 생성 
+
 x_train = np.array([1,2,3,4,5,6,7,8,9,10])
 y_train = np.array([1,2,3,4,5,6,7,8,9,10])
 x_test = np.array([101,102,103,104,105,106,107,108,109,110])
 y_test = np.array([101,102,103,104,105,106,107,108,109,110])
 
-from keras.models import Sequential
+
+# 2.모델구성
+from keras.models import Sequential # 층을 구성하는 인풋아서 아웃풋으로 바로갈수 없으므로 중간을 거쳐 간다는 의미
 from keras.layers import Dense
 
 model = Sequential()
-model.add(Dense(5,input_dim = 1,activation='relu'))
+model.add(Dense(5,input_dim = 1,activation='relu')) #하나의 인풋을 3개의 노드로 전달 첫번째 히든 레이어
 model.add(Dense(3))
 model.add(Dense(2))
 """model.add(Dense(720))
@@ -44,9 +47,14 @@ Non-trainable params: 0
 _________________________________________________________________
 """
 
-model.compile(loss = 'mse', optimizer='adam',metrics=['accuracy'])
-
+# 3. 훈련
+model.compile(loss = 'mse', optimizer='adam',metrics=['accuracy']) #계산을 잘하기위해 mse를 넣는다... 컴퓨터가 알아듣기 위한 과정
+                                                                   #훈련과정을 보여주는 부분에서 accuracy를 보여주겠다?
+                                                                
 model.fit(x_train, y_train, epochs=140, batch_size=3, validation_data=(x_train, y_train))
+
+
+# 4. 평가 예측
 los, acc = model.evaluate(x_test, y_test, batch_size =3)
 
 print("loss : " ,los )
