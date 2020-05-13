@@ -12,12 +12,10 @@ from keras.models import Sequential
 from keras.layers import Dense # DNN구조의 기본
 model = Sequential()
 
-model.add(Dense(5,input_dim=1))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
-model.add(Dense(999))
-model.add(Dense(5))
-model.add(Dense(999))
-model.add(Dense(55))
-model.add(Dense(999))
+model.add(Dense(70,input_dim=1,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
+model.add(Dense(70))
+model.add(Dense(70))
+model.add(Dense(70))
 model.add(Dense(1))
 
 #3. 훈련
@@ -32,8 +30,9 @@ print("loss : ",loss)
 print("mse : ",mse)
 print("acc : ",acc)
 
-# y_pred = model.predict(x_pred) #예측값
-# print("y_pred : ",y_pred)
+y_pred = model.predict(x_pred) #예측값
+print(y_pred)
+print("\n\n")
 
 y_predict = model.predict(x_test)
 print(y_predict)
