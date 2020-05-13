@@ -49,7 +49,7 @@ _________________________________________________________________
 
 # 3. 훈련
 model.compile(loss = 'mse', optimizer='adam',metrics=['accuracy']) #계산을 잘하기위해 mse를 넣는다... 컴퓨터가 알아듣기 위한 과정
-                                                                   #훈련과정을 보여주는 부분에서 accuracy를 보여주겠다?
+                                                                   # metrics=['accuracy'] -> 훈련과정을 보여주는 부분에서 accuracy를 보여주겠다?
                                                                 
 model.fit(x_train, y_train, epochs=140, batch_size=3, validation_data=(x_train, y_train))
 
