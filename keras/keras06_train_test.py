@@ -18,8 +18,8 @@ model.add(Dense(100))
 model.add(Dense(400))
 model.add(Dense(50))
 model.add(Dense(10))
-model.add(Dense(1))
-
+model.add(Dense(1)) 
+#s
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
 model.fit(x_train,y_train,epochs=200, batch_size=5) # batch_size = 32(default)
