@@ -22,7 +22,7 @@ model.compile(loss='mse',optimizer='adam', metrics=['mse','acc']) # 회기방식
 model.fit(x_train,y_train,epochs=200, batch_size=2) # batch_size = 32(default)
 
 #4. 평가, 예측
-loss,mse,acc,rmse = model.evaluate(x_test,y_test,batch_size=2) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,mse,acc = model.evaluate(x_test,y_test,batch_size=2) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
                                                       #MSE가 계산되는 시점  평가에서 나오는 mse와 모델링에서 나오는 mse가 다르다 
 
 print("loss : ",loss)
@@ -35,25 +35,31 @@ print("acc : ",acc)
 y_predict = model.predict(x_test)
 print(y_predict)
 
-from sklearn.metrics import mean_squared_error
 
+#RMSE 구하기 #낮을수록 좋다
+from sklearn.metrics import mean_squared_error
 def RMSE(y_test,y_predict):
     return np.sqrt(mean_squared_error(y_test,y_predict))
-
 print("RMSE : ", RMSE(y_test,y_predict))
 
 
+#R2 구하기 # 1에 근접할수록 좋다. 다른 보조지표와 같이 쓴다.
+from sklearn.metrics import r2_score
+r2_y_predict = r2_score(y_test,y_predict)
+print("r2 : ",r2_y_predict)
+
+
+
 """
+
  # Question
 
  # Note
 
-   r2 -> 예측 모델의 주어진 데이터에 대한 적합도를 표현하는 방법 -> 결정계수  
-         acc와 비슷하다   
-
-             |                                 mse
-    r2 =     |      ■■■      ---------------------------------------
-             |               (y_test - y_predict의 평균)제곱 의 평균
-
+ # homework
+ 
+    r2를 음수가 아닌 0.5이하로 줄이기.
+    레이어는 인풋과 아웃풋을 포함한 5개 이상, 노드는 레이어당 각각5개이상.
+    batch_size = 1  , epochs = 100 이상
 
  """
