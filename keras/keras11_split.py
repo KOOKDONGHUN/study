@@ -57,7 +57,7 @@ print("r2 : ",r2_y_predict)
 
 
  # Note
-    그나마 좋은 모델링
+
 
  # homework
  

@@ -56,11 +56,11 @@ model.add(Dense(1))
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-model.fit(x_train,y_train,epochs=150, batch_size=5,
+model.fit(x_train,y_train,epochs=80, batch_size=4,
             validation_data=(x_val,y_val)) # batch_size = 32(default)
 
 #4. 평가, 예측
-loss,mse = model.evaluate(x_test,y_test,batch_size=6) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,mse = model.evaluate(x_test,y_test,batch_size=4) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
 
 print("loss : ",loss)
 print("mse : ",mse)

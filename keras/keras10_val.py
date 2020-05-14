@@ -22,7 +22,7 @@ model.add(Dense(1))
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-model.fit(x_train,y_train,epochs=300, batch_size=2,
+model.fit(x_train,y_train,epochs=350, batch_size=1,
             validation_data=(x_val,y_val)) # batch_size = 32(default)
 
 #4. 평가, 예측
