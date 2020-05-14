@@ -15,7 +15,7 @@ model = Sequential()
 model.add(Dense(70,input_dim=1,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
 model.add(Dense(70))
 model.add(Dense(70))
-model.add(Dense(70))
+model.add(Dense(10))
 model.add(Dense(1))
 
 #3. 훈련
@@ -64,4 +64,6 @@ print("r2 : ",r2_y_predict)
     레이어는 인풋과 아웃풋을 포함한 5개 이상, 노드는 레이어당 각각5개이상.
     batch_size = 1  , epochs = 100 이상
 
+
+ 실패 한 코딩 ..
  """
