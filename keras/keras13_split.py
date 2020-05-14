@@ -3,39 +3,46 @@ import numpy as np
 x = np.array(range(1,101))
 y = np.array(range(101,201))
 
-x_train = x[:60]
-x_val = x[60:80]
-x_test = x[80:]
+from sklearn.model_selection import train_test_split
 
-y_train = x[:60]
-y_val = x[60:80]
-y_test = x[80:]
+x_train,x_test,y_train,y_test = train_test_split(
+    x,y,random_state = 66, shuffle=True,
+    train_size=0.95
+    )
 
+# print("x_train",x_train,"\ny_train",y_train)
+# print("x_test",x_test,"\ny_test",y_test)
 
 #2. 모델구성
 from keras.models import Sequential
 from keras.layers import Dense # DNN구조의 기본
-model = Sequential()
 
+model = Sequential()
 model.add(Dense(5,input_dim=1,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
-model.add(Dense(554))
-model.add(Dense(365))
-model.add(Dense(68))
+# model.add(Dense(222))
+# model.add(Dense(222))
+# model.add(Dense(222))
+model.add(Dense(200))
+model.add(Dense(10))
+model.add(Dense(150))
 model.add(Dense(1))
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-model.fit(x_train,y_train,epochs=180, batch_size=6,
-            validation_data=(x_val,y_val)) # batch_size = 32(default)
+model.fit(x_train,y_train,epochs=70, batch_size=4,
+            validation_split=0.4) # batch_size = 32(default)
+
+model.summary()
 
 #4. 평가, 예측
-loss,mse = model.evaluate(x_test,y_test,batch_size=6) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,mse = model.evaluate(x_test,y_test,batch_size=4) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
 
 print("loss : ",loss)
 print("mse : ",mse)
 
 
 y_predict = model.predict(x_test)
+print(y_test)
 print(y_predict)
 
 
@@ -57,10 +64,11 @@ print("r2 : ",r2_y_predict)
 
 
  # Note
-    그나마 좋은 모델링
+
 
  # homework
  
 
 
  """
+ 

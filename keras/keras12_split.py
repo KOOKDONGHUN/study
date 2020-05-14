@@ -3,13 +3,44 @@ import numpy as np
 x = np.array(range(1,101))
 y = np.array(range(101,201))
 
-x_train = x[:60]
-x_val = x[60:80]
-x_test = x[80:]
+from sklearn.model_selection import train_test_split
 
-y_train = x[:60]
-y_val = x[60:80]
-y_test = x[80:]
+x_train,x_test,y_train,y_test = train_test_split(
+    x,y,random_state = 66, shuffle=True,
+    # x,y,random_state = 66, shuffle=False,
+    train_size=0.7
+    )
+
+x_val,x_test,y_val,y_test = train_test_split(
+    x_test,y_test,random_state = 66, shuffle=True,
+    # x_test,y_test,random_state = 66, shuffle=False,
+    train_size=0.666666666666666,
+    
+    )
+
+# x_train,x_test,y_train,y_test = train_test_split(
+#     x,y,random_state = 66, shuffle=True,
+#     # x,y,random_state = 66, shuffle=False,
+#     train_size=0.6
+#     )
+
+# x_val,x_test,y_val,y_test = train_test_split(
+#     x_test,y_test,random_state = 66, shuffle=True,
+#     # x_test,y_test,random_state = 66, shuffle=False,
+#     test_size=0.5,
+#     )
+
+print("x_train",x_train,"\ny_train",y_train)
+print("x_val",x_val,"\ny_val",y_val)
+print("x_test",x_test,"\ny_test",y_test)
+
+# x_train = x[:60]
+# x_val = x[60:80]
+# x_test = x[80:]
+
+# y_train = x[:60]
+# y_val = x[60:80]
+# y_test = x[80:]
 
 
 #2. 모델구성
@@ -20,12 +51,12 @@ model = Sequential()
 model.add(Dense(5,input_dim=1,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
 model.add(Dense(554))
 model.add(Dense(365))
-model.add(Dense(68))
+model.add(Dense(70))
 model.add(Dense(1))
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-model.fit(x_train,y_train,epochs=180, batch_size=6,
+model.fit(x_train,y_train,epochs=150, batch_size=5,
             validation_data=(x_val,y_val)) # batch_size = 32(default)
 
 #4. 평가, 예측
@@ -57,10 +88,11 @@ print("r2 : ",r2_y_predict)
 
 
  # Note
-    그나마 좋은 모델링
+
 
  # homework
  
 
 
  """
+ 
