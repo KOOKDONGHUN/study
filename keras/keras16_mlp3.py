@@ -1,6 +1,6 @@
 #1. 데이터
 import numpy as np
-x = np.array([range(1,101),range(311,411),range(100)]).transpose()#.reshape(100,3)
+x = np.array(range(1,101)).transpose()#.reshape(100,3)
 y = np.array([range(101,201),range(711,811),range(100)]).transpose()#.reshape(100,3)
 
 # print(x.shape) #현재는 3행100열임...
@@ -23,22 +23,22 @@ from keras.models import Sequential
 from keras.layers import Dense # DNN구조의 기본
 
 model = Sequential()
-model.add(Dense(5,input_dim=3,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
+model.add(Dense(5,input_dim=1,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
                                                     #input_dim 열의 개수 
-model.add(Dense(169))
-model.add(Dense(70))
-model.add(Dense(71))
+model.add(Dense(110))
+model.add(Dense(30))
+model.add(Dense(21))
 model.add(Dense(3))
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-model.fit(x_train,y_train,epochs=100, batch_size=3,
+model.fit(x_train,y_train,epochs=70, batch_size=1,
             validation_split=0.3) # batch_size = 32(default)
 
 model.summary()
 
 #4. 평가, 예측
-loss,mse = model.evaluate(x_test,y_test,batch_size=3) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,mse = model.evaluate(x_test,y_test,batch_size=2) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
 
 print("loss : ",loss)
 print("mse : ",mse)
