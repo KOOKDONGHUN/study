@@ -27,6 +27,6 @@ model.compile(loss='mse',optimizer='adam', metrics=['acc'])
 model.fit(x,y,epochs=30, batch_size=4) #batch_size = 32(default)
 
 #4. 평가, 예측
-loss,acc = model.evaluate(x,y,batch_size=4) #evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,acc = model.evaluate(x,y,batch_size=4) #evaluate -> 결과 반환(기본적으로 loss와 metrics에 있는['acc']를 반환)을 loss와 acc에 받겠다.
 print("loss : ",loss)
 print("acc : ",acc)

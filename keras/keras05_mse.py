@@ -12,12 +12,7 @@ from keras.layers import Dense # DNN구조의 기본
 model = Sequential()
 
 model.add(Dense(5,input_dim=1))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
-model.add(Dense(3)) #히든 레이어   #질문 -> 대괄호가 2개면 어쩌구 ...
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
+model.add(Dense(3)) 
 model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
@@ -30,7 +25,7 @@ model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 �
 model.fit(x,y,epochs=30, batch_size=4) # batch_size = 32(default)
 
 #4. 평가, 예측
-loss,mse,acc = model.evaluate(x,y,batch_size=4) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,mse = model.evaluate(x,y,batch_size=4) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
 print("loss : ",loss)
 print("mse : ",mse)
 
@@ -44,6 +39,7 @@ print("y_pred : ",y_pred)
  훈련하는 데이터와 평가(evaluate)하는 데이터가 같음 
 
  Note
+ 
   회기모델링은 인풋수치에 대응하는 아웃풋수치가 나옴 y = x 일때 인풋이 1이면 아웃풋이 1
   분류모델링은 인풋에 대해 정해진 아웃풋이 나옴 인풋에 대한 참,거짓 등과 같은 모델링
   회기 모델링에서 평가 지표가 acc 가 아니고 1이 나올수 없다 
