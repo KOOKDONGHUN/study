@@ -1,2 +1,7 @@
+github -> home-PC : clone test
+create new test.txt
+home-PC -> github -> bitcamp-PC : commit and push test
 
-home -> bitcamp : push test
+-----------------------------------
+this area adjusted from bitcamp-PC
+-----------------------------------

@@ -1,0 +1,4 @@
+
+create new test2.txt
+
+github -> bitcamp-PC -> github ->home-PC : pull,commit and push test
