@@ -22,7 +22,7 @@ x_train,x_test,y_train,y_test = train_test_split(
 from keras.models import Sequential
 from keras.layers import Dense # DNN구조의 기본
 
-model = Sequential()
+model = Sequential() # 순차적 모델 
 model.add(Dense(5,input_dim=3,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
                                                     #input_dim 열의 개수 
 model.add(Dense(100))
@@ -70,6 +70,8 @@ print("r2 : ",r2_y_predict)
  # Note
 
     열 우선, 행 무시
+
+    순차적 모델과 함수형 모델 
 
  # homework
 
