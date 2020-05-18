@@ -9,33 +9,21 @@ x_pred = np.array([16,17,18])
 
 #2. 모델구성
 from keras.models import Sequential
-from keras.layers import Dense # DNN구조의 기본
+from keras.layers import Dense
 model = Sequential()
 
-model.add(Dense(5,input_dim=1,activation='relu'))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
-model.add(Dense(999))
+model.add(Dense(5,input_dim=1,activation='relu'))
 model.add(Dense(5))
-model.add(Dense(999))
-model.add(Dense(5))
-model.add(Dense(999))
-model.add(Dense(5))
-model.add(Dense(999))
-model.add(Dense(5))
-model.add(Dense(999))
-model.add(Dense(5))
-model.add(Dense(999))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
+model.add(Dense(7))
+model.add(Dense(6))
 model.add(Dense(1))
 
 #3. 훈련
-model.compile(loss='mse',optimizer='adam', metrics=['mse','acc']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-model.fit(x_train,y_train,epochs=1050, batch_size=1) # batch_size = 32(default)
+model.compile(loss='mse',optimizer='adam', metrics=['mse','acc'])
+model.fit(x_train,y_train,epochs=100, batch_size=1)
 
 #4. 평가, 예측
-loss,mse,acc = model.evaluate(x_test,y_test,batch_size=1) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
-                                                      #MSE가 계산되는 시점  평가에서 나오는 mse와 모델링에서 나오는 mse가 다르다 
+loss,mse,acc = model.evaluate(x_test,y_test,batch_size=1)
 
 print("loss : ",loss)
 print("mse : ",mse)
@@ -67,16 +55,18 @@ print("r2 : ",r2_y_predict)
 
  # Question
 
-    치우친 데이터를 범위로 나누면 나눈 범위가 같아진다?
-    그래프의 면적이 같아 진다...
+    치우친 데이터를 범위별로 나누면 나눈 범위가 같아진다? -> 그래프의 나눈범위의 면적이 같아 진다.
 
  # Note
 
-    분류와 회기 수치화는 회기 비가 온다 안온다 0,1 분류방식 눈이온다면? 0,1,2 
-    주가 회기만 해야하나? 분류방식으로 한다면 그룹으로 나눈다? 0원~1만(0), 1만~2만(1) ... 주가가 오르면 1 떨어지면 0
+   분류와 회기 
+    수치화는 회기모델
+    비가 온다 안온다 0,1 분류방식 눈이온다면? 0,1,2 
+    주가는 회기모델로만 해야하나? 분류모델로 한다면 그룹으로 나눈다? 0원~1만(0), 1만~2만(1) ... 주가가 오르면 1 떨어지면 0
 
-    검증데이터를 추가 하는 방법 교과서와 본사람과 교과서와 모의고사를 동시에 공부한 사람의 모의고사 점수의 차이 
-    1epochs에 train하고 validation을 하고 둘다 가중치를 반영한다 fit과정 // 레이어 추가하는 거랑 비슷한 개념 
+    검증데이터를 추가 하는 방법 -> validation
+     교과서를 본사람과 교과서와 모의고사를 동시에 공부한 사람의 모의고사 점수의 차이 
+     1epochs에 train하고 validation을 하고 둘다 가중치를 반영한다 fit과정
 
  # homework
  
@@ -84,6 +74,7 @@ print("r2 : ",r2_y_predict)
     레이어는 인풋과 아웃풋을 포함한 5개 이상, 노드는 레이어당 각각5개이상.
     batch_size = 1  , epochs = 100 이상
 
-    * core point 과적합을 유도하라
+    * 과적합을 유도하라? -> 못하겠음 안됨..
+      적당히 학습 시키는 거...
 
  """

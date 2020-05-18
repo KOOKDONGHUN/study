@@ -9,18 +9,19 @@ from keras.layers import Dense # DNN구조의 기본
 model = Sequential()
 
 model.add(Dense(5,input_dim=1))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
-model.add(Dense(3)) #히든 레이어   #질문 -> 대괄호가 2개면 어쩌구 ...
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
-# model.add(Dense(1000000))
+model.add(Dense(3)) #히든 레이어   #질문 -> 대괄호가 2개면 어쩌구 ...  인풋의 개수를 말하는 듯
 model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(1))
+
+# model.add(Dense(5,input_dim=1))
+# model.add(Dense(1000000))
+# model.add(Dense(1000000)) #여기서 안됨을 기억하라 -> cpu와 gpu의 속도?차이를 보라는 말씀이신듯 
+# model.add(Dense(1000000))
+# model.add(Dense(1))
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['acc'])

@@ -1,18 +1,19 @@
 #1. 데이터
 import numpy as np
+
 x_train = np.array([1,2,3,4,5,6,7,8,9,10])
 y_train = np.array([1,2,3,4,5,6,7,8,9,10])
 x_test = np.array([11,12,13,14,15])
 y_test = np.array([11,12,13,14,15])
 x_pred = np.array([16,17,18])
-# predict
+
 
 #2. 모델구성
 from keras.models import Sequential
-from keras.layers import Dense # DNN구조의 기본
+from keras.layers import Dense 
 model = Sequential()
 
-model.add(Dense(5,input_dim=1))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
+model.add(Dense(5,input_dim=1))
 # model.add(Dense(500))
 # model.add(Dense(405))
 # model.add(Dense(15))
@@ -37,11 +38,14 @@ print("y_pred : ",y_pred)
 
 """
  # 질문
-   1 epochs 에 트레인후 테스트를 하는가? ㄴㄴ 모든 epochs이 돌고 테스트
-   epochs 미루기  -> 학습할때 마다 달라서 그런가..
+
+   1 epochs 이후 테스트를 하고 2epochs를 하는가? ㄴㄴ 모든 epochs이 돌고 테스트한다. validation test는 맞음 
+   epochs 미루기  -> 학습할때 마다 달라서 그런가.. -> 그냥 내가 모델을 잘 못 짰다.
 
  #Note
- RMSE 평균 제곱근 오차 
- MSE가 평균 제곱오차라면 오차가 커질수록 계산은 느려진다. RMSE는 MSE에서 나온 값에 제곱근을 하는것
+
+  RMSE 평균 제곱근 오차 
+  RMSE는 MSE에서 나온 값에 제곱근을 하는것
+  MSE가 평균 제곱오차라면 오차가 커질수록 계산은 느려진다. 
 
  """

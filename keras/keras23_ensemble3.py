@@ -15,6 +15,7 @@ y = np.array([range(101,201),range(411,511),range(100)]).transpose()
 ################## ####
 
 from sklearn.model_selection import train_test_split
+
 # x_train,x_test,y_train,y_test = train_test_split( 
 #     x,y,random_state = 66, shuffle=True,
 #     # x,y, shuffle=False,
@@ -36,7 +37,7 @@ print("\nx2_train\n",x2_train)
 print("\nx2_test\n",x2_test)
 print("\ny_train\n",y_train)
 print("\ny_test\n",y_test)
-'''
+
 #2. 모델구성
 from keras.models import Sequential, Model
 from keras.layers import Dense, Input
@@ -134,4 +135,3 @@ print("r2 : ",r2)
  # homework
 
  """
-'''
