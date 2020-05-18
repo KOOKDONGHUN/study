@@ -15,7 +15,6 @@ x_val,x_test,y_val,y_test = train_test_split(
     x_test,y_test,random_state = 66, shuffle=True,
     # x_test,y_test,random_state = 66, shuffle=False,
     train_size=0.666666666666666,
-    
     )
 
 # x_train,x_test,y_train,y_test = train_test_split(
@@ -67,6 +66,7 @@ print("mse : ",mse)
 
 
 y_predict = model.predict(x_test)
+print(y_test)
 print(y_predict)
 
 

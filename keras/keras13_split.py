@@ -7,14 +7,15 @@ y = np.array(range(101,201))
 from sklearn.model_selection import train_test_split
 # train_size=0.9로 잡으면 1,3번째 변수에 0.95만큼 나머지 자동 test_size를 잡아주면 2,4번째로 할당하고 나머지 자동 
 x_train,x_test,y_train,y_test = train_test_split( 
-    x,y,random_state = 66, shuffle=True,
+    x,y,random_state = 3, shuffle=False,
     train_size=0.95
-    # train_size=0.8, test_size=0.1    0.1은 그냥 버려짐 
-    # # test_size=0.05 둘중 하나만 쓰면 나머지는 알아서 자동으로 잡히는거 같은데..
+    # test_size=0.6
+    # train_size=0.8, test_size=0.1   # 0.1은 그냥 버려짐 
+    # test_size=0.05 둘중 하나만 쓰면 나머지는 알아서 자동으로 잡히는거 같은데..
     )
 
-# print("x_train",x_train,"\ny_train",y_train)
-# print("x_test",x_test,"\ny_test",y_test)
+print("x_train",x_train,"\ny_train",y_train)
+print("x_test",x_test,"\ny_test",y_test)
 
 #2. 모델구성
 from keras.models import Sequential

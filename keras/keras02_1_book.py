@@ -1,23 +1,14 @@
 # 1.데이터 생성 
 import numpy as np
 
-ls = []
-for i in range(50001):
-    ls.append(i)
-
-
-train_list = ls[0:49990]
-test_list = ls[49990:50001]
-
-# print(train_list)
-# print(test_list)
+train_list = [i for i in range(2000)]
+test_list = [i for i in range(2000,4000)]
 
 x_train = np.array(train_list)
 y_train = np.array(train_list)
 
 x_test = np.array(test_list)
 y_test = np.array(test_list)
-
 
 # 2.모델구성
 from keras.models import Sequential # 층을 구성하는 인풋아서 아웃풋으로 바로갈수 없으므로 중간을 거쳐 간다는 의미
@@ -43,3 +34,4 @@ print("acc : " ,acc )
 
 output = (model.predict(x_test))
 print(output)
+'''
