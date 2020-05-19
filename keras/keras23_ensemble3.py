@@ -111,7 +111,6 @@ def RMSE(y_test,y_predict):
 RMSE = RMSE(y_test,y1_predict)
 print("RMSE : ", RMSE)
 
-
 #R2 구하기 # 1에 근접할수록 좋다. 다른 보조지표와 같이 쓴다.
 from sklearn.metrics import r2_score
 
