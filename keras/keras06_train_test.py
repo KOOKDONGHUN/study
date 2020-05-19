@@ -27,8 +27,10 @@ model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 �
 model.fit(x_train,y_train,epochs=200, batch_size=2) # batch_size = 32(default)
 
 #4. 평가, 예측
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 # loss,mse = model.evaluate(x_test,y_test,batch_size=3) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
-loss,mse = model.evaluate(x_test,y_test,batch_size=2) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,mse = model.evaluate(x_test,y_test,batch_size=2,callbacks=[els]) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
 
 print("loss : ",loss)
 print("mse : ",mse)

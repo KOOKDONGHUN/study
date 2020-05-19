@@ -14,7 +14,6 @@ model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
-model.add(Dense(500))
 model.add(Dense(1))
 
 # model.add(Dense(5,input_dim=1))
@@ -24,8 +23,10 @@ model.add(Dense(1))
 # model.add(Dense(1))
 
 #3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(loss='mse',optimizer='adam', metrics=['acc'])
-model.fit(x,y,epochs=30, batch_size=4) #batch_size = 32(default)
+model.fit(x,y,epochs=100, batch_size=4,callbacks=[els]) #batch_size = 32(default)
 
 #4. 평가, 예측
 loss,acc = model.evaluate(x,y,batch_size=4) #evaluate -> 결과 반환(기본적으로 loss와 metrics에 있는['acc']를 반환)을 loss와 acc에 받겠다.

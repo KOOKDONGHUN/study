@@ -17,12 +17,13 @@ model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
 model.add(Dense(500))
-model.add(Dense(500))
 model.add(Dense(1))
 
 #3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-model.fit(x,y,epochs=30, batch_size=4) # batch_size = 32(default)
+model.fit(x,y,epochs=150, batch_size=4,callbacks=[els]) # batch_size = 32(default)
 
 #4. 평가, 예측
 loss,mse = model.evaluate(x,y,batch_size=4) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.

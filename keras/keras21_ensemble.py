@@ -62,12 +62,15 @@ model.summary(line_length=None,
 
 
 #3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) 
 model.fit([x_train,x2_train],
           [y_train,y2_train],
           epochs=100,
           batch_size=2,
           validation_split=0.3,
+          callbacks=[els],
           verbose=3) 
 
 
@@ -77,10 +80,10 @@ li = model.evaluate([x_test,x2_test],
                     batch_size=2)
 
 print(li)
-print("앙상블의 loss : ",li[0])
+print("전체 loss : ",li[0])
 print("model1 loss : ",li[1])
-print("model2 loss : ",li[2])
-print("model1 mse : ",li[3])
+print("model1 mse : ",li[2])
+print("model2 loss : ",li[3])
 print("model2 mse : ",li[4])
 
 # m1과 m2의 예측값 

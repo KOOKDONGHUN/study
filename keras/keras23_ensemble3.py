@@ -79,12 +79,15 @@ model = Model(inputs=[input1,input2],
 # model.summary()
 
 #3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) 
 model.fit([x_train,x2_train],
           y_train,
           epochs=80,
           batch_size=3,
           validation_split=0.3,
+          callbacks=[els],
           verbose=2)
 
 

@@ -24,9 +24,11 @@ model.add(Dense(68))
 model.add(Dense(1))
 
 #3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(loss='mse',optimizer='adam', metrics=['mse'])
 model.fit(x_train,y_train,epochs=180, batch_size=6,
-            validation_data=(x_val,y_val))
+            validation_data=(x_val,y_val),callbacks=[els])
 
 #4. 평가, 예측
 loss,mse = model.evaluate(x_test,y_test,batch_size=6)
