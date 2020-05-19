@@ -48,11 +48,14 @@ _________________________________________________________________
 """
 
 # 3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
+
 model.compile(loss = 'mse', optimizer='adam',metrics=['accuracy']) #계산을 잘하기위해 mse를 넣는다... 컴퓨터가 알아듣기 위한 과정
                                                                    # metrics=['accuracy'] -> 훈련과정을 보여주는 부분에서 accuracy를 보여주고 
                                                                    # 평가할때 기본적으로 반환되는 loss와 함께 accuracy값을 반환한다.
                                                                 
-model.fit(x_train, y_train, epochs=140, batch_size=3, validation_data=(x_train, y_train))
+model.fit(x_train, y_train, epochs=140, batch_size=3, validation_data=(x_train, y_train),callbacks=[els])
 
 
 # 4. 평가 예측

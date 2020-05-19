@@ -16,16 +16,6 @@ y = np.array([range(101,201),range(411,511),range(100)]).transpose()
 
 from sklearn.model_selection import train_test_split
 
-
-# x_train,x_test,y_train,y_test = train_test_split( 
-#     x,y,random_state = 66, shuffle=True,
-#     # x,y, shuffle=False,
-#     train_size=0.95)
-# x2_train,x2_test = train_test_split( 
-#     x2,random_state = 66, shuffle=True,
-#     # x,y, shuffle=False,
-#     train_size=0.95)
-
 x_train,x_test,x2_train,x2_test,y_train,y_test = train_test_split( 
     x,x2,y,random_state = 66, shuffle=True,
     # x,x2,y, shuffle=False,
@@ -80,12 +70,18 @@ model = Model(inputs=[input1,input2],
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse']) 
+
+from keras.callbacks import EarlyStopping
+# 이미 일찍 멈추기 시작했다는것은 안좋아지기 시작했다는 의미 이므로 시점만 찾고 수작없으로 epochs을 조정하는게 더 좋다. -Y.YS-
+els = EarlyStopping(monitor='loss', patience=10, mode='auto') # patience=10 -> loss의 값에서 변경을 자동으로 감지하고 10번정도 후에 멈춘다.
 model.fit([x_train,x2_train],
           y_train,
-          epochs=80,
-          batch_size=3,
+          callbacks=[els],
+          verbose=2,
           validation_split=0.3,
-          verbose=2)
+          epochs=120,
+          batch_size=3
+        )
 
 
 #4. 평가, 예측
@@ -98,7 +94,6 @@ y1_predict = model.predict([x_test,x2_test])
 print(y_test)
 print(y1_predict)
 
-
 #RMSE 구하기 #낮을수록 좋다
 from sklearn.metrics import mean_squared_error
 
@@ -107,7 +102,6 @@ def RMSE(y_test,y_predict):
 
 RMSE = RMSE(y_test,y1_predict)
 print("RMSE : ", RMSE)
-
 
 #R2 구하기 # 1에 근접할수록 좋다. 다른 보조지표와 같이 쓴다.
 from sklearn.metrics import r2_score
@@ -124,14 +118,6 @@ print("r2 : ",r2)
  # Question
 
  # Note
-    
-    p.156 까지 내용 복습 하기 
-
-    단순모델일때 순차 모델
-    여러가지 모델을 합치고 싶을때 함수 모델
-
-    100,3의 비슷한 데이터 2개를 순차 모델로 할때 합쳐서 하면됨
-    but 합치지 않고 해도(함수모델) 상관없음 각자의 편의대로 하면됨 
 
  # homework
 

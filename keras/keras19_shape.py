@@ -3,7 +3,6 @@ import numpy as np
 x = np.array([range(1,101),range(311,411),range(100)]).transpose()
 y = np.array(range(711,811)).transpose()
 
-
 from sklearn.model_selection import train_test_split
 x_train,x_test,y_train,y_test = train_test_split( 
     x,y,random_state = 66, shuffle=True,
@@ -17,11 +16,12 @@ from keras.layers import Dense
 
 model = Sequential() 
 # model.add(Dense(5,input_dim=3,activation='relu'))
-model.add(Dense(5,input_shape=(3,))) # 이미지는 3차원일수 있기 때문에 (가로,세로,색)
+model.add(Dense(5,input_shape=(3,)))
 model.add(Dense(100))
 model.add(Dense(20))
 model.add(Dense(21))
 model.add(Dense(1))
+
 
 #3. 훈련
 model.compile(loss='mse',optimizer='adam', metrics=['mse'])
@@ -29,6 +29,7 @@ model.fit(x_train,y_train,epochs=90, batch_size=3,
             validation_split=0.3,verbose=3)
 
 model.summary()
+
 
 #4. 평가, 예측
 loss,mse = model.evaluate(x_test,y_test,batch_size=3)
@@ -56,9 +57,8 @@ print("r2 : ",r2_y_predict)
 
  # Note
 
-    열 우선, 행 무시
-
-    순차적 모델과 함수형 모델 
+    input_dim 대신에 input_shape을 사용 차이점은 
+    input_dim은 1차원의 인풋만 가능하지만 input_shape는 2차원이상의 인풋을 넣을 수 있음 
 
  # homework
 

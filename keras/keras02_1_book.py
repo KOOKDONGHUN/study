@@ -23,8 +23,10 @@ model.add(Dense(1,activation='relu'))
 model.summary()
 
 # 3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(loss = 'mse', optimizer='adam',metrics=['accuracy'])  #loss(오차)를 mse로 계산해서 줄여나간다, optimizer->최적화, metrics->훈련과정에서 프린트 되는 부분을 accuracy로 하겠다.
-model.fit(x_train, y_train, epochs=50, batch_size=20, validation_data=(x_train, y_train)) # 운동은 피트니스가서함-> 머신이 학습하는 장소
+model.fit(x_train, y_train, epochs=50, batch_size=20, validation_data=(x_train, y_train),callbacks=[els]) # 운동은 피트니스가서함-> 머신이 학습하는 장소
                                                                                           # validation_data=(x_train, y_train)는 한번의 epochs이 돌때 마다
                                                                                           # x_train, y_train 값을 가지고 테스트한 후 가중치를 수정하겠다.
 

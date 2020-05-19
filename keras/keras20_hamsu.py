@@ -70,6 +70,8 @@ print("r2 : ",r2_y_predict)
 
  # Note
 
+    함수모델 설계
+
  # homework
 
  """

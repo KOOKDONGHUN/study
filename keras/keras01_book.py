@@ -20,10 +20,13 @@ model.add(Dense(1,input_dim = 1,activation='relu'))
 
 
 # 3. 훈련
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
+
 model.compile(loss = 'mean_squared_error', optimizer='adam',metrics=['accuracy']) #내가 설계한 모델이 머신(컴퓨터 예를 들면 사람)이 알아 먹을수 있도록 해주는 작업 
 # model.compile(loss = 'mean_squared_error', optimizer='adam')
 
-model.fit(x,y,epochs=500,batch_size=1) # 모델에 학습을 시키는 과정
+model.fit(x,y,epochs=500,batch_size=1,callbacks=[els]) # 모델에 학습을 시키는 과정
 
 
 # 4. 평가 예측
