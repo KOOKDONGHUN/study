@@ -1,12 +1,11 @@
 # keras14_mlp를 sequential에서 함수형으로 변경 multi layer perceptron
-import numpy as np
 from sklearn.model_selection import train_test_split
-from keras.models import Model
-from keras.layers import Dense, Input
 from sklearn.metrics import mean_squared_error
-from sklearn.metrics import r2_score
 from keras.callbacks import EarlyStopping
-
+from keras.layers import Dense, Input
+from sklearn.metrics import r2_score
+from keras.models import Model
+import numpy as np
 
 x = np.array([range(1,101),range(311,411),range(100)]).transpose()
 y = np.array([range(101,201),range(711,811),range(100)]).transpose()
