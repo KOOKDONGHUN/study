@@ -6,13 +6,10 @@ from keras.models import Sequential
 from keras.layers import Dense, LSTM
 
 # 1. 데이터
-x = array([[1,2,3],[2,3,4],[3,4,5],[4,5,6]]) # 두가지 방법 .reshape(4,3,1) # x.reshape(x.shape[0],x.shape[1],1)
-x = x.reshape(x.shape[0], x.shape[1], 1) # 이것이 유지 보수가 쉬움
+x = array([[1,2,3],[2,3,4],[3,4,5],[4,5,6]]) # 
+x = x.reshape(x.shape[0], x.shape[1], 1) # 
 
-y = array([4,5,6,7]) # 스칼라 4개짜리 1개의 벡터 데이터 
-
-# y2 = array([[4,5,6,7]]) # (1,4)
-# y2 = array([[4],[5],[6],[7]]) # (4,1)
+y = array([4,5,6,7]) # 
 
 print(x.shape) # (4, 3) -> 스칼라 4
 print(y.shape) # (4, )
@@ -20,7 +17,8 @@ print(y.shape) # (4, )
 
 # 2. 모델구성
 model = Sequential()
-model.add(LSTM(17,activation='relu',input_shape=(3,1))) # input_shape=(3,1) -> 행 무시
+# model.add(LSTM(17,activation='relu',input_shape=(3,1))) # 
+model.add(LSTM(10, input_legth=3,input_dim=1)) # 
 model.add(Dense(42))
 model.add(Dense(39))
 model.add(Dense(41))
