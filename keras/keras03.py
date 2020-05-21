@@ -1,14 +1,19 @@
 #1. 데이터
 import numpy as np
-x = np.array([1,2,3,4,5,6,7,8,9,10])
+x = np.array([1,2,3,4,5,6,7,8,9,10]) # shape -> (10,)
 y = np.array([1,2,3,4,5,6,7,8,9,10])
+
+# x = np.array([1,2,3,2,3,4,3,4,5,4,5,6]) # shape -> (7,)
+# print(x.shape,"\n",x)
+# x = x.reshape(4,3,1)
+# print(x.shape,"\n",x)
 
 #2. 모델구성
 from keras.models import Sequential
 from keras.layers import Dense # DNN구조의 기본
 model = Sequential()
 
-model.add(Dense(5,input_dim=1))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
+model.add(Dense(5,input_dim=2))#인풋 1개 첫 아웃풋5개 activation도 default가 있음
 model.add(Dense(3)) #히든 레이어   #질문 -> 대괄호가 2개면 어쩌구 ...  인풋의 개수를 말하는 듯
 model.add(Dense(500))
 model.add(Dense(500))

@@ -7,6 +7,7 @@ from keras.layers import Dense, LSTM
 
 # 1. 데이터
 x = array([[1,2,3],[2,3,4],[3,4,5],[4,5,6]]) # 두가지 방법 .reshape(4,3,1) # x.reshape(x.shape[0],x.shape[1],1)
+print("x.shape : ",x.shape)
 x = x.reshape(x.shape[0], x.shape[1], 1) # 이것이 유지 보수가 쉬움
 
 y = array([4,5,6,7]) # 스칼라 4개짜리 1개의 벡터 데이터 
@@ -14,8 +15,8 @@ y = array([4,5,6,7]) # 스칼라 4개짜리 1개의 벡터 데이터
 # y2 = array([[4,5,6,7]]) # (1,4)
 # y2 = array([[4],[5],[6],[7]]) # (4,1)
 
-print(x.shape) # (4, 3) -> 스칼라 4
-print(y.shape) # (4, )
+print("x.shape : ",x.shape) # (4, 3) -> 스칼라 4
+print("y.shape : ",y.shape) # (4, )
 
 
 # 2. 모델구성
@@ -36,8 +37,8 @@ model.fit(x,y,epochs=200,batch_size=1,callbacks=[els]) # batch_size는? -> 귀�
 
 
 # 4. 테스트 
-x_input = array([5,6,7])
-x_input = x_input.reshape(1,3,1)
-print(x_input,"\n",x_input.shape) 
-yhat = model.predict(x_input)
-print(yhat)
+x_predict = array([5,6,7])
+x_predict = x_predict.reshape(1,3,1)
+print(x_predict,"\n",x_predict.shape) 
+y_predict = model.predict(x_predict)
+print(y_predict)
