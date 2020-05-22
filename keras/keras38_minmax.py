@@ -4,7 +4,9 @@
     standardscale : 평균=0과 표준편차=1이 되도록 Scaling 하는 방법이다.
                     이는 표준화라고도 부른다.
 
-    정규화인지 뭔지 알아야하고 수식은 까먹지 말고 기억할것 상당히 자주쓰임 중요하다아니고 당연하다 ㅎㅎ """
+    2가지 더 있음 정리 할해야함 , lstm, GRU 파라라미터 계산법 메일 보내기 
+
+    정규화인지 표준화인지 알아야하고 수식은 까먹지 말고 기억할것 상당히 자주쓰임 중요하다아니고 당연하다 ㅎㅎ """
 
 from numpy import array, sqrt, reshape
 from keras.models import Sequential, Model
@@ -31,7 +33,7 @@ std = StandardScaler()
 std.fit(x1) # (13,3)
 x1 = std.transform(x1)
 print("x1 : ",x1)
-''' y값도 표준화나 정규화를 해줘야 하는가? ->  ㄴㄴ 이유는->'''
+''' y값도 표준화나 정규화를 해줘야 하는가? ->  ㄴㄴ'''
 
 
 print("x1.shape",x1.shape)
@@ -62,21 +64,32 @@ print("y.shape : ",y.shape) #
 
 # 2. 모델구성
 input1 = Input(shape=(3,1))
-lstm1 = LSTM(11,return_sequences=True)(input1)
-lstm1 = LSTM(9,return_sequences=True)(lstm1)
+lstm1 = LSTM(12,return_sequences=True)(input1)
+lstm1 = LSTM(8,return_sequences=True)(lstm1)
 lstm1 = LSTM(8)(lstm1)
-dense1 = Dense(11)(lstm1)
-dense1 = Dense(11)(dense1)
-dense1 = Dense(11)(dense1)
+dense1 = Dense(9)(lstm1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
+dense1 = Dense(9)(dense1)
 output1 = Dense(1)(dense1)
 model = Model(inputs=input1,outputs=output1)
 model.summary()
 
 # 3. 실행
 from keras.callbacks import EarlyStopping
-els = EarlyStopping(monitor='loss', patience=15, mode='auto')
+els = EarlyStopping(monitor='loss', patience=7, mode='auto')
 model.compile(optimizer='adam',loss = 'mse',metrics=['mse'])
-model.fit(x1,y,epochs=200,batch_size=2,callbacks=[],verbose=2) # 
+model.fit(x1,y,epochs=200,batch_size=2,callbacks=[els],verbose=2) # 
 
 # 4. 테스트 
 y_predict = model.predict(x1_test)
