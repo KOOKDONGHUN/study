@@ -2,6 +2,7 @@
 import numpy as np
 x = np.array([range(1,101),range(311,411),range(100)]).transpose()
 y = np.array([range(711,811),range(711,811),range(100)]).transpose()
+print("x.shape : ",x.shape)
 
 x2 = np.array([range(101,201),range(411,511),range(100,200)]).transpose()
 y2 = np.array([range(501,601),range(711,811),range(100)]).transpose()
@@ -87,10 +88,12 @@ print("model2 loss : ",li[3])
 print("model2 mse : ",li[4])
 
 # m1과 m2의 예측값 
-y1_predict, y2_predict= model.predict([x_test,x2_test])
+y1_predict= model.predict([x_test,x2_test])
+# print("y1_predict,shape : ",y1_predict.shape) # AttributeError: 'list' object has no attribute 'shape'
+print("y1_predict[0],shape : ",y1_predict[0].shape)
 
 print(y_test,"\n\n",y2_test)
-print("\n",y1_predict,"\n\n",y2_predict)
+print("\n",y1_predict[0],"\n\n",y1_predict[1])
 
 #RMSE 구하기 #낮을수록 좋다
 from sklearn.metrics import mean_squared_error
@@ -99,8 +102,8 @@ def RMSE(y_test,y_predict):
     return np.sqrt(mean_squared_error(y_test,y_predict))
 
 # m1,m2,e1  모델1, 모델2, 앙상블모델1의 RMSE
-m1_RMSE = RMSE(y_test,y1_predict)
-m2_RMSE = RMSE(y2_test,y2_predict)
+m1_RMSE = RMSE(y_test,y1_predict[0])
+m2_RMSE = RMSE(y2_test,y1_predict[1])
 e1_RMSE = (m1_RMSE + m2_RMSE)/2
 
 print("m1_RMSE : ", m1_RMSE)
@@ -115,8 +118,8 @@ def r2_y_predict(y_test,y_predict):
     return r2_score(y_test,y_predict)
 
 # m1,m2,e1  모델1, 모델2, 앙상블모델1의 r2
-m1_r2 = r2_y_predict(y_test,y1_predict)
-m2_r2 = r2_y_predict(y2_test,y2_predict)
+m1_r2 = r2_y_predict(y_test,y1_predict[0])
+m2_r2 = r2_y_predict(y2_test,y1_predict[1])
 e1_r2 = (m1_r2 + m2_r2)/2
 
 print("m1_r2 : ",m1_r2)

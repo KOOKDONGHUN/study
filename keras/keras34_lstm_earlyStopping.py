@@ -45,33 +45,37 @@ print("y.shape : ",y.shape) #
 # model1
 input1 = Input(shape=(3,1))
 lstm1 = LSTM(8)(input1)
-dense1 = Dense(7)(lstm1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
+dense1 = Dense(10)(lstm1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(8)(dense1)
 
 #model2
 input2 = Input(shape=(3,1))
-lstm2 = LSTM(8)(input2)
-dense2 = Dense(7)(lstm2)
-dense2 = Dense(7)(dense2)
-dense2 = Dense(7)(dense2)
-dense2 = Dense(6)(dense2)
+lstm2 = LSTM(10)(input2)
+dense2 = Dense(11)(lstm2)
+dense2 = Dense(11)(dense2)
+dense2 = Dense(11)(dense2)
+dense2 = Dense(11)(dense2)
 
 # concatenate
 merge1 = concatenate([dense1,dense2])
-midle1 = Dense(7)(merge1)
-midle1 = Dense(7)(merge1)
+midle1 = Dense(11)(merge1)
+midle1 = Dense(11)(merge1)
+midle1 = Dense(11)(merge1)
 
 # output
-output1 = Dense(7)(midle1)
-output1 = Dense(7)(output1)
+output1 = Dense(15)(midle1)
+output1 = Dense(10)(output1)
 output1 = Dense(1)(output1)
-
 
 model = Model(inputs=[input1,input2],outputs=output1)
 
@@ -79,8 +83,10 @@ model.summary()
 
 
 # 3. 실행
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=20, mode='auto')
 model.compile(optimizer='adam',loss = 'mse',metrics=['mse'])
-model.fit([x1,x2],y,epochs=200,batch_size=1,verbose=2) # 
+model.fit([x1,x2],y,epochs=300,batch_size=1,callbacks=[els],verbose=2) # 
 
 
 # 4. 테스트 

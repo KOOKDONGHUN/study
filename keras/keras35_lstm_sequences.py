@@ -1,6 +1,6 @@
 from numpy import array, sqrt, reshape
 from keras.models import Sequential, Model
-from keras.layers import Dense, LSTM, Input
+from keras.layers import Dense, LSTM, Input,RepeatVector
 from keras.layers.merge import concatenate 
 
 # 1. 데이터
@@ -44,43 +44,52 @@ print("y.shape : ",y.shape) #
 
 # model1
 input1 = Input(shape=(3,1))
-lstm1 = LSTM(8)(input1)
-dense1 = Dense(7)(lstm1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
-dense1 = Dense(7)(dense1)
+# lstm1 = LSTM(8)(input1)
+# lstm1 = RepeatVector(5)(lstm1)
+
+lstm1 = LSTM(11,return_sequences=True)(input1) # lstm의 입력은 3차원이고 출력은 2차원 이므로 연속해서 lstm을 쓰기 위해서는 입력의 차원을 변경해줘야 한다
+                                             # Dense는 입력과 출력이 2차원 이다.
+lstm1 = LSTM(11)(lstm1)
+dense1 = Dense(5)(lstm1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(10)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(8)(dense1)
+dense1 = Dense(8)(dense1)
 
 #model2
 input2 = Input(shape=(3,1))
-lstm2 = LSTM(8)(input2)
-dense2 = Dense(7)(lstm2)
-dense2 = Dense(7)(dense2)
-dense2 = Dense(7)(dense2)
-dense2 = Dense(6)(dense2)
+lstm2 = LSTM(10,return_sequences=True)(input2)
+# lstm2 = RepeatVector(5)(lstm2)
+lstm2 = LSTM(10)(lstm2)
+dense2 = Dense(5)(lstm2)
+dense2 = Dense(11)(dense2)
+dense2 = Dense(11)(dense2)
+dense2 = Dense(11)(dense2)
 
 # concatenate
 merge1 = concatenate([dense1,dense2])
-midle1 = Dense(7)(merge1)
-midle1 = Dense(7)(merge1)
+midle1 = Dense(11)(merge1)
 
 # output
-output1 = Dense(7)(midle1)
-output1 = Dense(7)(output1)
+output1 = Dense(10)(midle1)
+output1 = Dense(10)(output1)
 output1 = Dense(1)(output1)
-
 
 model = Model(inputs=[input1,input2],outputs=output1)
 
 model.summary()
-
-
+'''
 # 3. 실행
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=20, mode='auto')
 model.compile(optimizer='adam',loss = 'mse',metrics=['mse'])
-model.fit([x1,x2],y,epochs=200,batch_size=1,verbose=2) # 
+model.fit([x1,x2],y,epochs=300,batch_size=1,callbacks=[els],verbose=2) # 
 
 
 # 4. 테스트 
@@ -107,3 +116,4 @@ print("RMSE : ", rmse)
 from sklearn.metrics import r2_score
 r2_y_predict = r2_score(y_test,y_predict)
 print("r2 : ",r2_y_predict)
+'''
