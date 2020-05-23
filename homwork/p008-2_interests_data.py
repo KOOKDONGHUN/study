@@ -1,3 +1,4 @@
+'''---- 데이터 영역 ----'''
 users = [
     {"id":0,"name":"Hero"},
     {"id":1,"name":"Dunn"},
@@ -21,6 +22,25 @@ friendship_paris = [ (0,1),(0,2),
                      (5,7),(6,8),
                      (7,8),(8,9)
 ]
+
+interests = [
+    (0, "Hadoop"), (0, "Big Data"), (0, "HBase"), (0, "Java"),
+    (0, "Spark"), (0, "Storm"), (0, "Cassandra"),
+    (1, "NoQDL"), (1, "MongoDB"), (1, "Cassandra"), (1, "HBase"),
+    (1, "Postgres"), (2, "Python"), (2, "scikit-learn"), (2, "scipy"), 
+    (2, "numpy"), (2, "statsmodels"), (2, "pandas"), (3, "R"), (3, "Python"),
+    (3, "statistics"), (3, "regression"), (3, "probability"),
+    (4, "machine learning"), (4, "regression"), (4, "decision trees"),
+    (4, "libsvm"), (5, "Python"), (5, "R"), (5, "Java"), (5, "C++"),
+    (5, "Haskell"), (5, "programming languages"), (6, "statistics"),
+    (6, "probability"),(6, "mathematics"), (6, "theory"),
+    (7, "machine learning"), (7, "scikit-learn"), (7, "Mahout"),
+    (7, "neural networks"), (8, "neural networks"), (8, "deep learning"),
+    (8, "Big Data"), (8, "artificial intelligence"), (9, "Hadoop"),
+    (9, "Java"), (9, "MapReduce"), (9, "Big Data"),
+]
+'''---- 데이터 영역 ----'''
+
 
 '''---- 이 과정의 목적은 각 사용자간의 연결된 수(네트워크 수)를 구하기 위함 ----'''
 # 사용자별로 친구목록을 저장하기위한 비어있는 리스트를 생성
@@ -58,6 +78,7 @@ num_of_users = len(users) # 10
 avg_conn = total_conn / num_of_users # 24/ 10 == 2.4
 '''---- 네트워크의 평균 ----'''
 
+
 '''---- 네트워크의 수가 가장 많은 사람 -> 최강 인싸 찾기 ----'''
 id_is_num_of_friend = [(user["id"],number_of_friends(user)) for user in users] 
 ''' 한줄 반복문을 일반 반복문으로 바꾸면
@@ -76,6 +97,7 @@ id_is_num_of_friend.sort( key = lambda id_and_friends : id_and_friends[1], # num
                           reverse = True ) # 내림차순으로 하겠다.
 print("id_is_num_of_friend : ",id_is_num_of_friend) # id_is_num_of_friend :  [(1, 3), (2, 3), (3, 3), (5, 3), (8, 3), (0, 2), (4, 2), (6, 2), (7, 2), (9, 1)]
 '''---- 네트워크의 수가 가장 많은 사람 -> 최강 인싸 찾기 ----'''
+
 
 ''' ---- 친구의 친구 추천 프로그램 ----'''
 # 친구의 친구를 추천 해주는 함수
@@ -104,5 +126,19 @@ for friend_id in friendships[users[0]["id"]] :  # ex) users[0] == {'id': 0, 'nam
         print("foaf_id : ", foaf_id)
         print("temp : ",temp)
 print(recommend_for_user0, " == ", temp) '''
-
 ''' ---- 친구의 친구 추천 프로그램 ----'''
+
+
+''' ---- 친구의 친구 추천 프로그램 (자기자신과 중복되는 친구를 제외) ----'''
+from collections import Counter
+
+def friends_of_friends(user):
+    user_id = user["id"]
+    return Counter( foaf_id for friend_id in friendships[user_id]
+                                for foaf_id in friendships[friend_id]
+                                    if (foaf_id != user_id) and (foaf_id not in friendships[user_id]) ) 
+                                                                # x not in 리스트 : 리스트에 x가 없으면 True
+mutualfriends_count = friends_of_friends(users[0])
+print("mutualfriends_count : ",mutualfriends_count) # mutualfriends_count :  Counter({3: 2})
+                                                    # 중복과 자기 자신을 제외하면 3번 친구와 아는 사람이 2명이 겹친다.
+''' ---- 친구의 친구 추천 프로그램 (자기자신과 중복되는 친구를 제외) ----'''
