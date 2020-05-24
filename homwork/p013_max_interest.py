@@ -36,6 +36,13 @@ interests = [
     (8, "Big Data"), (8, "artificial intelligence"), (9, "Hadoop"),
     (9, "Java"), (9, "MapReduce"), (9, "Big Data"),
 ]
+
+salaries_and_tenures = [(83000,8.7),(88000,8.1),
+                        (48000,0.7),(76000,6),
+                        (69000,6.5),(76000,7.5),
+                        (60000,2.5),(83000,10),
+                        (48000,1.9),(63000,4.2)]
+                        
 '''---- 데이터 영역 ----'''
 
 
@@ -70,3 +77,48 @@ def most_common_interests_with(user) :
                                     if interested_user_id != user["id"]
     )
 
+#키는 근속연수, 값은 해당 근속 연수에 대한 연봉 목록
+salary_by_tenure = defaultdict(list)
+
+for salary, tenure in salaries_and_tenures :
+    salary_by_tenure[tenure].append(salary)
+print("tenure :",tenure) # tenure : 4.2 왜 같은 변수명으로 밑에서도 쓰냐 사람 햇갈리게
+
+# 키는 근속연수, 값은 해당 근속 연수의 평균 연봉
+average_salary_by_tenure = {
+    tenure : sum(salaries) /  len(salaries) for tenure ,salaries in salary_by_tenure.items()
+}
+print("average_salary_by_tenure : ",average_salary_by_tenure)
+''' average_salary_by_tenure :  {8.7: 83000.0, 8.1: 88000.0, 0.7: 48000.0,
+                                 6: 76000.0, 6.5: 69000.0, 7.5: 76000.0,
+                                 2.5: 60000.0, 10: 83000.0, 1.9: 48000.0,
+                                 4.2: 63000.0} '''
+
+# 경력 구간 나누기
+def tenure_bucket(tenure):
+    if tenure < 2 :
+        return "less than two"
+    elif tenure < 5 :
+        return "between two and five"
+    else :
+        return "more than five"
+
+# 각 연봉을 해당구간에 대응 시켜보기.
+salary_by_tenure_bucket = defaultdict(list)
+for salary, tenure in salaries_and_tenures:
+    bucket = tenure_bucket(tenure)
+    salary_by_tenure_bucket[bucket].append(salary)
+
+# 키는 근속 연수 구간, 값은 해당 구간에 속하는 사용자들의 평균 연봉
+average_salary_by_bucket = {
+    tenure_bucket : sum(salaries) / len(salaries) for tenure_bucket, salaries in salary_by_tenure_bucket.items()
+}
+print("average_salary_by_bucket : ",average_salary_by_bucket)
+''' average_salary_by_bucket :  {'more than five': 79166.66666666667, 'less than two': 48000.0, 'between two and five': 61500.0} '''
+
+words_and_counts = Counter( word for user, interest in interests
+                                    for word in interest.lower().split() )
+
+for word, count in words_and_counts.most_common() :
+    if count > 1 :
+        print(f"interest : {word} \t\t count : {count}")
