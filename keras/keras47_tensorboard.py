@@ -77,6 +77,7 @@ print(f"hist : {hist}") # 숨겨져있다? 안보여주는 이유는? hist만 �
 print(hist.history.keys()) # dict_keys(['loss'])
 # print(f"hist : {hist.history['loss']}") # 데이터가 많다면 이렇게 출력하고 하나씩 보는것은 어려움 때문에 그래프로 확인해보자 
 
+'''그래프가 들어있는 경로로 이동한 후에 다음 커맨드 입력  tensorboard --logdir=. '''
 
 '''
 # 4. 테스트 
