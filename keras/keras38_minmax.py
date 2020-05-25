@@ -1,8 +1,8 @@
 """ minmaxscale   : MinMax Scaling은 최댓값 = 1, 최솟값 = 0으로 하여
                     그 사에 값들이 있도록 하는 정규화방법이다. -> 정규화
 
-    standardscale : 평균=0과 표준편차=1이 되도록 Scaling 하는 방법이다.
-                    이는 표준화라고도 부른다.
+    standardscale : 평균=0과 표준편차=1이 되도록 Scaling 하는 방법이다. -> 0을 기준으로 좌우로 여기서 말나는  0은 평균을 0으로 생각하는것 뿐이다 
+                    이는 표준화라고도 부른다. 정규분포 만들기
 
     2가지 더 있음 정리 할해야함 , lstm, GRU 파라라미터 계산법 메일 보내기 
 
@@ -28,8 +28,10 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Ro
 # minmax.fit(x1) # 실행 
 # x1 = minmax.transform(x1) # 변환 
 # print("x1 : ",x1) #
+''' 0 ~ 100 까지를 0 ~ 1로 바꾸는 방법은 단순히 100으로 나눈다 
+    (x - 최소)를 (최대 - 최소)로 나눈다 '''
 
-# 0을 기준으로 좌우로 갈림 (표준화)
+# 0을 기준으로 좌우로 갈림 (표준화) 한쪽으로 치우친 데이터에 유용 예외도 있음 
 std = StandardScaler()
 std.fit(x1) # (13,3)
 x1 = std.transform(x1)
@@ -72,7 +74,7 @@ input1 = Input(shape=(3,1))
 lstm1 = LSTM(16,return_sequences=True)(input1)
 lstm1 = LSTM(13,return_sequences=True)(lstm1)
 lstm1 = LSTM(10)(lstm1)
-dense1 = Dense(1)(lstm1)
+dense1 = Dense(16)(lstm1)
 dense1 = Dense(13)(dense1)
 dense1 = Dense(16)(dense1)
 dense1 = Dense(13)(dense1)

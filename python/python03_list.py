@@ -43,9 +43,11 @@ print(a) # [1,2,3,4]
 # a = a.append(5) #  print(a) -> None
 # b = a.append(5) # AttributeError: 'NoneType' object has no attribute 'append'
 
-a = [1,3,4,2]
+a = [[1,2],[2,3],[3,4],[4,5]]
+# print("a[:,0] : ", a[: ,0])
 a.sort()
 print(a) # [1, 2, 3, 4]
+# print("a.shape", a.shape) # [1, 2, 3, 4] # shape는 numpy문법 
 
 a.reverse()
 print(a) # [4, 3, 2, 1]

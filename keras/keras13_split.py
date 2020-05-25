@@ -9,7 +9,7 @@ y = np.array(range(101,201))
 from sklearn.model_selection import train_test_split
 
 x_train,x_test,y_train,y_test = train_test_split( 
-    x,y,random_state = 3, shuffle=False,
+    x,y,random_state = 66, shuffle=False,
     train_size=0.95
     # train_size=0.9로 잡으면 1,3번째 변수에 0.95만큼 나머지 자동 test_size를 잡아주면 2,4번째로 할당하고 나머지 자동 
     # x를 train과 test로 나누고 y를 train과 test로 나눈다.
