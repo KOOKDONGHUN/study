@@ -22,15 +22,15 @@ model.add(Dense(2000))
 model.add(Dense(1)) 
 
 #3. 훈련
-model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
-# model.fit(x_train,y_train,epochs=300, batch_size=3) # batch_size = 32(default)
-model.fit(x_train,y_train,epochs=200, batch_size=2) # batch_size = 32(default)
-
-#4. 평가, 예측
 from keras.callbacks import EarlyStopping
 els = EarlyStopping(monitor='loss', patience=10, mode='auto')
+model.compile(loss='mse',optimizer='adam', metrics=['mse']) # 회기방식과 분류방식 2가지 ?  # mse는 실제 값과 예측값의 차이를 평균하는것 
+# model.fit(x_train,y_train,epochs=300, batch_size=3) # batch_size = 32(default)
+model.fit(x_train,y_train,epochs=200, batch_size=2,callbacks=[els]) # batch_size = 32(default)
+
+#4. 평가, 예측
 # loss,mse = model.evaluate(x_test,y_test,batch_size=3) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
-loss,mse = model.evaluate(x_test,y_test,batch_size=2,callbacks=[els]) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
+loss,mse = model.evaluate(x_test,y_test,batch_size=2) # evaluate -> 결과 반환(기본적으로 loss와 metrics를 반환)을 loss와 acc에 받겠다.
 
 print("loss : ",loss)
 print("mse : ",mse)

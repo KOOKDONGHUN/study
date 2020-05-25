@@ -22,8 +22,8 @@ y_data = data[:, size-1]
 print("y_data : ", y_data)
 print("y_data.shape : ", y_data.shape)
 
-x_data = x_data.reshape(x_data.shape[0],x_data.shape[1],1)
-print("x_data.shape : ", x_data.shape)
+# x_data = x_data.reshape(x_data.shape[0],x_data.shape[1],1)
+# print("x_data.shape : ", x_data.shape)
 
 from sklearn.model_selection import train_test_split
 
@@ -50,23 +50,16 @@ print(f"x_test : {x_test} \n x_test count : {len(x_test)}")
     
 # 2. 모델구성
 model = Sequential()
-model.add(LSTM(10,activation='relu',input_shape=(4,1)))
-model.add(Dense(30))
-model.add(Dense(30))
+model.add(Dense(20,activation='relu',input_shape = (4, )))
 model.add(Dense(20))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
-model.add(Dense(5))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
 model.add(Dense(1))
 
 model.summary()
+
 
 # 3. 실행
 from keras.callbacks import EarlyStopping
