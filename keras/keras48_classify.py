@@ -20,17 +20,21 @@ from keras.models import Sequential
 from keras.layers import Dense
 
 model = Sequential()
-model.add(Dense(30,input_dim=1,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
-model.add(Dense(30,activation='sigmoid'))
+model.add(Dense(20,input_dim=1,activation='sigmoid'))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20))
+model.add(Dense(20,activation='sigmoid'))
 model.add(Dense(2,activation='sigmoid')) # activation = sigmoid? 시그모이드 함수 결과 값이 항상0,1이 나온다.
                                          # 아웃풋에 곱해주는 방법?
 
