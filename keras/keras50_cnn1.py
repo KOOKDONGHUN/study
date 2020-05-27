@@ -4,7 +4,7 @@ from keras.layers import Conv2D,MaxPooling2D,Flatten,Dense
 '''cnn은 입력이 4차원'''
 
 model = Sequential()
-model.add(Conv2D(10,(2,2), input_shape=(20,20,1))) # 1 또는 3 : 흑백 또는 컬러 
+model.add(Conv2D(10,(2,2), input_shape=(20,20,1))) # 1 또는 3 : 흑백 또는 컬러 채널
                  # 가로,세로,명암
 ''' filter, kernel_size=(2,2)'''
 model.add(Conv2D(7,(3,3)))

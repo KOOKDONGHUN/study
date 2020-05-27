@@ -24,6 +24,7 @@ print(f" x.shape : {x.shape}")
 # y = onehot.transform(temp)
 
 '''
+# 판다스를 이용한 원-핫-인코딩 
 y = pd.get_dummies(y)
 print(f" y : {y}")
 print(f" y.shape : {y.shape}")
