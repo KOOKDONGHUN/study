@@ -39,28 +39,40 @@ x_test = x_test.reshape(10000,28,28,1).astype('float32')/255
 
 # 2. 모델구성
 model = Sequential()
-model.add(Conv2D(20,(3,3), input_shape=(28,28,1)))
+model.add(Conv2D(50,(2,2), input_shape=(28,28,1)))
 
-model.add(Conv2D(20,(3,3)))
-model.add(Dropout(0.3))
+model.add(Conv2D(50,(2,2)))
+model.add(Dropout(0.5))
 
-model.add(Conv2D(20,(3,3)))
-model.add(Dropout(0.3))
+model.add(Conv2D(50,(2,2)))
+model.add(Dropout(0.5))
 
-model.add(Conv2D(20,(3,3)))
-model.add(Dropout(0.2))
+model.add(Conv2D(50,(2,2),padding='same'))
+model.add(Dropout(0.5))
 
-model.add(Conv2D(20,(3,3)))
-model.add(Conv2D(10,(3,3)))
-model.add(Conv2D(10,(2,2),padding='same'))
-model.add(Conv2D(5,(2,2)))
+model.add(Conv2D(50,(2,2),padding='same'))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(50,(2,2),padding='same'))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(50,(2,2),padding='same'))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(50,(2,2),padding='same'))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(50,(2,2),padding='same'))
+model.add(Dropout(0.5))
+
 # model.add(Conv2D(5,(2,2),strides=2))
 
-model.add(Conv2D(5,(2,2),strides=2,padding='same'))
+model.add(Conv2D(50,(2,2),strides=2,padding='same'))
 model.add(MaxPooling2D(pool_size=2))
-model.add(Dropout(0.2))
+model.add(Dropout(0.5))
 
-model.add(Conv2D(5,(2,2),padding='same',strides=2))
+model.add(Conv2D(50,(2,2),padding='same',strides=2))
+model.add(Dropout(0.5))
 
 model.add(Flatten())
 model.add(Dense(10,activation='softmax'))
@@ -73,7 +85,7 @@ from keras.callbacks import EarlyStopping
 els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=100,batch_size=30,callbacks=[els],validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=100,batch_size=30,callbacks=[els],validation_split=0.1,verbose=2)
 
 from matplotlib import pyplot as plt
 
