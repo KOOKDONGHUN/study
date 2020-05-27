@@ -39,13 +39,20 @@ x_test = x_test.reshape(10000,28,28,1).astype('float32')/255
 
 # 2. 모델구성
 model = Sequential()
-model.add(Conv2D(10,(3,3), input_shape=(28,28,1)))
-model.add(Conv2D(10,(3,3)))
+model.add(Conv2D(20,(3,3), input_shape=(28,28,1)))
+
+model.add(Conv2D(20,(3,3)))
+model.add(Dropout(0.3))
+
+model.add(Conv2D(20,(3,3)))
+model.add(Dropout(0.3))
+
+model.add(Conv2D(20,(3,3)))
 model.add(Dropout(0.2))
 
+model.add(Conv2D(20,(3,3)))
 model.add(Conv2D(10,(3,3)))
-model.add(Conv2D(7,(3,3)))
-model.add(Conv2D(5,(2,2),padding='same'))
+model.add(Conv2D(10,(2,2),padding='same'))
 model.add(Conv2D(5,(2,2)))
 # model.add(Conv2D(5,(2,2),strides=2))
 
@@ -56,20 +63,33 @@ model.add(Dropout(0.2))
 model.add(Conv2D(5,(2,2),padding='same',strides=2))
 
 model.add(Flatten())
-model.add(Dense(10))
+model.add(Dense(10,activation='softmax'))
 
 model.summary()
 
 
 # 3. 컴파일(훈련준비),실행(훈련)
-
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=100,batch_size=30,callbacks=[],validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=100,batch_size=30,callbacks=[els],validation_split=0.1)
 
+from matplotlib import pyplot as plt
+
+# plot 메소드의 개수에 따라 그려지는 선의 개수는 달라짐 
+plt.plot(hist.history['loss']) # 하나만 넣으면 자동으로 y값으로 인식 x는 시간 순서로 알아서 잡음?
+plt.plot(hist.history['acc'])
+# plt.plot(hist.history['val_loss']) # 이거 가능 validation_split 안한 모델이였던거 같은데?
+
+plt.title('keras54 loss plot')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train loss','train acc'])
+plt.show()
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=1)
+loss,acc = model.evaluate(x_test,y_test,batch_size=30)
 # pred = model.predict()
 # print(f"pred.shape : {pred.shape}")
 # pred = np_utils.to_categorical(pred)
