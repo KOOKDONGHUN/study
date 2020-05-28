@@ -20,7 +20,7 @@ print(f"y_test.shape : {y_test.shape}")
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 
-x_train = x_train.reshape(50000,46,64).astype('float32')/255
+x_train = x_train.reshape(50000,48,64).astype('float32')/255
 x_test = x_test.reshape(10000,48,64).astype('float32')/255
 
 
@@ -48,10 +48,19 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=10,batch_size=200,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=10,batch_size=100,callbacks=[],verbose=2)
+
+plt.plot(hist.history['loss'])
+plt.plot(hist.history['acc'])
+
+plt.title('keras60 loss plot')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train loss','train acc'])
+plt.show()
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=200)
+loss,acc = model.evaluate(x_test,y_test,batch_size=100)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}")

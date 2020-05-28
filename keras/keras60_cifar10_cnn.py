@@ -63,10 +63,19 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=30,batch_size=100,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=30,batch_size=32,callbacks=[],verbose=2)
+
+plt.plot(hist.history['loss'])
+plt.plot(hist.history['acc'])
+
+plt.title('keras60 loss plot')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train loss','train acc'])
+plt.show()
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=100)
+loss,acc = model.evaluate(x_test,y_test,batch_size=32)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}")

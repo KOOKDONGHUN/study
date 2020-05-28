@@ -64,6 +64,15 @@ model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['ac
 
 hist = model.fit(x_train,y_train,epochs=30,batch_size=60,callbacks=[],verbose=2)
 
+plt.plot(hist.history['loss'])
+plt.plot(hist.history['acc'])
+
+plt.title('keras60 loss plot')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train loss','train acc'])
+plt.show()
+
 # 4. 평가, 예측
 loss,acc = model.evaluate(x_test,y_test,batch_size=60)
 
