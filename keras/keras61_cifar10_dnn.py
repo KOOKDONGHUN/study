@@ -20,13 +20,13 @@ print(f"y_test.shape : {y_test.shape}")
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 
-x_train = x_train.reshape(50000,32,32,3).astype('float32')/255
-x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
+x_train = x_train.reshape(50000,32,96).astype('float32')/255
+x_test = x_test.reshape(10000,32,96).astype('float32')/255
 
 
 
 # 2. 모델구성
-input1 = Input(shape=(32,32,3))
+input1 = Input(shape=(32,96))
 
 fl1 = (Flatten())(input1)
 dense1 = (Dense(1024))(fl1)
