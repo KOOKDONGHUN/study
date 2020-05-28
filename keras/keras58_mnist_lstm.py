@@ -41,7 +41,7 @@ model.summary()
 els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=10,batch_size=200,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=10,batch_size=150,callbacks=[],verbose=2)
 
 plt.plot(hist.history['loss'])
 plt.plot(hist.history['acc'])
