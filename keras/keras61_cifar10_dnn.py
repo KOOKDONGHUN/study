@@ -29,11 +29,17 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
 input1 = Input(shape=(32,32,3))
 fl1 = (Flatten())(input1)
 
-dense1 = (Dense(2048))(fl1)
-dense1 = Dropout(0.3)(dense1)
+dense1 = (Dense(512,activation='relu'))(fl1)
+dense1 = Dropout(0.5)(dense1)
 
-dense1 = (Dense(2048))(dense1)
-dense1 = Dropout(0.3)(dense1)
+dense1 = (Dense(512))(dense1)
+dense1 = Dropout(0.5)(dense1)
+
+dense1 = (Dense(512))(dense1)
+dense1 = Dropout(0.5)(dense1)
+
+dense1 = (Dense(512))(dense1)
+dense1 = Dropout(0.5)(dense1)
 
 output1 = Dense(10,activation='softmax')(dense1)
 
@@ -45,10 +51,10 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=30,batch_size=100,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=20,batch_size=300,callbacks=[],verbose=2,validation_split=0.2)
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=100)
+loss,acc = model.evaluate(x_test,y_test,batch_size=300)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}")
