@@ -71,7 +71,7 @@ plt.title('keras54 loss plot')
 plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train loss','train acc'])
-plt.show()
+# plt.show()
 
 # 4. 평가, 예측
 loss,acc = model.evaluate(x_test,y_test,batch_size=30)
