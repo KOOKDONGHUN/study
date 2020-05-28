@@ -31,7 +31,6 @@ model = Sequential()
 model.add(LSTM(30,input_shape=(28,28)))
 model.add(Dense(256))
 model.add(Dense(256))
-model.add(Dense(128))
 model.add(Dense(10,activation='softmax'))
 
 model.summary()
@@ -41,7 +40,7 @@ model.summary()
 els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=10,batch_size=150,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=10,batch_size=100,callbacks=[],verbose=2)
 
 plt.plot(hist.history['loss'])
 plt.plot(hist.history['acc'])
