@@ -29,13 +29,10 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
 input1 = Input(shape=(32,32,3))
 fl1 = (Flatten())(input1)
 
-dense1 = (Dense(1024))(fl1)
+dense1 = (Dense(2048))(fl1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Dense(1024))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Dense(1024))(dense1)
+dense1 = (Dense(2048))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
 output1 = Dense(10,activation='softmax')(dense1)

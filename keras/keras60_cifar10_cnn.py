@@ -28,15 +28,11 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
 # 2. 모델구성
 input1 = Input(shape=(32,32,3))
 
-dense1 = (Conv2D(1024,(3,3)))(input1)
+dense1 = (Conv2D(2048,(3,3)))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(1024,(3,3)))(input1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Conv2D(1024,(3,3)))(input1)
+dense1 = (Conv2D(2048,(3,3)))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
