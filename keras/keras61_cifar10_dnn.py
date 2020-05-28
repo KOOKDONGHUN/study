@@ -29,22 +29,22 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
 input1 = Input(shape=(32,32,3))
 fl1 = (Flatten())(input1)
 
-dense1 = (Dense(128,activation='relu'))(fl1)
+dense1 = (Dense(64,activation='relu'))(fl1)
 dense1 = Dropout(0.1)(dense1)
 
-dense1 = (Dense(128))(dense1)
+dense1 = (Dense(64))(dense1)
 
 dense1 = (Dense(128,activation='relu'))(dense1)
 dense1 = Dropout(0.1)(dense1)
 
 dense1 = (Dense(128))(dense1)
 
-dense1 = (Dense(128,activation='relu'))(dense1)
+dense1 = (Dense(256))(dense1)
 dense1 = Dropout(0.1)(dense1)
 
-dense1 = (Dense(128))(dense1)
+dense1 = (Dense(256))(dense1)
 
-dense1 = (Dense(128))(dense1)
+dense1 = (Dense(256))(dense1)
 dense1 = Dropout(0.1)(dense1)
 
 output1 = Dense(10,activation='softmax')(dense1)
