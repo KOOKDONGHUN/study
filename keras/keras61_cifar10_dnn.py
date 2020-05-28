@@ -20,13 +20,13 @@ print(f"y_test.shape : {y_test.shape}")
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 
-x_train = x_train.reshape(50000,32,32,3).astype('float32')/255
-x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
+x_train = x_train.reshape(50000,64,16,3).astype('float32')/255
+x_test = x_test.reshape(10000,64,16,3).astype('float32')/255
 
 
 
 # 2. 모델구성
-input1 = Input(shape=(32,32,3))
+input1 = Input(shape=(64,16,3))
 fl1 = (Flatten())(input1)
 
 dense1 = (Dense(32,activation='relu'))(fl1)
@@ -62,10 +62,10 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=20,batch_size=100,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=30,batch_size=60,callbacks=[],verbose=2)
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=100)
+loss,acc = model.evaluate(x_test,y_test,batch_size=60)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}")
