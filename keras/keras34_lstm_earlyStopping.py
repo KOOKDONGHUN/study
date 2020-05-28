@@ -32,7 +32,7 @@ x2 = x2.reshape(x2.shape[0],x2.shape[1],1)
 print("x2.shape",x2.shape) # 
 
 y = array([4,5,6,7,8,90,10,11,12,13,50,60,70]) # 
-x1_predict = array([55,65,75])
+x1_predict = array([55,65,75])# (3, 1)
 x2_predict = array([65,75,85])
 x1_predict = x1_predict.reshape(1,3,1)
 x2_predict = x2_predict.reshape(1,3,1)
