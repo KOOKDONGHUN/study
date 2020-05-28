@@ -30,16 +30,16 @@ input1 = Input(shape=(32,32,3))
 fl1 = (Flatten())(input1)
 
 dense1 = (Dense(256,activation='relu'))(fl1)
-dense1 = Dropout(0.5)(dense1)
+dense1 = Dropout(0.1)(dense1)
 
 dense1 = (Dense(256))(dense1)
-dense1 = Dropout(0.5)(dense1)
+dense1 = Dropout(0.1)(dense1)
 
 dense1 = (Dense(256))(dense1)
-dense1 = Dropout(0.5)(dense1)
+dense1 = Dropout(0.1)(dense1)
 
 dense1 = (Dense(256))(dense1)
-dense1 = Dropout(0.5)(dense1)
+dense1 = Dropout(0.1)(dense1)
 
 output1 = Dense(10,activation='softmax')(dense1)
 
