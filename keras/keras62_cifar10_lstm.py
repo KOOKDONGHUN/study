@@ -31,8 +31,8 @@ input1 = Input(shape=(32,96))
 dense1 = (LSTM(1024,activation = 'relu'))(input1)
 dense1 = Dropout(0.3)(dense1)
 
-# dense1 = (Dense(1024))(dense1)
-# dense1 = Dropout(0.3)(dense1)
+dense1 = (Dense(1024))(dense1)
+dense1 = Dropout(0.3)(dense1)
 
 output1 = Dense(10,activation='softmax')(dense1)
 
@@ -44,10 +44,10 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=5,batch_size=200,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=5,batch_size=100,callbacks=[],verbose=2)
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=200)
+loss,acc = model.evaluate(x_test,y_test,batch_size=100)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}")
