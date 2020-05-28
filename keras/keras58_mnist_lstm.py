@@ -30,7 +30,7 @@ model = Sequential()
 # model.add(LSTM(5,input_shape=(num_pixels,1)))
 model.add(LSTM(30,input_shape=(28,28)))
 model.add(Dense(256))
-model.add(Dense(128))
+model.add(Dense(256))
 model.add(Dense(128))
 model.add(Dense(10,activation='softmax'))
 
