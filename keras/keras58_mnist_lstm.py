@@ -19,14 +19,17 @@ num_pixels = x_train.shape[1] * x_train.shape[2]
 
 # 각 픽셀에 대한 값을 0~255의 숫자를 0과1사이의 값으로 만들어줌
 ''' 여러가지 해보기 (784,1), (28,28), (392,2), (196,4) '''
-x_train = x_train.reshape(60000,num_pixels,1).astype('float32')/255
-x_test = x_test.reshape(10000,num_pixels,1).astype('float32')/255
+# x_train = x_train.reshape(60000,num_pixels,1).astype('float32')/255
+x_train = x_train.reshape(60000,28,28).astype('float32')/255
+# x_test = x_test.reshape(10000,num_pixels,1).astype('float32')/255
+x_test = x_test.reshape(10000,28,28).astype('float32')/255
 
 
 # 2. 모델구성
 model = Sequential()
-model.add(LSTM(512,input_shape=(num_pixels,1)))
-# model.add(Dense(256,activation='relu'))
+# model.add(LSTM(5,input_shape=(num_pixels,1)))
+model.add(LSTM(5,input_shape=(28,28)))
+model.add(Dense(128))
 model.add(Dense(10,activation='softmax'))
 
 model.summary()
