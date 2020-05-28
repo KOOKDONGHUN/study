@@ -1,45 +1,39 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D,Dropout,Input
-from keras.models import Sequential, Model
+from keras.layers import Dense,Dropout,LSTM
+from keras.models import Sequential
 from keras.utils import np_utils
 from keras.callbacks import EarlyStopping
 from matplotlib import pyplot as plt
 from keras.datasets import mnist
 
+
 # 1. 데이터
 data = mnist.load_data()
 (x_train, y_train),(x_test, y_test) = data
 
-# 데이터 전처리
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 
-x_train = x_train.reshape(60000,28,28,1).astype('float32')/255
-x_test = x_test.reshape(10000,28,28,1).astype('float32')/255
+num_pixels = x_train.shape[1] * x_train.shape[2]
 
+# 각 픽셀에 대한 값을 0~255의 숫자를 0과1사이의 값으로 만들어줌
+''' 여러가지 해보기 (784,1), (28,28), (392,2), (196,4) '''
+x_train = x_train.reshape(60000,num_pixels,1).astype('float32')/255
+x_test = x_test.reshape(10000,num_pixels,1).astype('float32')/255
 
 
 # 2. 모델구성
-input1 = Input(shape=(28,28,1))
+model = Sequential()
+model.add(LSTM(20,input_shape=(num_pixels,1)))
+model.add(Dense(512,activation='relu'))
+model.add(Dense(10,activation='softmax'))
 
-fl1 = (Flatten())(input1)
-dense1 = Dense(580,activation='relu')(fl1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = Dense(580)(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-output1 = Dense(10,activation='softmax')(dense1)
-
-model = Model(inputs=input1, outputs=output1)
 model.summary()
 
-
-
 # 3. 컴파일(훈련준비),실행(훈련)
-els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 
+els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
 hist = model.fit(x_train,y_train,epochs=12,batch_size=110,callbacks=[],verbose=2)

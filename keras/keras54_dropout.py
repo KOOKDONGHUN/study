@@ -41,11 +41,11 @@ x_test = x_test.reshape(10000,28,28,1).astype('float32')/255
 model = Sequential()
 model.add(Conv2D(200,(2,2), input_shape=(28,28,1),padding='same'))
 model.add(MaxPooling2D(pool_size=2))
-model.add(Dropout(0.5))
+model.add(Dropout(0.4))
 
 model.add(Conv2D(200,(2,2),padding='same'))
 model.add(MaxPooling2D(pool_size=2))
-model.add(Dropout(0.5))
+model.add(Dropout(0.4))
 
 model.add(Flatten())
 model.add(Dense(10,activation='softmax'))
