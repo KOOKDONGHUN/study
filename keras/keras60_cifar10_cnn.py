@@ -31,26 +31,19 @@ input1 = Input(shape=(32,32,3))
 dense1 = (Conv2D(32,(3,3),activation='relu'))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 
-dense1 = (Conv2D(32,(3,3)))(input1)
+dense1 = (Conv2D(32,(3,3)))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(64,(3,3)))(input1)
+dense1 = (Conv2D(64,(3,3)))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 
-dense1 = (Conv2D(64,(3,3)))(input1)
+dense1 = (Conv2D(64,(3,3)))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(128,(3,3),padding='same'))(input1)
+dense1 = (Conv2D(128,(3,3),padding='same'))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 
-dense1 = (Conv2D(128,(3,3),padding='same'))(input1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Conv2D(128,(3,3),padding='same'))(input1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-
-dense1 = (Conv2D(256,(3,3),padding='same'))(input1)
-dense1 = Dropout(0.3)(dense1)
+dense1 = (Conv2D(128,(3,3),padding='same'))(dense1)
 
 fl1 = (Flatten())(dense1)
 output1 = Dense(10,activation='softmax')(fl1)
@@ -63,7 +56,7 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=30,batch_size=90,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=30,batch_size=80,callbacks=[],verbose=2)
 
 plt.plot(hist.history['loss'])
 plt.plot(hist.history['acc'])
@@ -75,7 +68,7 @@ plt.legend(['train loss','train acc'])
 plt.show()
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=90)
+loss,acc = model.evaluate(x_test,y_test,batch_size=80)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}")

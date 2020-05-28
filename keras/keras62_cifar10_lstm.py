@@ -46,7 +46,6 @@ model = Model(inputs=input1, outputs=output1)
 model.summary()
 
 
-
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
@@ -55,7 +54,7 @@ hist = model.fit(x_train,y_train,epochs=10,batch_size=100,callbacks=[],verbose=2
 plt.plot(hist.history['loss'])
 plt.plot(hist.history['acc'])
 
-plt.title('keras60 loss plot')
+plt.title('keras62 loss plot')
 plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train loss','train acc'])
