@@ -36,7 +36,7 @@ dense1 = (Conv2D(1024,(3,3)))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(512,(3,3)))(input1)
+dense1 = (Conv2D(1024,(3,3)))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
