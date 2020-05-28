@@ -22,17 +22,13 @@ x_test = x_test.reshape(10000,28,28,1).astype('float32')/255
 input1 = Input(shape=(28,28,1))
 fl1 = (Flatten())(input1)
 dense1 = Dense(560,activation='relu')(fl1)
-# dense1 = Dense(100)(dense1)
 dense1 = Dropout(0.2)(dense1)
+
 # dense1 = Dense(100)(dense1)
 # dense1 = Dense(100)(dense1)
+
 output1 = Dense(10,activation='softmax')(dense1)
 model = Model(inputs=input1, outputs=output1)
-
-# model = Sequential()
-# model.add(Flatten(input_shapee=(28,28,1)))
-# model.add(Dense(512,activation='relu'))
-# model.add(Dense(10,activation='softmax'))
 
 model.summary()
 
