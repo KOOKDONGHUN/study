@@ -8,3 +8,11 @@ import matplotlib.pyplot as plt
 
 print(f"x_train[0] : {x_train[0]}")
 print(f'y_train[0] : {y_train[0]}')
+
+print(f"x_train.shape : {x_train.shape}")
+print(f"x_test.shape : {x_test.shape}")
+print(f"y_train.shape : {y_train.shape}")
+print(f"y_test.shape : {y_test.shape}")
+
+plt.imshow(x_train[0])
+plt.show()
