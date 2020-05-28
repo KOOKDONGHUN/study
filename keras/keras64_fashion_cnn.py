@@ -35,36 +35,26 @@ x_test = x_test.reshape(10000,28,28,1).astype('float32')/255
 
 
 # 2. 모델구성
-input1 = Input(shape=(28,28,1))
+model = Sequential()
+model.add(Conv2D(32,(2,2),input_shape=(28,28,1),activation='relu'))
+model.add(MaxPooling2D(pool_size=2))
+model.add(Conv2D(32,(2,2)))
+model.add(Dropout(0.3))
+model.add(Conv2D(64,(2,2)))
+model.add(MaxPooling2D(pool_size=2))
+model.add(Conv2D(64,(2,2)))
+model.add(Dropout(0.3))
+model.add(Conv2D(128,(2,2),padding='same'))
+model.add(MaxPooling2D(pool_size=2))
+model.add(Conv2D(128,(2,2),padding='same'))
+model.add(Dropout(0.3))
+model.add(Conv2D(128,(2,2),padding='same'))
+model.add(MaxPooling2D(pool_size=2))
+model.add(Conv2D(256,(2,2),padding='same'))
+model.add(Dropout(0.3))
+model.add(Flatten())
+model.add(Dense(10,activation='softmax'))
 
-dense1 = (Conv2D(32,(2,2),activation='relu'))(input1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-
-dense1 = (Conv2D(32,(2,2)))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Conv2D(64,(2,2)))(dense1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-
-dense1 = (Conv2D(64,(2,2)))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Conv2D(128,(2,2),padding='same'))(dense1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-
-dense1 = (Conv2D(128,(2,2),padding='same'))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Conv2D(128,(2,2),padding='same'))(dense1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-
-dense1 = (Conv2D(256,(2,2),padding='same'))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-fl1 = (Flatten())(dense1)
-output1 = Dense(10,activation='softmax')(fl1)
-
-model = Model(inputs=input1, outputs=output1)
 model.summary()
 
 
@@ -87,4 +77,4 @@ plt.show()
 loss,acc = model.evaluate(x_test,y_test,batch_size=80)
 
 print(f"loss : {loss}")
-print(f"acc : {acc}")
+print(f"acc : {acc}") # acc : 0.9077000021934509

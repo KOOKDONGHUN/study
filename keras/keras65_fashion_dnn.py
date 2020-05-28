@@ -16,31 +16,17 @@ x_test = x_test.reshape(10000,56,14,1).astype('float32')/255
 
 
 # 2. 모델구성
-input1 = Input(shape=(56,14,1))
-fl1 = (Flatten())(input1)
+model = Sequential()
+model.add(Flatten(input_shape=(56,14,1)))
+model.add(Dense(64,activation='relu'))
+model.add(Dense(64))
+model.add(Dense(128,activation='relu'))
+model.add(Dropout(0.1))
+model.add(Dense(128))
+model.add(Dense(128))
+model.add(Dropout(0.1))
+model.add(Dense(10,activation='softmax'))
 
-dense1 = (Dense(32,activation='relu'))(fl1)
-
-dense1 = (Dense(32))(dense1)
-
-dense1 = (Dense(64,activation='relu'))(dense1)
-dense1 = Dropout(0.1)(dense1)
-
-dense1 = (Dense(64,activation='relu'))(fl1)
-
-dense1 = (Dense(64))(dense1)
-
-dense1 = (Dense(128,activation='relu'))(dense1)
-dense1 = Dropout(0.1)(dense1)
-
-dense1 = (Dense(128))(dense1)
-
-dense1 = (Dense(128))(dense1)
-dense1 = Dropout(0.1)(dense1)
-
-output1 = Dense(10,activation='softmax')(dense1)
-
-model = Model(inputs=input1, outputs=output1)
 model.summary()
 
 
@@ -63,4 +49,4 @@ plt.show()
 loss,acc = model.evaluate(x_test,y_test,batch_size=60)
 
 print(f"loss : {loss}")
-print(f"acc : {acc}")
+print(f"acc : {acc}") # acc : 0.8751999735832214

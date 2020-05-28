@@ -34,7 +34,7 @@ dense1 = (Dense(32,activation='relu'))(fl1)
 dense1 = (Dense(64,activation='relu'))(dense1)
 dense1 = Dropout(0.1)(dense1)
 
-dense1 = (Dense(64,activation='relu'))(fl1)
+dense1 = (Dense(64,activation='relu'))(dense1)
 
 dense1 = (Dense(64,activation='relu'))(dense1)
 dense1 = Dropout(0.1)(dense1)

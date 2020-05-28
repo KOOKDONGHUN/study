@@ -17,23 +17,15 @@ x_test = x_test.reshape(10000,56,14).astype('float32')/255
 
 
 # 2. 모델구성
-input1 = Input(shape=(56,14))
-
-dense1 = (LSTM(32,activation = 'relu'))(input1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Dense(32))(dense1)
-
-dense1 = (Dense(64))(dense1)
-dense1 = Dropout(0.2)(dense1)
-
-dense1 = (Dense(64))(dense1)
-
-dense1 = (Dense(64))(dense1)
-
-output1 = Dense(10,activation='softmax')(dense1)
-
-model = Model(inputs=input1, outputs=output1)
+model = Sequential()
+model.add(LSTM(32,input_shape=(56,14),activation = 'relu'))
+model.add(Dropout(0.3))
+model.add(Dense(32))
+model.add(Dense(64))
+model.add(Dropout(0.2))
+model.add(Dense(64))
+model.add(Dense(64))
+model.add(Dense(10,activation='softmax'))
 model.summary()
 
 
@@ -55,4 +47,4 @@ plt.show()
 loss,acc = model.evaluate(x_test,y_test,batch_size=100)
 
 print(f"loss : {loss}")
-print(f"acc : {acc}")
+print(f"acc : {acc}") # acc : 0.835099995136261

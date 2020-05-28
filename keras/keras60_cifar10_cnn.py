@@ -71,4 +71,4 @@ plt.show()
 loss,acc = model.evaluate(x_test,y_test,batch_size=80)
 
 print(f"loss : {loss}")
-print(f"acc : {acc}")
+print(f"acc : {acc}") # acc : 0.7251999974250793
