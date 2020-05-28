@@ -28,17 +28,17 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
 # 2. 모델구성
 input1 = Input(shape=(32,32,3))
 
-dense1 = (Conv2D(512,(3,3)))(input1)
+dense1 = (Conv2D(1024,(3,3)))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(512,(3,3)))(input1)
+dense1 = (Conv2D(1024,(3,3)))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(512,(3,3)))(input1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.3)(dense1)
+# dense1 = (Conv2D(512,(3,3)))(input1)
+# dense1 = (MaxPooling2D(pool_size=2))(dense1)
+# dense1 = Dropout(0.3)(dense1)
 
 fl1 = (Flatten())(dense1)
 output1 = Dense(10,activation='softmax')(fl1)
@@ -51,10 +51,10 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=10,batch_size=100,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=10,batch_size=200,callbacks=[],verbose=2)
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=100)
+loss,acc = model.evaluate(x_test,y_test,batch_size=200)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}")

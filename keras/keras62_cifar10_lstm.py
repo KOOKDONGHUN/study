@@ -20,17 +20,15 @@ print(f"y_test.shape : {y_test.shape}")
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 
-x_train = x_train.reshape(50000,32,32).astype('float32')/255
-x_test = x_test.reshape(10000,32,32).astype('float32')/255
+x_train = x_train.reshape(50000,32,96).astype('float32')/255
+x_test = x_test.reshape(10000,32,96).astype('float32')/255
 
 
 
 # 2. 모델구성
-input1 = Input(shape=(32,32))
+input1 = Input(shape=(32,96))
 
-fl1 = (Flatten())(input1)
-dense1 = (LSTM(1024,activation = 'relu'))(fl1)
-# dense1 = (MaxPooling2D(pool_size=2))(dense1)
+dense1 = (LSTM(1024,activation = 'relu'))(input1)
 dense1 = Dropout(0.3)(dense1)
 
 # dense1 = (Dense(1024))(dense1)
