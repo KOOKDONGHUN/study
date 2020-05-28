@@ -28,7 +28,7 @@ x_test = x_test.reshape(10000,28,28).astype('float32')/255
 # 2. 모델구성
 model = Sequential()
 # model.add(LSTM(5,input_shape=(num_pixels,1)))
-model.add(LSTM(15,input_shape=(28,28)))
+model.add(LSTM(25,input_shape=(28,28)))
 model.add(Dense(512))
 model.add(Dense(10,activation='softmax'))
 
