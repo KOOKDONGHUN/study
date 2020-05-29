@@ -79,7 +79,7 @@ plt.plot(hist.history['val_loss'])
 plt.plot(hist.history['val_acc'])
 # plt.plot(hist.history['val_loss']) # 이거 가능 validation_split 안한 모델이였던거 같은데?
 
-plt.title('keras44 loss plot')
+plt.title('keras46 loss plot')
 plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train loss','train acc','val loss','val acc'])

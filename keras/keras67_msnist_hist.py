@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D
+from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D,Dropout
 from keras.models import Sequential
 
 from keras.callbacks import EarlyStopping
@@ -40,17 +40,16 @@ x_test = x_test.reshape(10000,28,28,1).astype('float32')/255
 # 2. 모델구성
 model = Sequential()
 model.add(Conv2D(10,(3,3), input_shape=(28,28,1)))
+model.add(Dropout(0.8))
+
 model.add(Conv2D(10,(3,3)))
+model.add(Dropout(0.8))
+
 model.add(Conv2D(10,(3,3)))
-# model.add(Conv2D(7,(3,3)))
-# model.add(Conv2D(5,(2,2),padding='same'))
-# model.add(Conv2D(5,(2,2)))
-# # model.add(Conv2D(5,(2,2),strides=2))
-# # model.add(Conv2D(5,(2,2),strides=2,padding='same'))
-# model.add(MaxPooling2D(pool_size=2))
-# model.add(Conv2D(5,(2,2),padding='same',strides=2))
+model.add(Dropout(0.8))
+
 model.add(Flatten())
-model.add(Dense(10))
+model.add(Dense(10,activation='softmax'))
 
 model.summary()
 
@@ -59,11 +58,55 @@ model.summary()
 
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=100,batch_size=1,callbacks=[],validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=10,batch_size=150,callbacks=[],validation_split=0.1)
+
+print(f"hist.type : {type(hist)}")
+print(f"hist : {hist}")
+print(f"hist.history.keys() : {hist.history.keys()}")
+print(f"hist.history.values() : {hist.history.values()}")
+
+loss = hist.history['loss']
+acc = hist.history['acc']
+val_loss = hist.history['val_loss']
+val_acc = hist.history['val_acc']
+
+print(f"acc : {acc}")
+print(f"loss : {loss}")
+print(f"val_acc : {acc}")
+print(f"val_loss : {loss}")
+
+plt.figure(figsize=(10,6)) # -> 도화지의 크기? 출력되는 창의 크기인가 그래프의 크기인가 
+
+plt.subplot(2,1,1) # 2행1열의 첫번쨰 그림을 그린다.
+plt.title('keras67 loss plot')
+plt.plot(hist.history['loss'],marker='.', c='red',label = 'loss') 
+plt.plot(hist.history['val_loss'],marker='.', c='blue',label = 'val_loss')
+
+plt. grid()
+
+plt.ylabel('loss')
+plt.xlabel('epoch')
+# plt.legend(['train loss','val loss'])
+plt.legend(loc = 'upper right')
 
 
+plt.subplot(2,1,2) # 2행1열의 첫번쨰 그림을 그린다.
+plt.title('keras67 acc plot')
+
+plt.plot(hist.history['val_acc'])
+plt.plot(hist.history['acc'])
+
+plt. grid()
+
+plt.ylabel('acc')
+plt.xlabel('epoch')
+
+plt.legend(['train acc','val acc'])
+
+plt.show()
+'''
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=1)
+loss_accuracy = model.evaluate(x_test,y_test,batch_size=1)
 # pred = model.predict()
 # print(f"pred.shape : {pred.shape}")
 # pred = np_utils.to_categorical(pred)
@@ -72,7 +115,5 @@ loss,acc = model.evaluate(x_test,y_test,batch_size=1)
 # print(f"pred.shape : {pred.shape}")
 # print(f"pred : {pred}")
 
-print(f"loss : {loss}")
-print(f"acc : {acc}")
-
-''' 99.25이상 만들기 '''
+print(f"loss : {loss_accuracy[0]}")
+print(f"accuracy : {loss_accuracy[1]}")'''
