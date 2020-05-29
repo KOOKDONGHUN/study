@@ -67,7 +67,7 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=100,batch_size=32,callbacks=[els,chpoint,tb_hist],verbose=2,validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=100,batch_size=32,callbacks=[els],verbose=2,validation_split=0.1)
 
 
 loss = hist.history['loss']
