@@ -34,19 +34,19 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255.0
 # 2. 모델구성
 input1 = Input(shape=(32,32,3))
 
-dense1 = (Conv2D(16,(3,3),activation='elu',padding='same'))(input1)
-dense1 = (Conv2D(16,(3,3),activation='elu'))(dense1)
+dense1 = (Conv2D(20,(2,2),activation='elu',padding='same'))(input1)
+dense1 = (Conv2D(20,(2,2),activation='elu'))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.2)(dense1)
+dense1 = Dropout(0.3)(dense1)
 
 
-dense1 = (Conv2D(16,(3,3),activation='elu',padding='same'))(dense1)
-dense1 = (Conv2D(16,(3,3),activation='elu'))(dense1)
+dense1 = (Conv2D(20,(2,2),activation='elu',padding='same'))(dense1)
+dense1 = (Conv2D(20,(2,2),activation='elu'))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.2)(dense1)
+dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(64,(2,2),activation='elu',padding='same'))(dense1)
-dense1 = (Conv2D(64,(2,2),activation='elu'))(dense1)
+dense1 = (Conv2D(32,(2,2),activation='elu',padding='same'))(dense1)
+dense1 = (Conv2D(32,(2,2),activation='elu'))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 dense1 = Dropout(0.4)(dense1)
 
@@ -54,6 +54,10 @@ fl1 = (Flatten())(dense1)
 
 output1 = Dense(128,activation='elu')(fl1)
 output1 = Dropout(0.4)(output1)
+
+output1 = Dense(128,activation='elu')(output1)
+output1 = Dropout(0.4)(output1)
+
 output1 = Dense(100,activation='softmax')(output1)
 
 model = Model(inputs=input1, outputs=output1)
