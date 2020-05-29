@@ -5,7 +5,7 @@ from keras.layers import Dense, Conv2D, LSTM , Flatten, Dropout, MaxPooling2D,In
 import matplotlib.pyplot as plt
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 
-els = EarlyStopping(monitor='loss', patience=8, mode='auto')
+els = EarlyStopping(monitor='loss', patience=6, mode='auto')
 
 modelpath = './model/keras70/{epoch:02d}--{val_loss:.4f}.hdf5'
 chpoint = ModelCheckpoint(filepath=f'{modelpath}', monitor='val_loss', save_best_only=True,mode='auto')
@@ -27,45 +27,34 @@ y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 
 # 0~ 255 사이의 x 값을 0~1사이의 값으로 바꿔줌 
-x_train = x_train.reshape(50000,32,32,3).astype('float32')/255
-x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
+x_train = x_train.reshape(50000,32,32,3).astype('float32')/255.0
+x_test = x_test.reshape(10000,32,32,3).astype('float32')/255.0
 
 
 # 2. 모델구성
 input1 = Input(shape=(32,32,3))
 
-dense1 = (Conv2D(64,(2,2),activation='relu'))(input1)
+dense1 = (Conv2D(16,(3,3),activation='elu',padding='same'))(input1)
+dense1 = (Conv2D(16,(3,3),activation='elu'))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.3)(dense1)
+dense1 = Dropout(0.2)(dense1)
 
-dense1 = (Conv2D(64,(2,2)))(dense1)
-dense1 = Dropout(0.5)(dense1)
 
-dense1 = (Conv2D(128,(2,2)))(dense1)
+dense1 = (Conv2D(16,(3,3),activation='elu',padding='same'))(dense1)
+dense1 = (Conv2D(16,(3,3),activation='elu'))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.3)(dense1)
+dense1 = Dropout(0.2)(dense1)
 
-dense1 = (Conv2D(128,(2,2)))(dense1)
-dense1 = Dropout(0.5)(dense1)
-
-dense1 = (Conv2D(128,(2,2),padding='same'))(dense1)
+dense1 = (Conv2D(64,(2,2),activation='elu',padding='same'))(dense1)
+dense1 = (Conv2D(64,(2,2),activation='elu'))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Conv2D(128,(2,2),padding='same'))(dense1)
-dense1 = Dropout(0.5)(dense1)
-
-dense1 = (Conv2D(128,(2,2),padding='same'))(dense1)
-dense1 = (MaxPooling2D(pool_size=2))(dense1)
-dense1 = Dropout(0.3)(dense1)
-
-dense1 = (Conv2D(256,(2,2),padding='same'))(dense1)
-dense1 = Dropout(0.5)(dense1)
+dense1 = Dropout(0.4)(dense1)
 
 fl1 = (Flatten())(dense1)
 
-output1 = Dense(100,activation='relu')(fl1)
-outpu1 = Dense(100,activation='softmax')(output1)
+output1 = Dense(128,activation='elu')(fl1)
+output1 = Dropout(0.4)(output1)
+output1 = Dense(100,activation='softmax')(output1)
 
 model = Model(inputs=input1, outputs=output1)
 
@@ -74,7 +63,7 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=30,batch_size=32,callbacks=[els],verbose=2,validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=30,batch_size=32,callbacks=[els],verbose=2,validation_split=0.01)
 
 loss = hist.history['loss']
 acc = hist.history['acc']
@@ -111,7 +100,7 @@ plt.legend(['train acc','val acc'])
 plt.show()
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=100)
+loss,acc = model.evaluate(x_test,y_test,batch_size=32)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}") # acc : 
