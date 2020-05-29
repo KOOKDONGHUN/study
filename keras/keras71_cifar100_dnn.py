@@ -5,7 +5,7 @@ from keras.layers import Dense, Conv2D, LSTM , Flatten, Dropout, MaxPooling2D,In
 import matplotlib.pyplot as plt
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 
-els = EarlyStopping(monitor='loss', patience=8, mode='auto')
+els = EarlyStopping(monitor='loss', patience=5, mode='auto')
 
 modelpath = './model/keras71/{epoch:02d}--{val_loss:.4f}.hdf5'
 chpoint = ModelCheckpoint(filepath=f'{modelpath}', monitor='val_loss', save_best_only=True,mode='auto')
@@ -27,36 +27,27 @@ y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 
 # 0~ 255 사이의 x 값을 0~1사이의 값으로 바꿔줌 
-x_train = x_train.reshape(50000,8,2**7,3).astype('float32')/255
-x_test = x_test.reshape(10000,8,2**7,3).astype('float32')/255
+x_train = x_train.reshape(50000,2**7,8,3).astype('float32')/255
+x_test = x_test.reshape(10000,2**7,8,3).astype('float32')/255
 
 
 # 2. 모델구성
-input1 = Input(shape=(8,2**7,3))
+input1 = Input(shape=(2**7,8,3))
 fl1 = (Flatten())(input1)
 
 dense1 = (Dense(64,activation='relu'))(fl1)
+dense1 = (Dense(64,activation='relu'))(dense1)
+dense1 = Dropout(0.5)(dense1)
+
+dense1 = (Dense(64,activation='relu'))(dense1)
+dense1 = (Dense(64,activation='relu'))(dense1)
 dense1 = Dropout(0.5)(dense1)
 
 dense1 = (Dense(64,activation='relu'))(dense1)
 dense1 = Dropout(0.5)(dense1)
 
-dense1 = (Dense(128))(dense1)
+dense1 = (Dense(64,activation='relu'))(dense1)
 dense1 = Dropout(0.5)(dense1)
-
-dense1 = (Dense(128))(dense1)
-dense1 = Dropout(0.5)(dense1)
-
-dense1 = (Dense(128))(dense1)
-dense1 = Dropout(0.5)(dense1)
-
-dense1 = (Dense(128))(dense1)
-dense1 = Dropout(0.5)(dense1)
-
-dense1 = (Dense(128))(dense1)
-dense1 = Dropout(0.5)(dense1)
-
-dense1 = (Dense(128))(dense1)
 
 output1 = Dense(100,activation='softmax')(dense1)
 
@@ -67,7 +58,7 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=100,batch_size=32,callbacks=[els],verbose=2,validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=200,batch_size=100,callbacks=[els],verbose=2,validation_split=0.3)
 
 
 loss = hist.history['loss']
@@ -105,7 +96,7 @@ plt.legend(['train acc','val acc'])
 plt.show()
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=32)
+loss,acc = model.evaluate(x_test,y_test,batch_size=100)
 
 print(f"loss : {loss}")
 print(f"acc : {acc}") # acc : 
