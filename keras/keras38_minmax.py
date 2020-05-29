@@ -23,6 +23,8 @@ x1 = array([[1,2,3],[2,3,4],[3,4,5],[4,5,6],
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, RobustScaler # PolynomialFeatures, Normalizer, Binarizer, KernelCenterer ... 개많음
 
+# RobustScaler : 이상치 제거 해주는 스케일러
+
 # # 정규화
 # minmax = MinMaxScaler()
 # minmax.fit(x1) # 실행 
