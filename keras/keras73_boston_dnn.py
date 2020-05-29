@@ -8,3 +8,4 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 
 boston = load_boston()
 print(f"boston : {boston}")
+print(f"boston.shape : {boston.shape}")
