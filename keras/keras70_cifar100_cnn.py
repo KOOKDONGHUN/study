@@ -52,6 +52,7 @@ dense1 = Dropout(0.4)(dense1)
 
 fl1 = (Flatten())(dense1)
 
+
 output1 = Dense(128,activation='elu')(fl1)
 output1 = Dropout(0.4)(output1)
 
