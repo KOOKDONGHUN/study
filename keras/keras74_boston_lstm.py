@@ -42,17 +42,19 @@ x_data = pca.fit_transform(x_data)
 # d = np.argmax(cumsum >= 0.95) + 1
 # print('선택할 차원 수 :', d)
 
+x_data = x_data.reshape(x_data.shape[0],3,3)
+
 x_train,x_test,y_train,y_test = train_test_split( 
     x_data,y_data,random_state = 66, shuffle=False,
     train_size=0.8
     )
 
-print(f"x_train.shape : {x_train.shape}") # x_train.shape : (404, 13)
+print(f"x_train.shape : {x_train.shape}") # x_train.shape : (404, 9)
 
-'''
+
 # 2. 모델
 model = Sequential()
-model.add(Dense(64,input_shape=(9,)))
+model.add(LSTM(64,input_shape=(3,3),activation='relu'))
 model.add(Dense(64,activation='relu'))
 model.add(Dense(64,activation='relu'))
 model.add(Dense(64,activation='relu'))
@@ -63,7 +65,7 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'mse', metrics = ['mse'])
 
-hist = model.fit(x_train,y_train,epochs=75,batch_size=6,callbacks=[],verbose=2,validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=30,batch_size=2,callbacks=[],verbose=2,validation_split=0.03)
 
 loss = hist.history['loss']
 acc = hist.history['mse']
@@ -100,7 +102,7 @@ plt.legend(['train mse','val mse'])
 plt.show()
 
 # 4. 평가, 예측
-loss,acc = model.evaluate(x_test,y_test,batch_size=6)
+loss,mse = model.evaluate(x_test,y_test,batch_size=6)
 
 # R2 구하기 # 1에 근접할수록 좋다. 다른 보조지표와 같이 쓴다.
 from sklearn.metrics import r2_score
@@ -111,4 +113,4 @@ r2_y_predict = r2_score(y_test,y_predict)
 
 print("r2 : ",r2_y_predict)
 print(f"loss : {loss}")
-# print(f"acc : {acc}") # acc : '''
+print(f"mse : {mse}") # mse : 

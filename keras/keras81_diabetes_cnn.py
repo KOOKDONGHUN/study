@@ -26,6 +26,28 @@ print(f"y_data.shape : {y_data.shape}") # 150,
 feature_names = a_data.feature_names
 print(f"feature_names : {feature_names}") # 
 
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+# std = StandardScaler()
+# std.fit(x_data) # (150,4)
+# x_data = std.transform(x_data)
+
+# pca = PCA(n_components=9)
+# pca = PCA()
+# pca.fit(x_data)
+
+# x_data = pca.fit_transform(x_data)
+
+# cumsum = np.cumsum(pca.explained_variance_ratio_)
+# d = np.argmax(cumsum >= 0.95) + 1
+# print('선택할 차원 수 :', d)
+
+print(f"x_data.shape : {x_data.shape}") # x_train.shape : (120, 4)
+
+x_data = x_data.reshape(x_data.shape[0],2,2,1)
+y_data = np_utils.to_categorical(y_data)
+
 from sklearn.model_selection import train_test_split
 
 x_train,x_test,y_train,y_test = train_test_split( 
@@ -33,34 +55,34 @@ x_train,x_test,y_train,y_test = train_test_split(
     train_size=0.8
     )
 
-print(f"x_train.shape : {x_train.shape}") # x_train.shape : (120, 4)
-
-y_train = np_utils.to_categorical(y_train)
-y_test = np_utils.to_categorical(y_test)
+print(f"x_train.shape : {x_train.shape}") # x_train.shape : (120, 2,2,1)
 
 print(f"y_train : {y_train}")
 
-# 2. 모델
+# 2.  모델
+
 model = Sequential()
-model.add(Dense(64,input_shape=(4,)))
-model.add(Dense(64))
-model.add(Dense(64))
-model.add(Dense(64,activation='softmax'))
-model.add(Dense(3))
+model.add(Conv2D(50,(2,2),input_shape=(2,2,1),activation='relu'))
+model.add(Flatten())
+model.add(Dense(512,activation='relu'))
+model.add(Dense(512,activation='relu'))
+model.add(Dense(256,activation='relu'))
+model.add(Dense(128,activation='relu'))
+model.add(Dense(3,activation='softmax'))
 
 model.summary()
 
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=30,batch_size=3,callbacks=[],verbose=2,validation_split=0.1)
+hist = model.fit(x_train,y_train,epochs=30,batch_size=3,callbacks=[],verbose=2,validation_split=0.03)
 
 # 4. 평가, 예측
 
 plt.figure(figsize=(10,6)) # -> 도화지의 크기? 출력되는 창의 크기인가 그래프의 크기인가 
 
 plt.subplot(2,1,1) # 2행1열의 첫번쨰 그림을 그린다.
-plt.title('keras76 loss plot')
+plt.title('keras78 loss plot')
 plt.plot(hist.history['loss'],marker='.', c='red',label = 'loss') 
 plt.plot(hist.history['val_loss'],marker='.', c='blue',label = 'val_loss')
 
@@ -72,7 +94,7 @@ plt.legend(loc = 'upper right')
 
 
 plt.subplot(2,1,2) # 2행1열의 첫번쨰 그림을 그린다.
-plt.title('keras76 acc plot')
+plt.title('keras78 acc plot')
 
 plt.plot(hist.history['val_acc'])
 plt.plot(hist.history['acc'])
