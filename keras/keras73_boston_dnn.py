@@ -29,10 +29,10 @@ std = StandardScaler()
 std.fit(x_data) # (13,3)
 x_data = std.transform(x_data)
 
-# pca = PCA(n_components=9)
-# pca.fit(x_data)
+pca = PCA(n_components=9)
+pca.fit(x_data)
 
-# x_data = pca.fit_transform(x_data)
+x_data = pca.fit_transform(x_data)
 
 # cumsum = np.cumsum(pca.explained_variance_ratio_)
 # d = np.argmax(cumsum >= 0.95) + 1
@@ -49,19 +49,19 @@ print(f"x_train.shape : {x_train.shape}") # x_train.shape : (404, 13)
 
 # 2. 모델
 model = Sequential()
-model.add(Dense(64,input_shape=(13,)))
+model.add(Dense(32,input_shape=(9,)))
 model.add(Dropout(0.5))
-model.add(Dense(64,activation='relu'))
+model.add(Dense(32,activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(256,activation='relu'))
+model.add(Dense(32,activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(256,activation='relu'))
+model.add(Dense(32,activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(128,activation='relu'))
+model.add(Dense(32,activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(128,activation='relu'))
+model.add(Dense(32,activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(64,activation='relu'))
+model.add(Dense(32,activation='relu'))
 model.add(Dense(1))
 
 model.summary()
@@ -69,7 +69,7 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'mse', metrics = ['mse'])
 
-hist = model.fit(x_train,y_train,epochs=25,batch_size=3,callbacks=[],verbose=2,validation_split=0.03)
+hist = model.fit(x_train,y_train,epochs=15,batch_size=3,callbacks=[],verbose=2,validation_split=0.03)
 
 
 
