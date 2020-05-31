@@ -10,13 +10,12 @@ test_data = pd.read_csv('c:/titanic/test.csv')
 
 
 '''데이터 구조? 눈으로 직접 보기 위한 프린트'''
-
 # print(f"train_data.head() : {train_data.head()}")
 feature = train_data.columns  # PassengerId, Survived, Pclass, Name, Sex, Age, SibSp, Parch, Ticket, Fare, Cabin, Embarked
 # print(f"feature : {feature}")
 
 # PassengerId, Survived, Pclass, Name, Sex, Age, SibSp, Parch, Ticket, Fare, Cabin, Embarked
-temp = feature[4] # Sex
+# temp = feature[4] # Sex
 # print(f"train_data : {train_data[temp]}\n")
 
 # print(f"feature[0] : {feature[0]}")
@@ -28,7 +27,6 @@ temp = feature[4] # Sex
 # print(train_data.info()) # PassengerId, Survived, Pclass, Name, Sex, Age, SibSp, Parch, Ticket, Fare, Cabin, Embarked
 # print('----------[test infomation]----------')
 # print(test.info()) # PassengerId, Pclass, Name, Sex, Age, SibSp, Parch, Ticket, Fare, Cabin, Embarked
-
 '''데이터 구조? 눈으로 직접 보기 위한 프린트'''
 
 
@@ -38,7 +36,6 @@ Survivied는 생존 여부(0은 사망, 1은 생존; train 데이터에서만 �
 Pclass는 사회경제적 지위(1에 가까울 수록 높음),
 SipSp는 배우자나 형제 자매 명 수의 총 합,
 Parch는 부모 자식 명 수의 총 합을 나타낸다.
-
 '''
 
 
@@ -49,7 +46,6 @@ Parch는 부모 자식 명 수의 총 합을 나타낸다.
 
 각 컬럼들과 생존간의 연관성을 그래프로 그리기
 '''
-
 # 그래프 그리기 준비
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -96,10 +92,8 @@ def pie_chart(feature):
     # plt.show()
 
 # 차트를 보기위한 함수 실행 
-pie_chart(temp)
-
+# pie_chart(temp) # test
 # pie_chart('Pclass') -> 왜 안될까?
-
 pie_chart('Embarked')
 
 def bar_chart(feature):
@@ -126,7 +120,7 @@ print(f"title_sex : \n{title_sex}")
 print(f"title_sex.shape : \n{title_sex.shape}") # 17,2 title이 인덱스 처럼 들어가네 
 
 
-'''인덱스가 흔하지 않은 title인 것을 단순히 Other로 바꾼다 -> 왜?'''
+'''인덱스가 흔하지 않은 title인 것을 단순히 Other로 바꾼다 -> 왜? 바꾸지 말고 차라리 버리면? '''
 for dataset in train_and_test:
     dataset['Title'] = dataset['Title'].replace(['Capt', 'Col', 'Countess',
                                                  'Don','Dona', 'Dr',
@@ -165,19 +159,36 @@ print(f"train_data.Embarked.value_counts(dropna=False) :\n{train_data.Embarked.v
 '''블로그 오타 있음...  Embared -> Embarked  value_count -> value_counts 
    중요한건 오타가 문제가 아니고 주어진 데이터에서 Nan값이 있다는거 결측치를 의미하는거 같다
    블로그에서는 결측치를 s로 넣어줬는데 시간이 된다면 다른 걸 넣어서 테스트 해보자!!'''
-for  dataset in train_and_test:
+for dataset in train_and_test:
     dataset['Embarked'] = dataset['Embarked'].fillna('S')
     dataset['embarked'] = dataset['Embarked'].astype(str)
 print(f"transform -> Embarked.value_counts :\n{train_data.Embarked.value_counts(dropna=False)}")
 
 '''나이 평균 구하기 Age의 결측치도 지금은 평균으로 채워주지만 다른 방법을 생각해보자'''
-def avg(col):
-    avg_Age = 0
-    for i in train_and_test[col]:
-        avg_Age += i
-    res = avg_Age/len(train_and_test[col])
-    return res
-print(avg())
-# for  dataset in train_and_test:
-#     dataset['Age'] = dataset['Age'].fillna('S')
-#     dataset['Age'] = dataset['Age'].astype(str)
+print("train_data.Age.value_counts(dropna=False) : \n",train_data.Age.value_counts(dropna=False)) # 177명인데 이걸 평균으로만 채우면 예측률에 영향이 있을듯?
+avg_Age = round(train_and_test[0]['Age'].mean(),2) # 29.69
+print("avg_Age = ",avg_Age)
+
+for dataset in train_and_test:
+    dataset['Age'].fillna(train_and_test[0]['Age'].mean(),inplace=True)
+    # dataset['Age'] = dataset['Age'].fillna(train_and_test[0]['Age'].mean(),inplace=True) # ㅋㅋ 이것 떄문에 안된건데 뭐가 문제 일까 
+    # print("1")
+    dataset['Age'] = dataset['Age'].astype(int) # -> 뭐야 왜 에러야 TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+    # print("2")
+    # 이거 인헤도 어차피 int형 일거 같은데 일단 생략 해봄 추후에 이것 떄문에 에러가 난다면 수정해야함!!
+
+    train_data['AgeBand'] = pd.cut(train_data['Age'], 5) # 어차피 트레인 데이터만 할거면 반복문 안에다 쓴이유를 찾아보자 
+
+print("train_data.Age.value_counts(dropna=False) : \n",train_data.Age.value_counts(dropna=False))
+# 뭐지 NaN만 남기고 다 사라짐 -> 이렇게된 문제점은 찾았지만 왜 없어졌는지는 모르겠다
+print (train_data[['AgeBand', 'Survived']].groupby(['AgeBand'], as_index=False).mean()) # Survivied ratio about Age Band
+''' Age의 구간을 정하는 이유? '''
+for dataset in train_and_test:
+    dataset.loc[ dataset['Age'] <= 16, 'Age'] = 0
+    dataset.loc[(dataset['Age'] > 16) & (dataset['Age'] <= 32), 'Age'] = 1
+    dataset.loc[(dataset['Age'] > 32) & (dataset['Age'] <= 48), 'Age'] = 2
+    dataset.loc[(dataset['Age'] > 48) & (dataset['Age'] <= 64), 'Age'] = 3
+    dataset.loc[ dataset['Age'] > 64, 'Age'] = 4
+    dataset['Age'] = dataset['Age'].map( { 0: 'Child',  1: 'Young', 2: 'Middle', 3: 'Prime', 4: 'Old'} ).astype(str)
+'''이 블로그의 글쓴이는 Age값으로 numeric이 아닌 string의 형식으로 넣어 주었다는데 숫자에 대한 경향성을 가지고 싶지 않다고 함 뭔 소린지 모르겠다...'''
+

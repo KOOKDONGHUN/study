@@ -2,8 +2,8 @@
 import numpy as np
 import pandas as pd
 
-x_train = pd.read_csv('E:/Bit Camp/titanic/train.csv')
-x_pred = pd.read_csv('E:/Bit Camp/titanic/test.csv') 
+x_train = pd.read_csv('c:/titanic/train.csv')
+x_pred = pd.read_csv('c:/titanic/test.csv') 
 
 print(x_train.shape)       # (891, 12)
 print(x_pred.shape)        # (418, 11)
@@ -210,8 +210,8 @@ for dataset in x:
 for dataset in x:
     dataset['Age'].fillna(dataset['Age'].mean(), inplace =True)    # NaN값에 평균 넣음
     dataset['Age'] = dataset['Age'].astype(int) 
-
-
+print("x_train.Age.value_counts(dropna=False) : \n",x_train.Age.value_counts(dropna=False))
+'''
 # Fare feature
 # test데이터 중에 NaN값이 하나 존재한다. 
 # Pclass와 Fare가 어느정도 연관성이 있는거 같아 
@@ -349,6 +349,5 @@ submission = pd.DataFrame({
 
 submission.to_csv('submission_dnn.csv', index = False)
 '''
-loss :  0.5896705009417826
-acc :  0.8212290406227112
-'''
+# loss :  0.5896705009417826
+# acc :  0.8212290406227112
