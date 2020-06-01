@@ -26,8 +26,30 @@ earlystopping의 단점 -> 이미 과적합이 지나고 있는 부분이므로 
 
 모델 저장하는 방법 
 
-load_weight 뭐야 이거
+load_weight 뭐야 이거 -> 해결
 
 가중치를 저장할 수 있는방법 3가지 modelcheckpoint, model.save(), model.save_weight()
 
 예제 10가지에 대한 3가지 모델중 가장 최적화된 모델의 model.save, model.save_weight, modelcheckpoint
+
+비선형 활성화함수 relu, sigmoid
+
+backpropagation : 오차 역전파 
+Vanishing Gradient Problem : 기울기 소실 문제
+optimaizer : 반복 최적화 알고리즘 
+
+'''
+반복횟수에 맞는 적당한 레이어의 갯수가 필요하다? 
+가중치가 너무 작은 값이면 가중치가 충분히 변화하지 않기 때문에 최적에 도달하기위해 많은 반복횟수를 요구하게되고 
+너무큰 가중치는
+
+출처 -> https://brunch.co.kr/@chris-song/39
+'''
+
+확장자가 .npy 로 저장하는 방법
+csv파일 불러서 .npy
+
+넘파이에서는 헤더까지 불러오면 에러가 난다
+csv파일을 불러오고 첫행과 첫열을 사용할지 말지 판단해야함 
+
+csv파일을 받아서 numpy로 저장해서 모델링하고 model.save를 이용해서 

@@ -26,6 +26,9 @@ print(f"y_data.shape : {y_data.shape}") # y_data.shape : (569,)
 feature_names = a_data.feature_names
 print(f"feature_names : {feature_names}") # 
 
+print(f"keys():{a_data.keys()}")
+print(f"DESCR:{a_data['DESCR']}")
+
 from sklearn.model_selection import train_test_split
 
 x_train,x_test,y_train,y_test = train_test_split( 

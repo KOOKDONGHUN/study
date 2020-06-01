@@ -1,5 +1,4 @@
 from sklearn.datasets import load_diabetes
-from keras.datasets import cifar100
 from keras.utils import np_utils
 from keras.models import Sequential, Model
 from keras.layers import Dense, Conv2D, LSTM , Flatten, Dropout, MaxPooling2D,Input
@@ -42,7 +41,7 @@ from sklearn.model_selection import train_test_split
 
 x_train,x_test,y_train,y_test = train_test_split( 
     x_data,y_data,random_state = 66, shuffle=False,
-    train_size=0.8
+    train_size=0.9
     )
 
 print(f"x_train.shape : {x_train.shape}") # x_train.shape : (442,10)
@@ -50,13 +49,13 @@ print(f"x_train.shape : {x_train.shape}") # x_train.shape : (442,10)
 # 2. 모델
 model = Sequential()
 model.add(Dense(64,input_shape=(10,)))
-model.add(Dropout(0.5))
+model.add(Dropout(0.6))
 model.add(Dense(64,activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(256,activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(256,activation='relu'))
-model.add(Dropout(0.5))
+model.add(Dropout(0.6))
+# model.add(Dense(64,activation='relu'))
+# model.add(Dropout(0.6))
+# model.add(Dense(256,activation='relu'))
+# model.add(Dropout(0.5))
 model.add(Dense(1))
 
 model.summary()
