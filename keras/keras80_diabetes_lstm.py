@@ -55,8 +55,11 @@ print(f"x_train.shape : {x_train.shape}") # x_train.shape : (404, 9)
 # 2. 모델
 model = Sequential()
 model.add(LSTM(64,input_shape=(4,2),activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(64,activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(64,activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(64,activation='relu'))
 model.add(Dense(1))
 
