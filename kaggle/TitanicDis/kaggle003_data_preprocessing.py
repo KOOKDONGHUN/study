@@ -29,16 +29,12 @@ feature = train_data.columns  # PassengerId, Survived, Pclass, Name, Sex, Age, S
 # print(test.info()) # PassengerId, Pclass, Name, Sex, Age, SibSp, Parch, Ticket, Fare, Cabin, Embarked
 '''데이터 구조? 눈으로 직접 보기 위한 프린트'''
 
-
-
 '''
 Survivied는 생존 여부(0은 사망, 1은 생존; train 데이터에서만 제공),
 Pclass는 사회경제적 지위(1에 가까울 수록 높음),
 SipSp는 배우자나 형제 자매 명 수의 총 합,
 Parch는 부모 자식 명 수의 총 합을 나타낸다.
 '''
-
-
 
 '''
 트레인 셋과 테스트 셋의 컬럼의 갯수가 다른 이유?
@@ -192,3 +188,6 @@ for dataset in train_and_test:
     dataset['Age'] = dataset['Age'].map( { 0: 'Child',  1: 'Young', 2: 'Middle', 3: 'Prime', 4: 'Old'} ).astype(str)
 '''이 블로그의 글쓴이는 Age값으로 numeric이 아닌 string의 형식으로 넣어 주었다는데 숫자에 대한 경향성을 가지고 싶지 않다고 함 뭔 소린지 모르겠다...'''
 
+print (train[['Pclass', 'Fare']].groupby(['Pclass'], as_index=False).mean())
+print("")
+print(test[test["Fare"].isnull()]["Pclass"])
