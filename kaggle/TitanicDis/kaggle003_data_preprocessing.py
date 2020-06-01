@@ -1,13 +1,23 @@
 import pandas as pd # 판다스데이터 프레임으로 구조를 만들때는 인자로 딕의 형태를 받음 -> pd.DataFrame(dic)
 import numpy as np
 
-
-
 # 1. 데이터 불러오기
 train_data = pd.read_csv('c:/titanic/train.csv') 
 test_data = pd.read_csv('c:/titanic/test.csv')
 
-
+'''
+- PassengerId : 승객 번호
+- Survived : 생존여부(1: 생존, 0 : 사망)
+- Pclass : 승선권 클래스(1 : 1st, 2 : 2nd ,3 : 3rd)
+- Name : 승객 이름
+- Sex : 승객 성별
+- Age : 승객 나이 
+- SibSp : 동반한 형제자매, 배우자 수
+- Patch : 동반한 부모, 자식 수
+- Ticket : 티켓의 고유 넘버
+- Fare 티켓의 요금
+- Cabin : 객실 번호
+- Embarked : 승선한 항구명(C : Cherbourg, Q : Queenstown, S : Southampton)'''
 
 '''데이터 구조? 눈으로 직접 보기 위한 프린트'''
 # print(f"train_data.head() : {train_data.head()}")
@@ -131,12 +141,10 @@ print(f"train_data[['Title','Survived']].groupby(['Title'], as_index=False).mean
 
 '''추출한 title데이터를 학습하기 알맞게 StringData로 변형해준다. -> 왜? 학습하기 알맞은 이유? '''
 
-'''train_data[,,] -> 이런식으로 []안에 ,로 여러가지 컬럼들을 입력해서 데이터를 원하는 컬럼끼리만 볼수 있는듯 하다. 
-   프린트 찍어서 확인해보자!'''
+'''train_data[,,] -> 이런식으로 []안에 ,로 여러가지 컬럼들을 입력해서 데이터를 원하는 컬럼끼리만 볼수 있는듯 하다. '''
 
 for dataset in train_and_test:
     dataset['Title'] = dataset['Title'].astype(str)
-
 
 '''성별은 male과 female로 나뉘어 있으므로 stringdata로 만 변형해주면 된다
    그럼 원래는 타입이 뭐가 나오는가 위에도 마찬가지고 타입을 변형해주는 이유
@@ -173,11 +181,21 @@ for dataset in train_and_test:
     # print("2")
     # 이거 인헤도 어차피 int형 일거 같은데 일단 생략 해봄 추후에 이것 떄문에 에러가 난다면 수정해야함!!
 
-    train_data['AgeBand'] = pd.cut(train_data['Age'], 5) # 어차피 트레인 데이터만 할거면 반복문 안에다 쓴이유를 찾아보자 
+    train_data['AgeBand'] = pd.cut(train_data['Age'], 5) # 어차피 트레인 데이터만 할거면 반복문 안에다 쓴이유를 찾아보고 이 의미를 알아보자 
 
-print("train_data.Age.value_counts(dropna=False) : \n",train_data.Age.value_counts(dropna=False))
 # 뭐지 NaN만 남기고 다 사라짐 -> 이렇게된 문제점은 찾았지만 왜 없어졌는지는 모르겠다
-print (train_data[['AgeBand', 'Survived']].groupby(['AgeBand'], as_index=False).mean()) # Survivied ratio about Age Band
+print("train_data.Age.value_counts(dropna=False) : \n",train_data.Age.value_counts(dropna=False))
+
+
+print (train_data[['AgeBand', 'Survived']].groupby(['AgeBand'], as_index=False).mean(),"\n") # Survivied ratio about Age Band
+'''      AgeBand  Survived
+0  (-0.08, 16.0]  0.550000
+1   (16.0, 32.0]  0.344762
+2   (32.0, 48.0]  0.403226
+3   (48.0, 64.0]  0.434783
+4   (64.0, 80.0]  0.090909'''
+
+
 ''' Age의 구간을 정하는 이유? '''
 for dataset in train_and_test:
     dataset.loc[ dataset['Age'] <= 16, 'Age'] = 0
@@ -186,8 +204,25 @@ for dataset in train_and_test:
     dataset.loc[(dataset['Age'] > 48) & (dataset['Age'] <= 64), 'Age'] = 3
     dataset.loc[ dataset['Age'] > 64, 'Age'] = 4
     dataset['Age'] = dataset['Age'].map( { 0: 'Child',  1: 'Young', 2: 'Middle', 3: 'Prime', 4: 'Old'} ).astype(str)
-'''이 블로그의 글쓴이는 Age값으로 numeric이 아닌 string의 형식으로 넣어 주었다는데 숫자에 대한 경향성을 가지고 싶지 않다고 함 뭔 소린지 모르겠다...'''
+'''이 블로그의 글쓴이는 Age값으로 numeric이 아닌 string의 형식으로 넣어 주었다는데 숫자에 대한 경향성을 가지고 싶지 않다고 함 뭔 소린지 모르겠다...
+     -> 이유없음 없어도 되는 부분인듯 하다'''
 
-print (train[['Pclass', 'Fare']].groupby(['Pclass'], as_index=False).mean())
+print ("",train_data[['Pclass', 'Fare']].groupby(['Pclass'], as_index=False).mean())
+'''
+    Pclass       Fare
+0       1  84.154687
+1       2  20.662183
+2       3  13.675550'''
+
 print("")
-print(test[test["Fare"].isnull()]["Pclass"])
+
+print(test_data[test_data["Fare"].isnull()]["Pclass"]) # .isnull() -> 결측치 찾기 
+'''
+152    3
+Name: Pclass, dtype: int64'''
+
+'''형제, 자매, 배우자, 부모님, 자녀의 수가 많을 수록 생존한경우가 많다는 것을 위에 그린 그래프를 보면 알수 있다
+   두개의 칼럼을 하나의 칼럼으로 만들어 준다. '''
+for dataset in train_and_test:
+    dataset['Family'] = dataset['Parch'] + dataset['Sibsp']
+    dataset['Family'] = dataset['Family'].astype(int)
