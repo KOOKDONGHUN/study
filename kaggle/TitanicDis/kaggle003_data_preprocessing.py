@@ -221,8 +221,28 @@ print(test_data[test_data["Fare"].isnull()]["Pclass"]) # .isnull() -> 결측치 
 152    3
 Name: Pclass, dtype: int64'''
 
+for dataset in train_and_test:
+    dataset.loc[ dataset['Fare'] <= 7.854, 'Fare'] = 0
+    dataset.loc[(dataset['Fare'] > 7.854) & (dataset['Fare'] <= 10.5), 'Fare'] = 1
+    dataset.loc[(dataset['Fare'] > 10.5) & (dataset['Fare'] <= 21.679), 'Fare']   = 2
+    dataset.loc[(dataset['Fare'] > 21.679) & (dataset['Fare'] <= 39.688), 'Fare']   = 3
+    dataset.loc[ dataset['Fare'] > 39.688, 'Fare'] = 4
+    dataset['Fare'] = dataset['Fare'].astype(int)
+
 '''형제, 자매, 배우자, 부모님, 자녀의 수가 많을 수록 생존한경우가 많다는 것을 위에 그린 그래프를 보면 알수 있다
    두개의 칼럼을 하나의 칼럼으로 만들어 준다. '''
 for dataset in train_and_test:
-    dataset['Family'] = dataset['Parch'] + dataset['Sibsp']
+    dataset['Family'] = dataset['Parch'] + dataset['SibSp']
     dataset['Family'] = dataset['Family'].astype(int)
+
+'''특성 추출 및 나머지 전처리 '''
+features_drop = ['Name','Ticket','Cabin','SibSp','Parch']
+train_data = train_data.drop(features_drop,axis=1)
+test_data = test_data.drop(features_drop,axis=1)
+train_data = train_data.drop(['PassengerId','AgeBand','FareBccand'],axis=1)
+
+print("train_data : \n",train_data.head())
+print("train_data.shape : \n",train_data.shape)
+
+print("test_data : \n",test_data.head())
+print("test_data.shape : \n",test_data.shape)

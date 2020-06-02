@@ -15,4 +15,4 @@ print(datasets.values) # 판다스를 넘파이로 바꾸는 키워드
 data = datasets.values
 print(type(data))
 
-np.save('./data/iris_data.npy',arr = data)
+# np.save('./data/iris_data.npy',arr = data)
