@@ -168,6 +168,8 @@ temp_data = jinlo_data
 temp_data = split_x(temp_data,size)
 jin_x_train = temp_data[:, 0:size-1]
 
+print(jin_x_train.shape)
+
 jin_scaler = MinMaxScaler()
 jin_scaler.fit(jin_x_train)
 jin_x_train = jin_scaler.transform(jin_x_train)

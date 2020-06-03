@@ -165,7 +165,8 @@ print(f"train_data.Embarked.value_counts(dropna=False) :\n{train_data.Embarked.v
    블로그에서는 결측치를 s로 넣어줬는데 시간이 된다면 다른 걸 넣어서 테스트 해보자!!'''
 for dataset in train_and_test:
     dataset['Embarked'] = dataset['Embarked'].fillna('S')
-    dataset['embarked'] = dataset['Embarked'].astype(str)
+    # dataset['embarked'] = dataset['Embarked'].astype(str) # 오타 때문에 똑같은 칼럼이 하나가 더생김..
+    dataset['Embarked'] = dataset['Embarked'].astype(str)
 print(f"transform -> Embarked.value_counts :\n{train_data.Embarked.value_counts(dropna=False)}")
 
 '''나이 평균 구하기 Age의 결측치도 지금은 평균으로 채워주지만 다른 방법을 생각해보자'''
@@ -181,7 +182,7 @@ for dataset in train_and_test:
     # print("2")
     # 이거 인헤도 어차피 int형 일거 같은데 일단 생략 해봄 추후에 이것 떄문에 에러가 난다면 수정해야함!!
 
-    train_data['AgeBand'] = pd.cut(train_data['Age'], 5) # 어차피 트레인 데이터만 할거면 반복문 안에다 쓴이유를 찾아보고 이 의미를 알아보자 
+    train_data['AgeBand'] = pd.cut(train_data['Age'], 5) # 어차피 트레인 데이터만 할거면 반복문 안에다 쓴이유를 찾아보고 이 의미를 알아보자 애초에 쓸대 없음 글쓴이가 그냥 눈으로 뭔가 확인하고 싶었던거 같다.
 
 # 뭐지 NaN만 남기고 다 사라짐 -> 이렇게된 문제점은 찾았지만 왜 없어졌는지는 모르겠다
 print("train_data.Age.value_counts(dropna=False) : \n",train_data.Age.value_counts(dropna=False))
@@ -197,13 +198,13 @@ print (train_data[['AgeBand', 'Survived']].groupby(['AgeBand'], as_index=False).
 
 
 ''' Age의 구간을 정하는 이유? '''
-for dataset in train_and_test:
-    dataset.loc[ dataset['Age'] <= 16, 'Age'] = 0
-    dataset.loc[(dataset['Age'] > 16) & (dataset['Age'] <= 32), 'Age'] = 1
-    dataset.loc[(dataset['Age'] > 32) & (dataset['Age'] <= 48), 'Age'] = 2
-    dataset.loc[(dataset['Age'] > 48) & (dataset['Age'] <= 64), 'Age'] = 3
-    dataset.loc[ dataset['Age'] > 64, 'Age'] = 4
-    dataset['Age'] = dataset['Age'].map( { 0: 'Child',  1: 'Young', 2: 'Middle', 3: 'Prime', 4: 'Old'} ).astype(str)
+# for dataset in train_and_test:
+#     dataset.loc[ dataset['Age'] <= 16, 'Age'] = 0
+#     dataset.loc[(dataset['Age'] > 16) & (dataset['Age'] <= 32), 'Age'] = 1
+#     dataset.loc[(dataset['Age'] > 32) & (dataset['Age'] <= 48), 'Age'] = 2
+#     dataset.loc[(dataset['Age'] > 48) & (dataset['Age'] <= 64), 'Age'] = 3
+#     dataset.loc[ dataset['Age'] > 64, 'Age'] = 4
+#     dataset['Age'] = dataset['Age'].map( { 0: 'Child',  1: 'Young', 2: 'Middle', 3: 'Prime', 4: 'Old'} ).astype(str)
 '''이 블로그의 글쓴이는 Age값으로 numeric이 아닌 string의 형식으로 넣어 주었다는데 숫자에 대한 경향성을 가지고 싶지 않다고 함 뭔 소린지 모르겠다...
      -> 이유없음 없어도 되는 부분인듯 하다'''
 
@@ -221,13 +222,13 @@ print(test_data[test_data["Fare"].isnull()]["Pclass"]) # .isnull() -> 결측치 
 152    3
 Name: Pclass, dtype: int64'''
 
-for dataset in train_and_test:
-    dataset.loc[ dataset['Fare'] <= 7.854, 'Fare'] = 0
-    dataset.loc[(dataset['Fare'] > 7.854) & (dataset['Fare'] <= 10.5), 'Fare'] = 1
-    dataset.loc[(dataset['Fare'] > 10.5) & (dataset['Fare'] <= 21.679), 'Fare']   = 2
-    dataset.loc[(dataset['Fare'] > 21.679) & (dataset['Fare'] <= 39.688), 'Fare']   = 3
-    dataset.loc[ dataset['Fare'] > 39.688, 'Fare'] = 4
-    dataset['Fare'] = dataset['Fare'].astype(int)
+# for dataset in train_and_test:
+#     dataset.loc[ dataset['Fare'] <= 7.854, 'Fare'] = 0
+#     dataset.loc[(dataset['Fare'] > 7.854) & (dataset['Fare'] <= 10.5), 'Fare'] = 1
+#     dataset.loc[(dataset['Fare'] > 10.5) & (dataset['Fare'] <= 21.679), 'Fare']   = 2
+#     dataset.loc[(dataset['Fare'] > 21.679) & (dataset['Fare'] <= 39.688), 'Fare']   = 3
+#     dataset.loc[ dataset['Fare'] > 39.688, 'Fare'] = 4
+#     dataset['Fare'] = dataset['Fare'].astype(int)
 
 '''형제, 자매, 배우자, 부모님, 자녀의 수가 많을 수록 생존한경우가 많다는 것을 위에 그린 그래프를 보면 알수 있다
    두개의 칼럼을 하나의 칼럼으로 만들어 준다. '''
@@ -239,10 +240,21 @@ for dataset in train_and_test:
 features_drop = ['Name','Ticket','Cabin','SibSp','Parch']
 train_data = train_data.drop(features_drop,axis=1)
 test_data = test_data.drop(features_drop,axis=1)
-train_data = train_data.drop(['PassengerId','AgeBand','FareBccand'],axis=1)
+print("train_data : \n",train_data.head())
+print("train_data.shape : \n",train_data.shape)
+# train_data = train_data.drop(['PassengerId','AgeBand','FareBand'],axis=1) # 블로그에서는 Fare를 구간별로 나눴는데 나는 하지 않았으므로 삭제할것도 없음
+train_data = train_data.drop(['AgeBand'],axis=1) # PassengerId 이것도 마찬가지임 블로그에서는 이거를 Drop했는데 그렇게하면 딥러닝에서는 train input값과 test input값의  shape가 달라지기 때문에 에러날거 같은데 머신러닝에서는 이렇게 하나?
 
 print("train_data : \n",train_data.head())
 print("train_data.shape : \n",train_data.shape)
 
 print("test_data : \n",test_data.head())
 print("test_data.shape : \n",test_data.shape)
+
+# One-hot-encoding for categorical variables
+train_data = pd.get_dummies(train_data)
+test_data = pd.get_dummies(test_data)
+
+train_label = train_data['Survived'] # 딥러닝의 y_data가 되는 부분
+train_data = train_data.drop('Survived', axis=1) # 딥러닝의 x_data가 되는 부분
+test_data = test_data.drop("PassengerId", axis=1).copy()
