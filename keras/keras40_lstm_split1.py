@@ -24,7 +24,7 @@ print("y_train.shape : ", y_train.shape)
 
 x_train = x_train.reshape(x_train.shape[0],x_train.shape[1],1)
 print("x_train.shape : ", x_train.shape)
-
+'''
 # 2. 모델구성
 model = Sequential()
 model.add(LSTM(10,activation='relu',input_shape=(4,1)))
@@ -62,4 +62,4 @@ x_predict = x_predict.reshape(x_predict.shape[0], x_predict.shape[1], 1)
 print("x_predict.shape : ", x_predict.shape) 
 y_predict = model.predict(x_predict)
 print("x_predict : ", x_predict)
-print("y_predict : ", y_predict)
+print("y_predict : ", y_predict)'''
