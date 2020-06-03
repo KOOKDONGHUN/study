@@ -67,12 +67,12 @@ model.add(Dense(512,activation='relu'))
 model.add(Dense(512,activation='relu'))
 model.add(Dense(256,activation='relu'))
 model.add(Dense(128,activation='relu'))
-model.add(Dense(2,activation='softmax'))
+model.add(Dense(2,activation='sigmoid'))
 
 model.summary()
 
 # 3. 컴파일(훈련준비),실행(훈련)
-model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
+model.compile(optimizer='adam',loss = 'binary_crossentropy', metrics = ['acc'])
 
 hist = model.fit(x_train,y_train,epochs=10,batch_size=3,callbacks=[],verbose=2,validation_split=0.03)
 

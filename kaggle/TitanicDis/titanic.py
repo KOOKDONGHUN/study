@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-train = pd.read_csv('c:/titanic/train.csv)
+train = pd.read_csv('c:/titanic/train.csv')
 test = pd.read_csv('c:/titanic/test.csv')
 
 train.head()

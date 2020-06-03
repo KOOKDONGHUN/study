@@ -54,7 +54,7 @@ model.add(Dense(2))
 model.summary()
 
 # 3. 컴파일(훈련준비),실행(훈련)
-model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
+model.compile(optimizer='adam',loss = 'binary_crossentropy', metrics = ['acc'])
 
 hist = model.fit(x_train,y_train,epochs=30,batch_size=3,callbacks=[],verbose=2,validation_split=0.1)
 

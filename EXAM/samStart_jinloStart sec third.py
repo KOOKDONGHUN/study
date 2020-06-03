@@ -43,8 +43,8 @@ jinlo_data = jinlo_data.values
 samsung_data = samsung_data[:509, 1]
 jinlo_data = jinlo_data[:509, 1:]
 
-print(samsung_data)
-print(jinlo_data)
+# print(samsung_data)
+# print(jinlo_data)
 
 samsung_data = samsung_data.astype(str)
 jinlo_data = jinlo_data.astype(str)
@@ -57,8 +57,8 @@ for j in range(len(jinlo_data)):
     for i in range(5):
         jinlo_data[j, i] = jinlo_data[j, i].replace(',','')
 
-print(samsung_data)
-print(jinlo_data)
+# print(samsung_data)
+# print(jinlo_data)
 
 samsung_data = samsung_data.astype(int)
 jinlo_data = jinlo_data.astype(int)
@@ -104,17 +104,19 @@ sam_x_train,sam_x_test,sam_y_train,sam_y_test = train_test_split(sam_x_train,sam
 
 # 1-2 진로 데이터 스플릿
 
-temp_data = jinlo_data
+jin_x_train = jinlo_data
 
-jin_scaler = MinMaxScaler()
-jin_scaler.fit(temp_data)
-jin_x_train = jin_scaler.transform(temp_data)
+# temp_data = jinlo_data
+
+# jin_scaler = MinMaxScaler()
+# jin_scaler.fit(temp_data)
+# jin_x_train = jin_scaler.transform(temp_data)
 
 jin_x_train = split_x(jin_x_train,size)
 jin_x_train = jin_x_train[:, 0:size-1]
 
-# print(jin_x_train.shape)
-# print(jin_x_train)
+print(jin_x_train.shape)
+print(jin_x_train)
 
 jin_x_train = jin_x_train.reshape(jin_x_train.shape[0],jin_x_train.shape[1],5)
 jin_x_train,jin_x_test = train_test_split(jin_x_train,
@@ -122,9 +124,10 @@ jin_x_train,jin_x_test = train_test_split(jin_x_train,
                                           train_size=(508-size-2)/(508-size+2))
 
 print(jin_x_test.shape)
+print(jin_x_train)
 
 
-
+'''
 # 2. 모델 생성
 input1 = Input(shape=(size-1,1))
 dense1 = LSTM(50,activation='relu')(input1)
@@ -197,4 +200,4 @@ x = x.reshape(1,size-1,1)
 y = y.reshape(1,size-1,5)
  
 pred = model.predict([x,y])
-print("제출해야할 값 : ",pred)
+print("제출해야할 값 : ",pred)'''

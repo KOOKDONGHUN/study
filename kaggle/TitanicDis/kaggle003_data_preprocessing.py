@@ -255,6 +255,27 @@ print("test_data.shape : \n",test_data.shape)
 train_data = pd.get_dummies(train_data)
 test_data = pd.get_dummies(test_data)
 
-train_label = train_data['Survived'] # 딥러닝의 y_data가 되는 부분
-train_data = train_data.drop('Survived', axis=1) # 딥러닝의 x_data가 되는 부분
-test_data = test_data.drop("PassengerId", axis=1).copy()
+y_data = train_data['Survived'] # 딥러닝의 y_data가 되는 부분 
+x_data = train_data.drop(['Survived'], axis=1) # 딥러닝의 x_data가 되는 부분
+test_data = test_data.copy() # 태스트 데이터 
+                                                         # 학습데이터는 PassengerId 를 가지고 있는데 테스트 데이터는 PassengerId가 있음
+                                                         # 이러면 shape에러나는데 왜 이렇게 데이터를 만들었을까? 그러므로 나는 학습데이터도 PassengerId를 빼겠음
+ 
+print("test_data : \n",test_data)
+print("test_data.shape : \n",test_data.shape)
+print("x_data : \n", x_data)
+print("x_data.type : \n", type(x_data))
+print("y_data : \n", y_data)
+print("y_data.type : \n", type(y_data))
+
+
+test_data = test_data.values
+x_data = x_data.values
+y_data = y_data.values
+
+# 총 891행의 데이터가 각각 15개의 칼럼을 가지고 있음
+
+np.save('./data/titanic_x.npy',arr=x_data)
+np.save('./data/titanic_y.npy',arr=y_data)
+np.save('./data/titanic_test.npy',arr=test_data)
+

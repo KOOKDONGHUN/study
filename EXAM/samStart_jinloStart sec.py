@@ -238,11 +238,25 @@ for i in range(5):
 x = np.array([samsung_data[-4:]])
 y = np.array([jinlo_data[-4:]])
 
+print(x)
+print(y)
+
 x = sam_scaler.transform(x)
 y = jin_scaler.transform(y)
 
 x = x.reshape(1,4,1)
 y = y.reshape(1,4,1)
 
+
 pred = model.predict([x,y])
 print("제출해야할 값 : ",pred)
+
+x = x.reshape(1,4)
+y = y.reshape(1,4)
+
+x = sam_scaler.inverse_transform(x)
+y = jin_scaler.inverse_transform(y)
+
+
+print(x)
+print(y)
