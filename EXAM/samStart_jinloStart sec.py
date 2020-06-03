@@ -24,13 +24,15 @@ samsung_data = pd.read_csv('./data/csv/samsung.csv',
                             index_col = None,
                             header=0,
                             sep=',',
-                            encoding='CP949')
+                            encoding='CP949'
+                            )
 
 jinlo_data = pd.read_csv('./data/csv/jinlo.csv',
                           index_col = None,
                           header=0,
                           sep=',',
-                          encoding='CP949')
+                          encoding='CP949'
+                          )
 
 
 
@@ -130,10 +132,10 @@ print("jinlo_data : \n", jinlo_data)
 
 
 
-# # # npy파일로 저장
-# np.save('./data/samsung.npy',arr=samsung_data)
-# np.save('./data/jinlo.npy',arr=jinlo_data)
-# # '''
+# npy파일로 저장
+np.save('./data/samsung.npy',arr=samsung_data)
+np.save('./data/jinlo.npy',arr=jinlo_data)
+# '''
 
 
 

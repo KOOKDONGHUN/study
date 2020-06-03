@@ -35,13 +35,19 @@ jinlo_data = pd.read_csv('./data/csv/jinlo.csv',
 samsung_data = samsung_data.sort_values(['일자'],ascending=['True'])
 jinlo_data = jinlo_data.sort_values(['일자'],ascending=['True'])
 
-jinlo_data = jinlo_data.fillna('37555')
+jinlo_data = jinlo_data.fillna(method='ffill')
 
 samsung_data = samsung_data.values
 jinlo_data = jinlo_data.values
 
 samsung_data = samsung_data[:509, 1]
 jinlo_data = jinlo_data[:509, 1:]
+
+print(samsung_data)
+print(jinlo_data)
+
+samsung_data = samsung_data.astype(str)
+jinlo_data = jinlo_data.astype(str)
 
 # 금액의 콤마를 제거
 for i in range(len(samsung_data)):
@@ -51,13 +57,14 @@ for j in range(len(jinlo_data)):
     for i in range(5):
         jinlo_data[j, i] = jinlo_data[j, i].replace(',','')
 
+print(samsung_data)
+print(jinlo_data)
+
 samsung_data = samsung_data.astype(int)
 jinlo_data = jinlo_data.astype(int)
 
 # print("samsung_data : \n", samsung_data)
 # print("jinlo_data : \n", jinlo_data)
-
-
 
 
 
@@ -72,10 +79,7 @@ jinlo_data = jinlo_data.astype(int)
 
 
 
-
-
-
-size = 4
+size = 5
 
 ## 508 행 4열
 
@@ -118,27 +122,6 @@ jin_x_train,jin_x_test = train_test_split(jin_x_train,
                                           train_size=(508-size-2)/(508-size+2))
 
 print(jin_x_test.shape)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
