@@ -7,9 +7,9 @@ from keras.callbacks import EarlyStopping
 from keras.utils import np_utils
 
 # 1. 데이터 불러오기
-x_data = np.load('./data/titanic_x.npy')
-y_data = np.load('./data/titanic_y.npy')
-test_data = np.load('./data/titanic_test.npy')
+x_data = np.load('./data/npy/titanic_x.npy')
+y_data = np.load('./data/npy/titanic_y.npy')
+test_data = np.load('./data/npy/titanic_test.npy')
 
 y_data = np_utils.to_categorical(y_data)
 
@@ -43,7 +43,7 @@ print(x_data[:,1:].shape)
 print(y_data)
 print(y_data.shape)
 
-els = EarlyStopping(monitor='loss', patience=10, mode='auto')
+els = EarlyStopping(monitor='loss', patience=9, mode='auto')
 
 model.compile(optimizer='adam',loss = 'binary_crossentropy', metrics = ['acc'])
 model.fit(x_data[:,1:],y_data,epochs=200,batch_size=32,callbacks=[els],verbose=2,validation_split=0.03)

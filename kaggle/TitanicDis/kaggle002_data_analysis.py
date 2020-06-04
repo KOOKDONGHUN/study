@@ -4,12 +4,28 @@ import numpy as np
 
 
 # 1. 데이터 불러오기
-train_data = pd.read_csv('c:/titanic/train.csv') 
-test_data = pd.read_csv('c:/titanic/test.csv')
+train_data = pd.read_csv('./data/csv/train.csv')
+test_data = pd.read_csv('./data/csv/test.csv')
 
 #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------
+
+'''
+- PassengerId : 승객 번호
+- Survived : 생존여부(1: 생존, 0 : 사망)
+- Pclass : 승선권 클래스(1 : 1st, 2 : 2nd ,3 : 3rd)
+- Name : 승객 이름
+- Sex : 승객 성별
+- Age : 승객 나이 
+- SibSp : 동반한 형제자매, 배우자 수
+- Patch : 동반한 부모, 자식 수
+- Ticket : 티켓의 고유 넘버
+- Fare 티켓의 요금
+- Cabin : 객실 번호
+- Embarked : 승선한 항구명(C : Cherbourg, Q : Queenstown, S : Southampton)'''
+
+
 
 '''데이터 구조? 눈으로 직접 보기 위한 프린트'''
 
@@ -43,8 +59,6 @@ Parch는 부모 자식 명 수의 총 합을 나타낸다.
 
 '''
 
-
-
 '''
 트레인 셋과 테스트 셋의 컬럼의 갯수가 다른 이유?
 테스트에는 생존 여부가 없음 있어야 테스트한게 맞는지 틀린지 알거아닌가?
@@ -55,52 +69,54 @@ Parch는 부모 자식 명 수의 총 합을 나타낸다.
 # 그래프 그리기 준비
 import matplotlib.pyplot as plt
 import seaborn as sns
-sns.set() # setting seaborn default for plots
+sns.set() # setting seaborn default for plots 여기서는 사용하지 않았음 
+
+# print(f"train_data :\n{train_data}")
 
 # categorical feature의 분포(연관성?)를 보기 위해서 pie chart
 def pie_chart(feature):
 
-    # train_data 의 칼럼명이 feature인 데이터 종류의 개수? 말로 표현하기 어렵네 
+    # train_data 의 칼럼명이 feature인 데이터 종류와 개수? 
     feature_ratio = train_data[feature].value_counts(sort=False)
-    print(f"feature_ratio : {feature_ratio}") #feature_ratio : female    314    \n male      577    \n Name: Sex, dtype: int64
-    print(f"feature_ratio.len : {len(feature_ratio)}") #feature_ratio.len : 2
-    print(f"feature_ratio[0] : {feature_ratio[0]}") # 577
-    print(f"feature_ratio[1] : {feature_ratio[1]}") # 314
-
+    print(f"\nfeature_ratio : \n{feature_ratio}") #feature_ratio : female    314    \n male      577    \n Name: Sex, dtype: int64
+    print(f"\nfeature_ratio.len : \n{len(feature_ratio)}") #feature_ratio.len : 3 -> 이거는 들어오는 컬럼에 따라 달라지는데 
+                                                           #                        컬럼의 세부분류가 몇개 인가? 정도가 적당한 설명 같다 
+    print(f"\nfeature_ratio.shape : \n{feature_ratio.shape}") #feature_ratio.shape : (3,) -> 마찬가지 
+    
     # len과 같은말 
     feature_size = feature_ratio.size
-    print(f"feature_size : {feature_size}") # 2
+    print(f"\nfeature_size : \n{feature_size}") # 3
 
     # train_data 의 칼럼명이 feature인 데이터의 종류(인덱스 이름)
     feature_index = feature_ratio.index
-    print(f"feature_index : {feature_index}") # Index(['female', 'male'], dtype='object')
+    print(f"\nfeature_index : \n{feature_index}") # Index(['female', 'male'], dtype='object')
 
-    # 성별을 기준으로 생존한 인원수 
+    # 선착장 또는 좌석의 등급(퍼스트 이코노미 같은)을 기준으로 생존한 인원수 
     survived = train_data[train_data['Survived'] == 1][feature].value_counts()
-    print(f"survived : {survived}")
+    print(f"\nsurvived : \n{survived}")
 
-    # 성별을 기준으로 사망한 인원수
+    # 선착장 또는 좌석의 등급(퍼스트 이코노미 같은)을 기준으로 생존한 인원수 
     dead = train_data[train_data['Survived'] == 0][feature].value_counts()
-    print(f"dead : {dead}")
+    print(f"\ndead : \n{dead}")
 
 
     plt.plot(aspect='auto')
     plt.pie(feature_ratio, labels=feature_index, autopct='%1.1f%%')
     plt.title(feature + '\'s ratio in total')
 
-    # plt.show()
+    plt.show()
 
     for i, index in enumerate(feature_index):
         plt.subplot(1, feature_size + 1, i + 1, aspect='equal')
         plt.pie([survived[index], dead[index]], labels=['Survivied', 'Dead'], autopct='%1.1f%%')
         plt.title(str(index) + '\'s ratio')
 
-    # plt.show()
+    plt.show()
 
 # 차트를 보기위한 함수 실행 
-pie_chart(temp)
+# pie_chart(temp)
 
-# pie_chart('Pclass') -> 왜 안될까?
+pie_chart('Pclass') #-> 왜 안될까?     # print(f"feature_ratio[0] : {feature_ratio[0]}") # 577 -> 이 부분에서 에러가남 -> []에 들어가는 부분이 인덱스의 숫자가 아니고 인덱스의 이름으로 들어간다
 
 pie_chart('Embarked')
 
@@ -110,7 +126,7 @@ def bar_chart(feature):
     df = pd.DataFrame([survived, dead]) 
     df.index = ['Survived','Dead']
     df.plot( kind = 'bar', stacked = True, figsize = (10, 5))
-    # plt.show()
+    plt.show()
 
 bar_chart("SibSp")
 bar_chart("Parch")

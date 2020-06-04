@@ -2,8 +2,8 @@ import pandas as pd # 판다스데이터 프레임으로 구조를 만들때는 
 import numpy as np
 
 # 1. 데이터 불러오기
-train_data = pd.read_csv('c:/titanic/train.csv') 
-test_data = pd.read_csv('c:/titanic/test.csv')
+train_data = pd.read_csv('./data/csv/train.csv')
+test_data = pd.read_csv('./data/csv/test.csv')
 #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------
@@ -117,20 +117,28 @@ bar_chart("Parch")
 #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------
+
+# train_data와 test_data의 전처리를 반복문을 사용하기 위함인듯 하다.
 train_and_test = [train_data,test_data]
 
-for dataset in train_and_test:
-    dataset['Title'] = dataset.Name.str.extract('([A-Za-z]+)\.') 
-'''-> '([A-Za-z]+)\.' 정규 표현식인데 공백으로 시작하고 ,로 끝나는 문자열을 추출할 사용하는 표현 방식이다'''
+for dataset in train_and_test: # 2번 반복되고 각각은 train과 test에 대한 Title칼럼의 추가 
+    # print(f"dataset : \n{dataset}")
+    # print(f"dataset.keys() : \n{dataset.keys()}")
+    # print(f"type(dataset) : \n{type(dataset)}")
+    dataset['Title'] = dataset.Name.str.extract('([A-Za-z]+)\.')  # Name칼럼의 Mr,Mrs 등등 계급 및 성별을 표시하는 부분을 Title이라는 컬럼으로 각각의 traindata와 testdata에 추가한다.
+    # print(f"dataset : \n{dataset}")
+'''-> '([A-Za-z]+)\.' 정규 표현식인데 공백으로 시작하고 .로 끝나는 문자열을 추출할때 사용하는 표현 방식이다'''
 
-print(train_data.head(5))
+
+print(f"train_data.head(5) : \n{train_data.head(5)}")
+print(f"test_data.head(5) : \n{test_data.head(5)}")
 
 '''추출한 Title을 가진 사람이 몇 명이 존재 하는지 성별과 함께 나타내보기'''
 title_sex = pd.crosstab(train_data['Title'],train_data['Sex'])
 print(f"title_sex : \n{title_sex}")
 print(f"title_sex.shape : \n{title_sex.shape}") # 17,2 title이 인덱스 처럼 들어가네 
 
-
+"""
 '''인덱스가 흔하지 않은 title인 것을 단순히 Other로 바꾼다 -> 왜? 바꾸지 말고 차라리 버리면? '''
 for dataset in train_and_test:
     dataset['Title'] = dataset['Title'].replace(['Capt', 'Col', 'Countess',
@@ -283,3 +291,4 @@ y_data = y_data.values
 np.save('./data/titanic_x.npy',arr=x_data)
 np.save('./data/titanic_y.npy',arr=y_data)
 np.save('./data/titanic_test.npy',arr=test_data)
+"""

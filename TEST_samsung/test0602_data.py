@@ -69,3 +69,5 @@ hite = hite.values
 
 np.save('./data/samsung2.npy', arr=samsung)
 np.save('./data/hite2.npy', arr=hite)
+
+''' scikit-learn    0.22.1 '''
