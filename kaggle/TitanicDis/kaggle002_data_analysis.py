@@ -100,8 +100,8 @@ def pie_chart(feature):
     print(f"\ndead : \n{dead}")
 
 
-    plt.plot(aspect='auto')
-    plt.pie(feature_ratio, labels=feature_index, autopct='%1.1f%%')
+    plt.plot(aspect='auto')# 데이터를 자동으로 사각형에 채우겠다? 그래프의 막대 또는 원에서 높이와 넓이를 적당한 사이즈로? 자동으로 맞추겠다?
+    plt.pie(feature_ratio, labels=feature_index, autopct='%1.1f%%')# autopct='%1.1f%%' -> 파이 조각의 전체 대비 백분율을 소수점 1자리까지 표기한다
     plt.title(feature + '\'s ratio in total')
 
     plt.show()
