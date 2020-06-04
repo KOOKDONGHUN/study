@@ -46,7 +46,7 @@ print(y_data.shape)
 els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 
 model.compile(optimizer='adam',loss = 'binary_crossentropy', metrics = ['acc'])
-model.fit(x_data[:,1:],y_data,epochs=200,batch_size=32,callbacks=[els],verbose=2,validation_split=0.04)
+model.fit(x_data[:,1:],y_data,epochs=200,batch_size=32,callbacks=[els],verbose=2,validation_split=0.03)
 
 
 pred = model.predict(test_data[:,1:])
@@ -60,7 +60,7 @@ submission = pd.DataFrame({
     "Survived": pred
 })
 
-# submission.to_csv('./submit/submission_dnn.csv', index = False)
+submission.to_csv('./submit/submission_dnn.csv', index = False)
 
 '''validation을 0.1에서 0.05로 줄이고, 전체 drop의 비율을 0.7에서 살짝 낮췄을때 0.02의 상승이 있었음
    validation이 0.1 일때 레이어의 갯수를 늘려보았지만 오히려 0.1이상의 하락이 있었음
