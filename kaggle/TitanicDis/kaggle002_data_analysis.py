@@ -128,5 +128,5 @@ def bar_chart(feature):
     df.plot( kind = 'bar', stacked = True, figsize = (10, 5))
     plt.show()
 
-bar_chart("SibSp")
-bar_chart("Parch")
+bar_chart("SibSp") # - SibSp : 동반한 형제자매, 배우자 수
+bar_chart("Parch") # - Patch : 동반한 부모, 자식 수
