@@ -19,15 +19,22 @@ y_data = np_utils.to_categorical(y_data)
 
 # 모델 구성
 model = Sequential()
-model.add(Dense(200,input_dim=14,activation='relu'))
-model.add(Dropout(0.5))
+model.add(Dense(180,input_dim=14,activation='relu'))
+model.add(Dropout(0.55))
 model.add(Dense(150))
-model.add(Dropout(0.5))
-model.add(Dense(100))
-model.add(Dropout(0.5))
+model.add(Dropout(0.68))
+model.add(Dense(118))
+model.add(Dropout(0.58))
+model.add(Dense(150))
+model.add(Dropout(0.68))
+model.add(Dense(150))
+model.add(Dropout(0.75))
+
 model.add(Dense(50))
 
 model.add(Dense(2,activation='sigmoid'))
+
+model.summary()
 
 # 컴파일 및 실행
 
@@ -39,7 +46,8 @@ print(y_data.shape)
 els = EarlyStopping(monitor='loss', patience=10, mode='auto')
 
 model.compile(optimizer='adam',loss = 'binary_crossentropy', metrics = ['acc'])
-model.fit(x_data[:,1:],y_data,epochs=200,batch_size=32,callbacks=[els],verbose=2)
+model.fit(x_data[:,1:],y_data,epochs=200,batch_size=32,callbacks=[els],verbose=2,validation_split=0.04)
+
 
 pred = model.predict(test_data[:,1:])
 pred = np.argmax(pred,axis=1).astype(int)
@@ -52,4 +60,8 @@ submission = pd.DataFrame({
     "Survived": pred
 })
 
-submission.to_csv('./submit/submission_dnn.csv', index = False)
+# submission.to_csv('./submit/submission_dnn.csv', index = False)
+
+'''validation을 0.1에서 0.05로 줄이고, 전체 drop의 비율을 0.7에서 살짝 낮췄을때 0.02의 상승이 있었음
+   validation이 0.1 일때 레이어의 갯수를 늘려보았지만 오히려 0.1이상의 하락이 있었음
+   '''
