@@ -24,8 +24,10 @@ allAlgorithms = all_estimators(type_filter='classifier') # iris에 대한 모든
 
 for (name, algorithm) in allAlgorithms:
     model = algorithm() # -> 존나 희안한 문법인거 같은데 
-
-    scores = cross_val_score(model,x,y, cv=kfold) # 분리 하지 않은 데이터를 넣어도 알아서 잘라서 학습하고 평가한다 
-    print(name,"의 정답률 = ", scores)
+    try :
+        scores = cross_val_score(model,x,y, cv=kfold) # 분리 하지 않은 데이터를 넣어도 알아서 잘라서 학습하고 평가한다 
+        print(name,"의 정답률 = ", scores)
+    except :
+        print("Error!!", name)
 
 print(sklearn.__version__)
