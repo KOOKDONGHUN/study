@@ -21,9 +21,11 @@ allAlgorithms = all_estimators(type_filter='classifier') # iris에 대한 모든
 
 for (name, algorithm) in allAlgorithms:
     model = algorithm() # -> 존나 희안한 문법인거 같은데 
-    print(sklearn.__version__)
-    model.fit(x_train,y_train)
-    y_pred = model.predict(x_test)
-    print(name,"의 정답률 = ", accuracy_score(y_test,y_pred))
+    try :
+        model.fit(x_train,y_train)
+        y_pred = model.predict(x_test)
+        print(name,"의 정답률 = ", accuracy_score(y_test,y_pred))
+    except : 
+        print("Error!!",name)
 
 print(sklearn.__version__)
