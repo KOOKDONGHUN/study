@@ -41,7 +41,7 @@ parameters = [
     {"n_estimators" : [7,10,100],"max_depth" : [1,2,3,4]}
 ]
 
-kfold = KFold(n_splits=5, shuffle=True)
+kfold = KFold(n_splits=6, shuffle=True)
 
 # SVC의 어떤 파라미터? (C, kernel, gemma)의 파라미터로 크로스 발리데이션은 kfold 처럼 하겠다
 model = GridSearchCV(RandomForestClassifier(), parameters,cv=kfold,n_jobs=-1) # Cross Validation
