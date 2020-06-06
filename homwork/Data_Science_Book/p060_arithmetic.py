@@ -68,6 +68,6 @@ def sum_of_squares(v):
 assert sum_of_squares([1,2,3]) == 14 # 1*1 + 2*2 + 3*3
 
 def magnitude(vlist):
-    return math.sqrt(sum_of_squares(v))
+    return math.sqrt(sum_of_squares(vlist))
 
-assert magitude([3,4]) == 5
+assert magnitude([3,4]) == 5
