@@ -1,5 +1,5 @@
 ''' 회기 모델 '''
-
+'''LinearSVC 선형 서포트 벡터머신'''
 from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
 
