@@ -44,3 +44,5 @@ model.fit(x_train,y_train)
 print("최적의 매개변수 : ",model.best_params_)
 print("최적의 매개변수 : ",model.best_estimator_)
 print("acc : ",model.score(x_test,y_test))
+
+print(f"pipe.get_params():{pipe.get_params()}")

@@ -112,3 +112,5 @@ conv1D
 
 전처리 자동화 까지 minmax,standard -> pipeline
 전처리 친구는 파이프라인 
+
+x값 groupby 하기
