@@ -3,7 +3,7 @@ from keras.utils import np_utils
 from keras.models import Sequential, Model
 import numpy as np
 import pandas as pd
-from keras.layers import Dense, Conv2D, Dropout, Flatten,Input
+from keras.layers import Dense, Conv2D, Dropout, Flatten,Input,LSTM
 from keras.layers import MaxPooling2D
 from keras.wrappers.scikit_learn import KerasClassifier, KerasRegressor # 항상 분류와 회기가 존재한다 ㅎ
 from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
@@ -17,8 +17,8 @@ print(x_test.shape)
 # x_train = x_train.reshape(x_train.shape[0],28, 28, 1)/255
 # x_test = x_test.reshape(x_test.shape[0],28, 28, 1)/255
 
-x_train = x_train.reshape(x_train.shape[0],28*28)/255
-x_test = x_test.reshape(x_test.shape[0],28*28)/255
+# x_train = x_train.reshape(x_train.shape[0],28,28)/255
+# x_test = x_test.reshape(x_test.shape[0],28,28)/255
 
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
@@ -28,8 +28,8 @@ print(y_train.shape)
 # 2. model 모델 자체를 진짜 함수로 만든다?
 
 def build_model(drop=0.5, optimizer='adam'):
-    input1 = Input(shape=(28*28,),name='input1')
-    x = Dense(512, activation='relu', name='hidden1')(input1)
+    input1 = Input(shape=(28,28),name='input1')
+    x = LSTM(512, activation='relu', name='hidden1')(input1)
     x = Dropout(drop)(x)
     x = Dense(256, activation='relu', name='hidden2')(x)
     x = Dropout(drop)(x)
@@ -53,7 +53,7 @@ model = KerasClassifier(build_fn=build_model,verbose=1) # 사이킷런에서 쓸
 
 hyperparameters = create_hyperparameters()
 
-search = RandomizedSearchCV(model,hyperparameters,cv=3)
+search = RandomizedSearchCV(model,hyperparameters,cv=3) # cv = kfold
 
 search.fit(x_train,y_train)
 

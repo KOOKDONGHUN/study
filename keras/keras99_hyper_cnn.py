@@ -17,8 +17,8 @@ print(x_test.shape)
 # x_train = x_train.reshape(x_train.shape[0],28, 28, 1)/255
 # x_test = x_test.reshape(x_test.shape[0],28, 28, 1)/255
 
-x_train = x_train.reshape(x_train.shape[0],28*28)/255
-x_test = x_test.reshape(x_test.shape[0],28*28)/255
+x_train = x_train.reshape(x_train.shape[0],28,28,1)/255
+x_test = x_test.reshape(x_test.shape[0],28,28,1)/255
 
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
@@ -28,12 +28,13 @@ print(y_train.shape)
 # 2. model 모델 자체를 진짜 함수로 만든다?
 
 def build_model(drop=0.5, optimizer='adam'):
-    input1 = Input(shape=(28*28,),name='input1')
-    x = Dense(512, activation='relu', name='hidden1')(input1)
+    input1 = Input(shape=(28,28,1),name='input1')
+    x = Conv2D(512,(2,2), activation='relu', name='hidden1')(input1)
     x = Dropout(drop)(x)
-    x = Dense(256, activation='relu', name='hidden2')(x)
+    x = Conv2D(256,(2,2), activation='relu', name='hidden2')(x)
     x = Dropout(drop)(x)
-    x = Dense(128, activation='relu', name='hidden3')(x)
+    x = Conv2D(128,(2,2), activation='relu', name='hidden3')(x)
+    x = Flatten()(x)
     output = Dense(10,activation='softmax',name='output')(x)
     model = Model(inputs=input1,outputs=output)
     model.compile(optimizer=optimizer,metrics=['acc'],loss='categorical_crossentropy')
