@@ -1,4 +1,4 @@
-''' m03_xor2.py copy '''
+''' xor의 해결 '''
 
 # from sklearn.svm import LinearSVC
 from sklearn.svm import SVC

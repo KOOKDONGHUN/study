@@ -54,3 +54,5 @@ y_pred = model.predict(x_test)
 print(f"최종 정답률 : {accuracy_score(y_test,y_pred)}")
 
 ''' ?? kfold를 쓰고 traintestsplit을 한다는게 뭔말이야? -> 잘못 말한듯 앞뒤가 안맞아 '''
+
+''' 그리드와 랜덤은 성능은 비슷하지만 속도가 랜덤이 쪼금더 빠르다 '''

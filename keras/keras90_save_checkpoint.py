@@ -42,6 +42,7 @@ chpoint = ModelCheckpoint(filepath=modelpath, monitor='val_loss',
                           save_best_only=True,save_weights_only=False,mode='auto',verbose=1)
 
 hist = model.fit(x_train,y_train,epochs=10,batch_size=150,callbacks=[chpoint],validation_split=0.1)
+# hist에 callback반환 
 
 # 4. 평가, 예측
 loss_accuracy = model.evaluate(x_test,y_test,batch_size=150)
