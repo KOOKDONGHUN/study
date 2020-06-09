@@ -46,3 +46,6 @@ print("최적의 매개변수 : ",model.best_estimator_)
 print("acc : ",model.score(x_test,y_test))
 
 print(f"pipe.get_params():{pipe.get_params()}")
+
+'''파이프라인의 진짜 목적? 
+크로스 발리데이션할때 트랜스폼을 적절히 섞어서함 '''

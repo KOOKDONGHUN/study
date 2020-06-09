@@ -49,7 +49,7 @@ train = train.values
 test = test.values
 
 plt.figure(figsize=(71,71))
-sns.heatmap(train,linewidths=0.1,vmax=0.5,linecolor='white',annot=True)
+sns.heatmap(train)
 plt.show()
 
 ''' 
