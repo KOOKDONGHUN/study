@@ -9,6 +9,7 @@ from sklearn.datasets import load_iris
 from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.preprocessing import MinMaxScaler,StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 
 # 1. data
 iris = load_iris()
@@ -20,9 +21,11 @@ x_train, x_test, y_train,y_test = train_test_split(x,y,random_state=43,shuffle=T
 
 # gridsearchCV/randomizesearchCV에서 사용할 매개 변수
 parameters = [
-    {"svc__C" : [1,10,100,1000], "svc__kernel" : ['linear']},
-    {"svc__C" : [1,10,100,1000], "svc__kernel" : ['rbf'], "svc__gamma" : [0.001, 0.0001]},
-    {"svc__C" : [1,10,100,1000], "svc__kernel" : ['sigmoid'], "svc__gamma" : [0.001, 0.0001]}
+    {"randomforestclassifier__n_estimators": list(range(20, 30, 1)),
+              "randomforestclassifier__max_depth": [4, 8, 12, 16],
+            #   "randomforestclassifier__max_features": [3, 5, 7, 9],
+              "randomforestclassifier__min_samples_split": [3, 5, 7, 9],
+              "randomforestclassifier__random_state" : [True,False]}
 ]
 
 # parameters = [
@@ -41,7 +44,7 @@ parameters = [
 # model = SVC()
 
 # pipe = Pipeline([('scaler', MinMaxScaler()),('svc',SVC())])
-pipe = make_pipeline(MinMaxScaler(),SVC())
+pipe = make_pipeline(MinMaxScaler(),RandomForestClassifier())
 
 model = RandomizedSearchCV(pipe, parameters, cv=5)  # -> 첫번째 인자에 모델이 들어가고 파라미터, kfold
 
