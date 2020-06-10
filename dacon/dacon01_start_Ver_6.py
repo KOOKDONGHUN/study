@@ -21,9 +21,12 @@ print('train.shape : ',train.shape) # 10000,75 : x_train, x_test
 print('test.shape : ',test.shape) # 10000,71 : x_predict
 print('submission.shape : ',submission.shape) # 10000, 4 : y_predict
 
+print(train.head())
+print(train[''])
+
 # print(train.isnull().sum()) 
 
-# train = train.interpolate() # ? 뭔법? -> 보간법//선형보간 # 값들 전체의 선을 그리고 그에 상응하는 값을 알아서 넣어준다? ?? 하나의 선을 긋고 ? 그럼 완전 간단한 예측 모델을 만든거네
+train = train.interpolate() # ? 뭔법? -> 보간법//선형보간 # 값들 전체의 선을 그리고 그에 상응하는 값을 알아서 넣어준다? ?? 하나의 선을 긋고 ? 그럼 완전 간단한 예측 모델을 만든거네
 # print(train.isnull().sum()) 
 # print(train.isnull().any()) 
 # 회기 
@@ -34,7 +37,8 @@ print('submission.shape : ',submission.shape) # 10000, 4 : y_predict
 
 # 보간법에서 앞뒤가 nan이면 채워지는 값도 nan?
 
-# train = train.fillna(train.mean(),axis=0)
+train = train.fillna(train.mean(),axis=0)
+test = train.fillna(test.mean(),axis=0)
 # train = train.fillna(method='bfill')
 # test = test.fillna(method='bfill')
 train = train.fillna(train.mean(),axis=0)
@@ -50,9 +54,12 @@ test = train.fillna(test.mean(),axis=0)
 train = train.values
 test = test.values
 
-plt.figure(figsize=(71,71))
-sns.heatmap(train)
-plt.show()
+print(train.shape)
+print(test.shape)
+
+# plt.figure(figsize=(71,71))
+# sns.heatmap(train)
+# plt.show()
 
 ''' 
 print(type(train))

@@ -118,3 +118,8 @@ x값 groupby 하기
 0610
 decision tree
 feature importance
+
+트리구조의 장점은 전처리가 필요없다 
+2가지 장점이 있음 
+
+내가 depth를 4에서 3으로 했을때 테스트 값에 대한 스코어값 
