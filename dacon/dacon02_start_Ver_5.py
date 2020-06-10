@@ -30,25 +30,27 @@ x_pred = x_pred[:,:, 1:]
 
 
 tmp_list = list()
-def preprocessing_x_data(shape1,shape2,shape3):
+def preprocessing_x_data(ls,shape1,shape2,shape3):
     # axis_list = list()
     new_x = list()
 
     for i in range(shape1): 
         for j in range(shape3):
             for k in range(shape2):
-                tmp_list = x_train[i,k,j]
+                tmp_list = ls[i,k,j]
                 if tmp_list != 0:
                     # axis_list.append([i,k,j])
                     new_x.append(tmp_list)
                     break
     return new_x
 
-new_x_train = np.array(preprocessing_x_data(x_train.shape[0],x_train.shape[1],x_train.shape[2]))
-new_x_pred = np.array(preprocessing_x_data(x_pred.shape[0],x_pred.shape[1],x_pred.shape[2]))
+new_x_train = np.array(preprocessing_x_data(x_train,x_train.shape[0],x_train.shape[1],x_train.shape[2]))
+new_x_pred = np.array(preprocessing_x_data(x_pred,x_pred.shape[0],x_pred.shape[1],x_pred.shape[2]))
 
 print(new_x_train.shape)
 print(new_x_pred.shape)
+
+
 
 new_x_train = new_x_train.reshape(2800,4)
 new_x_pred = new_x_pred.reshape(700,4)
