@@ -9,7 +9,6 @@ data = {"fruits" : ["apple","orange", "banana","strawberry","kiwifruit"],
 
 df = pd.DataFrame(data)
 
-
 print('''※ Basic create DataFrame\n''')
 
 index = ["apple", "orange", "banana", "strawberry", "kiwifruit"]

@@ -22,7 +22,6 @@ print('test.shape : ',test.shape) # 10000,71 : x_predict
 print('submission.shape : ',submission.shape) # 10000, 4 : y_predict
 
 print(train.head())
-print(train[''])
 
 # print(train.isnull().sum()) 
 
@@ -61,7 +60,7 @@ print(test.shape)
 # sns.heatmap(train)
 # plt.show()
 
-''' 
+
 print(type(train))
 
 x_data = train[:, :-4]
@@ -124,4 +123,4 @@ y_pred = search.predict(test)
 
 a = np.arange(10000,20000)
 y_pred = pd.DataFrame(y_pred,a)
-y_pred.to_csv('./data/dacon/comp1/sample_submission.csv', index = True, header=['hhb','hbo2','ca','na'],index_label='id') '''
+y_pred.to_csv('./data/dacon/comp1/sample_submission.csv', index = True, header=['hhb','hbo2','ca','na'],index_label='id') 

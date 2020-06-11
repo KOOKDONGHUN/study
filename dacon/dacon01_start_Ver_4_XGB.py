@@ -59,4 +59,6 @@ for col in models:
 
     submission[col] = pred
 
-submission.to_csv('./data/dacon/comp1/Dacon_baseline.csv', index=False)
+print(model.feature_importances_)
+print(xgb.feature_importances_)
+submission.to_csv('./data/dacon/comp1/sample_submission.csv', index=False)
