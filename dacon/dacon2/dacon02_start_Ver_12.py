@@ -1,13 +1,13 @@
 from platform import python_version
 import pandas as pd
 import numpy as np
-
-# 입력하세요.
 import sklearn
 from sklearn.ensemble import RandomForestRegressor,GradientBoostingRegressor
 from sklearn.model_selection import KFold 
-
+from sklearn.tree import DecisionTreeRegressor
+import xgboost as xgb                  
 import warnings
+
 warnings.filterwarnings(action='ignore') 
 
 # 1. data
@@ -15,15 +15,6 @@ train_features = pd.read_csv('./data/dacon/comp2/train_features.csv')
 train_target = pd.read_csv('./data/dacon/comp2/train_target.csv', index_col='id')
 test_features = pd.read_csv('./data/dacon/comp2/test_features.csv')
 submission = pd.read_csv('./data/dacon/comp2/sample_submission.csv')
-
-print(train_target.head())
-
-print(f"train_features {train_features.shape}")
-print(f"train_target {train_target.shape}")
-print(f"test_features {test_features.shape}")
-'''train_features (1050000, 6)
-train_target (2800, 4)
-test_features (262500, 6)'''
 
 def preprocessing_KAERI(data):
 
@@ -44,31 +35,25 @@ def preprocessing_KAERI(data):
 train_features = preprocessing_KAERI(train_features)
 test_features = preprocessing_KAERI(test_features)
 
-print(f"train_features {train_features.shape}")
-print(f"test_features {test_features.shape}")
+# 2. model
+model = DecisionTreeRegressor() 
 
+model.fit(train_features,train_target)
+
+df = model.predict(test_features)
+df = pd.DataFrame(df)
+df = df.drop([2,3],axis=1)
 
 # 2. model
-model = GradientBoostingRegressor() 
+model = RandomForestRegressor() 
 
-print(train_features.shape, train_target.shape)
+model.fit(train_features,train_target)
 
-def model_fit(y) :
-    model.fit(train_features,y)
-    data = model.predict(train_features)
-    df = pd.Series(data)
-    return df
-print("train_target",train_target.shape)
+df2 = model.predict(test_features)
+df2 = pd.DataFrame(df2)
+df2 = df2.drop([1,2],axis=1)
 
-X = model_fit(train_target[:, ])
-Y = model_fit(train_target[:, 2])
-M = model_fit(train_target[:, 3])
-V = model_fit(train_target[:, 4])
+df = pd.concat([df,df2],axis=1)
 
-df = pd.DataFrame([X,Y,M,V])
-
-df = df.transpose()
-
-print(df.head(10))
-
-# df.to_csv('./data/dacon/comp1/sample_submission_GB.csv', index = True, header=['hhb','hbo2','ca','na'],index_label='id')
+df.index =[i for i in range(2800,3500,1)]
+df.to_csv('./data/dacon/comp2/sample_submission_DCT_RF.csv', index = True, header=['X','Y','M','V'],index_label='id')
