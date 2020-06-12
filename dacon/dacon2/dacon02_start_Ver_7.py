@@ -91,7 +91,7 @@ dense1 = Dropout(0.68)(dense1)
 dense1 = Dense(128,name='d4-1')(dense1)
 
 input2 = Input(shape=(4,))
-dense2 = Dense(64,activation='relu',name='lstm1-2')(input2)4
+dense2 = Dense(64,activation='relu',name='lstm1-2')(input2)
 dense2 = Dropout(0.7)(dense2)
 dense2 = Dense(64,name='lstm2-2')(dense2)
 dense2 = Dropout(0.7)(dense2)
