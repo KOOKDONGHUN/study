@@ -6,4 +6,6 @@ df = pd.read_csv('http://archive.ics.uci.edu/ml/machine-learning-databases/wine/
 df.columns = ["", "Alcohol", "Maic acid", "Ash", "Alcalinity of ash", "Magnesium", "Total phenols", 'Flavanoids', "Nonflavanoid phenols",
               "Proanthocyanins", "Color intensity", "Hue", "OD280/OD315 of diluted wines", "Proline"]
 
-print(f"df : \n{df}")
+print(f'Alcohol column mean values : {df["Alcohol"].mean()}')
+
+print(f'Magnesium column mean values : {df["Magnesium"].mean()}')

@@ -35,3 +35,7 @@ print(f'fillna(method="ffill")!!\n')
 # nan을 앞의 데이터로 채우시오
 new_sample_data_frame = new_sample_data_frame.fillna(method='ffill')
 print(f'new_sample_data_frame : \n{new_sample_data_frame}\n')
+
+
+# nan을 열의 평균값으로 채우는 방법
+sample_data_frame4 = sample_data_frame.fillna(sample_data_frame.mean())
