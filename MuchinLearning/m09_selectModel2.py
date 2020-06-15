@@ -37,6 +37,7 @@ for (name, algorithm) in allAlgorithms:
         y_pred = model.predict(x_test)
         # print(name,"의 정답률 = ", accuracy_score(y_test,y_pred))
         print(name,"의 정답률 = ", model.score(x_test,y_test))
+        print(model.feature_importances_)
     except:
         print("Error!!",name)
 print(sklearn.__version__)
