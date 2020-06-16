@@ -39,6 +39,7 @@ print(f"series_fruits : \n{series_fruits}\n")
 condition = [True, True, False, False, False, False]
 print(f"series_fruits : \n{series_fruits[condition]}\n")
 
+'''리스트컴리핸션할때 반복문뒤에 조건문이 온다 하지만 조건문이 if else라면 조건문이 먼저오고 반복문이 와야한다'''
 condition = [True if "apple" in ele else False for ele in series_fruits.index]
 print(type(condition))
 print(condition,"\n")
