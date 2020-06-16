@@ -1,7 +1,4 @@
+import pandas as pd
 
-
-ls = ['2020', '2021', '2022', '2023' , '1911', '1912']
-
-
-if ls in '2020':
-    print(ls)
+rain = pd.read_csv('./data/Seoul/Seoul_temp_2010-2020_season.csv',encoding='CP949',header=6,sep=',',error_bad_lines=False)
+print(rain)
