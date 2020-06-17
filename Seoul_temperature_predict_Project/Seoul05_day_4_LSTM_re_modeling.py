@@ -5,7 +5,7 @@ from hamsu import view_nan, split_x, plot_feature_importances
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler,MinMaxScaler,RobustScaler
 from keras.models import Sequential
 from keras.layers import Dense,LSTM,Dropout
 from keras.callbacks import EarlyStopping
@@ -54,7 +54,7 @@ x_pred = x_pred.drop('시간',axis=1)
 
 x_pred = x_pred.values
 
-print(x_pred)
+# print(x_pred)
 
 x_pred = x_pred[:-1,:]
 y_past = x_pred[-1,:]
@@ -62,8 +62,8 @@ y_past = x_pred[-1,:]
 x_pred = x_pred.reshape(1,4,5)
 y_past = y_past.reshape(1,5)
 
-print(x_pred.shape)
-print(y_past.shape)
+# print(x_pred.shape)
+# print(y_past.shape)
 
 data_ls = ['spring','summer','fall','winter']
 
@@ -72,16 +72,16 @@ data_dic = {'spring' : spring,
             'fall' : fall,
             'winter' : winter}
 
-for i in data_ls:
-    print(data_dic[i])
+# for i in data_ls:
+#     print(data_dic[i])
 
 split_data_dic = dict()
 
 for i in data_ls:
     split_data_dic[i] = split_x(data_dic[i].values,5)
 
-for i in data_ls:
-    print(split_data_dic[i])
+# for i in data_ls:
+#     print(split_data_dic[i])
 
 x_data = dict()
 y_data = dict()
@@ -101,8 +101,19 @@ y_test = dict()
 for i in data_ls:
     x_train_1, x_test_1, y_train_1, y_test_1 = train_test_split(x_data[i],y_data[i],shuffle=False,test_size=0.1)
 
-    x_train[i] = x_train_1
-    x_test[i] = x_test_1
+    x_train_scal = x_train_1.reshape(x_train_1.shape[0],x_train_1.shape[1]*x_train_1.shape[2])
+    x_test_scal = x_test_1.reshape(x_test_1.shape[0],x_test_1.shape[1]*x_test_1.shape[2])
+
+    scaler = MinMaxScaler()
+    x_train_scal = scaler.fit_transform(x_train_scal)
+    x_test_scal = scaler.transform(x_test_scal)
+
+    x_train_scal = x_train_scal.reshape(x_train_1.shape[0],x_train_1.shape[1],x_train_1.shape[2])
+    x_test_scal = x_test_scal.reshape(x_test_1.shape[0],x_test_1.shape[1],x_test_1.shape[2])
+    print(x_train_1.shape)
+
+    x_train[i] = x_train_scal
+    x_test[i] = x_test_scal
 
     y_train[i] = y_train_1
     y_test[i] = y_test_1
@@ -134,9 +145,9 @@ r2_value = r2_score(y_past,y_pred)
 
 # print("res : ",res)
 
-print("r2 : ",r2_value)
+# print("r2 : ",r2_value)
 
-print(y_past,y_pred)
+# print(y_past,y_pred)
 
-# for i in range(len(y_pred)):
-#     print(f'실제값 : {y_test[-5+i]} \t 예측값 : {y_pred[i]}')
+for i in range(len(y_pred)):
+    print(f'실제값 : {y_test[data_ls[1]][-5+i]} \t 예측값 : {y_pred[i]}')

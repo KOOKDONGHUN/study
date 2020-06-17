@@ -10,6 +10,7 @@ from hamsu import view_nan, split_x, plot_feature_importances
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
+from sklearn.preprocessing import StandardScaler,MinMaxScaler, RobustScaler
 
 # 1. 데이터가 내가 원하는 형식으로 되어있지 않아서 제외
 # cloud_data = pd.read_csv('./data/csv/Seoul/Seoul_cloud_2010-2020_by_month.csv',encoding='CP949') 형식이 이상해서 이렇게 하면 에러가남 밑에 줄 처럼 해야함
@@ -51,7 +52,7 @@ y_data = []
 
 for i in range(len(data)-1):
     x_data.append(data[i,:])
-    y_data.append(data[i+1,0])
+    y_data.append(data[i+1,:])
 
 x_data = np.array(x_data)
 y_data = np.array(y_data)
@@ -60,6 +61,18 @@ y_data = np.array(y_data)
 # print(y_data.shape)
 
 x_train,x_test,y_train, y_test = train_test_split(x_data,y_data,shuffle=False,test_size=0.1)
+
+# scaler = MinMaxScaler()
+# x_train = scaler.fit_transform(x_train)
+# x_test = scaler.transform(x_test)
+
+scaler = RobustScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
+
+scaler = StandardScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
 
 # print(x_train.shape)
 # print(x_test.shape)
@@ -73,9 +86,11 @@ y_pred = model.predict(x_test)
 
 for i in range(len(y_pred)):
     if 6+i <13:
-        print(f"2019-{6+i}\t y_tets : {y_test[i]} \t y_pred : {round(y_pred[i],1)}")
+        # print(f"2019-{6+i}\t y_tets : {y_test[i]} \t y_pred : {round(y_pred[i],1)}")
+        print(f"2019-{6+i}\t y_tets : {y_test[i]} \t y_pred : {y_pred[i].round(1)}")
     else:
-        print(f"2020-{i-6}\t y_tets : {y_test[i]} \t y_pred : {round(y_pred[i],1)}")
+        # print(f"2020-{i-6}\t y_tets : {y_test[i]} \t y_pred : {round(y_pred[i],1)}")
+        print(f"2020-{i-6}\t y_tets : {y_test[i]} \t y_pred : {y_pred[i].round(1)}")
     # pass
 
 

@@ -18,8 +18,10 @@ data = data[:,1:]
 print(data)
 print(data.shape)
 
+
 # 하루 단위로 스플릿
-data = split_x(data,3)
+size = 4
+data = split_x(data,size)
 print(data.shape)
 
 x_data = data[:,:-1,:]
@@ -32,7 +34,7 @@ print(y_test.shape)
 
 # 2. 모델 구성
 model = Sequential()
-model.add(LSTM(32,input_shape=(2,5),activation='tanh'))
+model.add(LSTM(32,input_shape=(size-1,5),activation='tanh'))
 model.add(Dense(32))
 model.add(Dropout(0.7))
 model.add(Dense(32))

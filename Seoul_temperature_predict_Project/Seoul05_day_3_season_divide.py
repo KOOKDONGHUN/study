@@ -53,6 +53,12 @@ print(data)
 # price_df["month"] =[i[-5:-3] for i in list(price_df.index)]
 # price_df["year"] =[i[:4] for i in list(price_df.index)]
 
+data = data.sort_values(by='season',ascending=True)
+print(data)
+
+data.to_csv('./data/Seoul/Seoul_data.csv')
+
+""" 
 spring = data[data['season']==0]
 print(spring)
 
@@ -68,4 +74,4 @@ print(winter)
 spring.to_csv('./data/Seoul/Seoul_spring.csv')
 summer.to_csv('./data/Seoul/Seoul_summer.csv')
 fall.to_csv('./data/Seoul/Seoul_fall.csv')
-winter.to_csv('./data/Seoul/Seoul_winter.csv')
+winter.to_csv('./data/Seoul/Seoul_winter.csv') """

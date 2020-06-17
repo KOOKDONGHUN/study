@@ -12,6 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from xgboost import XGBRegressor
 import math
+from sklearn.preprocessing import StandardScaler,MinMaxScaler, RobustScaler
 
 # 1. 데이터가 내가 원하는 형식으로 되어있지 않아서 제외
 # cloud_data = pd.read_csv('./data/csv/Seoul/Seoul_cloud_2010-2020_by_month.csv',encoding='CP949') 형식이 이상해서 이렇게 하면 에러가남 밑에 줄 처럼 해야함
@@ -67,6 +68,19 @@ x_train,x_test,y_train, y_test = train_test_split(x_data,y_data,shuffle=False,te
 # print(x_test.shape)
 # print(y_train.shape)
 # print(y_test.shape)
+
+scaler = MinMaxScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
+
+# scaler = RobustScaler()
+# x_train = scaler.fit_transform(x_train)
+# x_test = scaler.transform(x_test)
+
+# scaler = StandardScaler()
+# x_train = scaler.fit_transform(x_train)
+# x_test = scaler.transform(x_test)
+
 
 model = XGBRegressor()
 

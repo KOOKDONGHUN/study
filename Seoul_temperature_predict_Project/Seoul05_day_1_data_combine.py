@@ -43,7 +43,7 @@ view_nan(dust)
 view_nan(rain)
 index = rain.loc[pd.isna(rain[rain.columns[-1]]), :].index
 # print(rain.iloc[index,:])
-rain = rain.interpolate()
+rain = rain.fillna(0)
 view_nan(rain)
 index = rain.loc[pd.isna(rain[rain.columns[-1]]), :].index
 # print(rain.iloc[index,:])
