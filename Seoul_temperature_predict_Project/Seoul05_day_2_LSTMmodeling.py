@@ -14,7 +14,7 @@ from keras.callbacks import EarlyStopping
 
 # 1-0. 학습과 테스트 데이터 분리 및 스케일링
 data = np.load('./Data/Seoul/Seoul_data.npy',allow_pickle=True)
-data = data[:,1:]
+data = data[:,1:-2]
 print(data)
 print(data.shape)
 
@@ -49,22 +49,22 @@ x_test_scal = scaler.transform(x_test_scal)
 x_train_scal = x_train_scal.reshape(x_train.shape[0],x_train.shape[1],x_train.shape[2])
 x_test_scal = x_test_scal.reshape(x_test.shape[0],x_test.shape[1],x_test.shape[2])
 
-print(x_train_scal.shape)
-print(x_test_scal.shape)
+print("d",x_train_scal.shape)
+print("d",x_test_scal.shape)
 
-print(y_train.shape)
-print(y_test.shape)
+print("d",y_train.shape)
+print("d",y_test.shape)
 
 # 2. 모델 구성
 model = Sequential()
-model.add(LSTM(32,input_shape=(size-1,5),activation='tanh'))
+model.add(LSTM(32,input_shape=(size-1,x_test.shape[2]),activation='tanh'))
 model.add(Dense(32))
 model.add(Dropout(0.7))
 model.add(Dense(32))
 model.add(Dropout(0.7))
 model.add(Dense(32))
 
-model.add(Dense(5))
+model.add(Dense(x_test.shape[2]))
 
 
 # 3. 모델 컴파일 및 실행

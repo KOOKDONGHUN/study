@@ -9,6 +9,7 @@ from sklearn.preprocessing import StandardScaler,MinMaxScaler,RobustScaler
 from keras.models import Sequential
 from keras.layers import Dense,LSTM,Dropout
 from keras.callbacks import EarlyStopping
+import math
 
 ''' 일평균 온도, 최저온도, 최고온도, 미세먼지농도, 강수량'''
 
@@ -25,6 +26,8 @@ fall = fall.drop('season',axis=1)
 winter = pd.read_csv('./data/Seoul/Seoul_winter.csv',index_col=0)
 winter = winter.drop('season',axis=1)
 
+
+### x_pred
 pred_temp = pd.read_csv('./data/Seoul/pred_temperature.csv',encoding='CP949',header=6,sep=',',error_bad_lines=False)
 pred_temp = pred_temp.drop('지점',axis=1)
 pred_temp.columns = ['시간', '평균기온', '최저기온', '최고기온']
@@ -44,14 +47,14 @@ pred_dust = pred_dust.interpolate()
 
 pred_dust = pred_dust.fillna(method='bfill')
 
-# print(pred_temp)
-# print(pred_rain)
-# print(pred_dust)
+print(pred_temp)
+print(pred_rain)
+print(pred_dust)
 
 x_pred = pd.merge(pred_temp,pred_dust,on='시간')
 x_pred = pd.merge(x_pred,pred_rain,on='시간')
 x_pred = x_pred.drop('시간',axis=1)
-
+print(x_pred)
 x_pred = x_pred.values
 
 # print(x_pred)
@@ -99,7 +102,7 @@ x_test = dict()
 y_test = dict()
 
 for i in data_ls:
-    x_train_1, x_test_1, y_train_1, y_test_1 = train_test_split(x_data[i],y_data[i],shuffle=False,test_size=0.1)
+    x_train_1, x_test_1, y_train_1, y_test_1 = train_test_split(x_data[i],y_data[i],shuffle=False,test_size=0.05)
 
     x_train_scal = x_train_1.reshape(x_train_1.shape[0],x_train_1.shape[1]*x_train_1.shape[2])
     x_test_scal = x_test_1.reshape(x_test_1.shape[0],x_test_1.shape[1]*x_test_1.shape[2])
@@ -110,7 +113,7 @@ for i in data_ls:
 
     x_train_scal = x_train_scal.reshape(x_train_1.shape[0],x_train_1.shape[1],x_train_1.shape[2])
     x_test_scal = x_test_scal.reshape(x_test_1.shape[0],x_test_1.shape[1],x_test_1.shape[2])
-    print(x_train_1.shape)
+    # print(x_train_1.shape)
 
     x_train[i] = x_train_scal
     x_test[i] = x_test_scal
@@ -118,10 +121,13 @@ for i in data_ls:
     y_train[i] = y_train_1
     y_test[i] = y_test_1
 
+x_pred = x_pred.reshape(1,20)
+x_pred = scaler.transform(x_pred)
+x_pred = x_pred.reshape(1,4,5)
 
 # 2. 모델 구성
 model = Sequential()
-model.add(LSTM(32,input_shape=(4,5),activation='tanh'))
+model.add(LSTM(32,input_shape=(4,5),activation='relu'))
 model.add(Dense(32))
 model.add(Dropout(0.7))
 model.add(Dense(32))
@@ -139,15 +145,29 @@ model.fit(x_train[data_ls[1]],y_train[data_ls[1]],epochs=100,batch_size=32,valid
 
 
 # 4. 평가 예측
-y_pred = model.predict(x_pred)
+# y_pred = model.predict(x_pred)
 
-r2_value = r2_score(y_past,y_pred)
+# r2_value = r2_score(y_past,y_pred)
 
-# print("res : ",res)
+# # print("res : ",res)
 
 # print("r2 : ",r2_value)
 
-# print(y_past,y_pred)
+# # print(y_past,y_pred)
+# print(f'실제값 : {y_past} \t 예측값 : {y_pred}')
+
+# np.save('./Data/Seoul/5col_y_past.npy',arr=y_past)
+# np.save('./Data/Seoul/5col_x_pred.npy',arr=x_pred)
+
+# # for i in range(len(y_pred)):
+# #     print(f'실제값 : {y_test[data_ls[1]][-5+i]} \t 예측값 : {y_pred[i]}')
+
+x_train[data_ls[1]],y_train[data_ls[1]]
+y_pred = model.predict(x_test[data_ls[1]])
+
+r2_value = r2_score(y_test[data_ls[1]],np.round(y_pred,1))
+
+print("r2 : ",math.sqrt(r2_value**2))
 
 for i in range(len(y_pred)):
-    print(f'실제값 : {y_test[data_ls[1]][-5+i]} \t 예측값 : {y_pred[i]}')
+    print(f'실제값 : {y_test[data_ls[1]][i]} \t 예측값 : {y_pred[i]}')

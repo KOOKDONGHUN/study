@@ -8,7 +8,6 @@ from sklearn.metrics import r2_score
 
 data = pd.read_csv('./Data/Seoul/Seoul_data.csv')
 print(data)
-data = data.drop(['season'],axis=1)
 data = data.drop(['date'],axis=1)
 print(data)
 
@@ -29,6 +28,8 @@ print(i)
 x_train,x_test, y_train,y_test = train_test_split(x_data,y_data,shuffle=False,test_size=0.1)
 
 print(x_train.shape)
+print(x_train)
+print(x_test)
 model = RandomForestRegressor()
 model.fit(x_train,y_train)
 

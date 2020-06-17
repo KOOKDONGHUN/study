@@ -162,5 +162,13 @@ for i in range(len(y_pred)):
 r2_y_pred = r2_score(y_test,y_pred)
 print("r2 : ",r2_y_pred)
 
+np.save
+x_pred = np.load('./Data/Seoul/5col_x_pred.npy')
+print(x_pred)
+y_past = np.load('./Data/Seoul/5col_y_past.npy')
+y_pred = model.predict(x_pred)
+print(f"RF -> 실제값 : {y_past} \t 예측값 : {y_pred}")
+
+
 data_origin.columns = ['avg temp', 'low temp', 'high temp', 'dust','rain']
 plot_feature_importances(model,data_origin)
