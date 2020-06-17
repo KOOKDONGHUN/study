@@ -57,7 +57,7 @@ print("d",y_test.shape)
 
 # 2. 모델 구성
 model = Sequential()
-model.add(LSTM(32,input_shape=(size-1,x_test.shape[2]),activation='tanh'))
+model.add(LSTM(32,input_shape=(size-1,x_test.shape[2]),activation='elu'))
 model.add(Dense(32))
 model.add(Dropout(0.7))
 model.add(Dense(32))
