@@ -56,12 +56,48 @@ model.add(Dense(5))
 model.compile(optimizer='adam',loss='mse',metrics=['mse'])
 model.fit(x_train_scal,y_train,validation_split=0.1,batch_size=16,epochs=30)
 
-# 4. predict
 
-y_pred = model.predict(x_test_scal)
+
+
+
+# 4. predict
+# 1-0. 월별 서울 온도 데이터 로드
+temp = pd.read_csv('./data/Seoul2/pred_temp.csv',encoding='CP949',header=6,sep=',',error_bad_lines=False)
+temp.columns = ['날짜', '지점','avg', 'low', 'high']
+print(temp)
+
+rain = pd.read_csv('./data/Seoul2/pred_rain.csv',encoding='CP949',header=6,sep=',',error_bad_lines=False)
+rain.columns = ['날짜', '지점','rain']
+print(rain)
+
+dust = pd.read_csv('./data/Seoul2/pred_dust.csv',encoding='CP949',header=3,sep=',',error_bad_lines=False)
+dust.columns = ['지점', '지점명','날짜', 'dust']
+print(dust)
+
+data = pd.merge(temp,rain,on='날짜',how='outer')
+data = pd.merge(data,dust,on='날짜',how='outer')
+print(data)
+data = data.drop(['지점_x','지점_y','지점', '지점명'],axis=1)
+print(data)
+
+data = data.fillna(0)
+
+x_test = data.values
+x_test = x_test[:,1:]
+print(x_test)
+x_test = x_test.reshape(1,20)
+x_test = scaler.transform(x_test)
+
+
+
+
+
+y_pred = model.predict(x_test)
+
 
 for i in range(len(y_pred)):
-    print(f'실제값 : {y_test[i]} \t 예측값 : {np.round(y_pred[i],1)}')
+    print(f'예측값 : {np.round(y_pred[i],1)}')
 
-r2_res = r2_score(y_test,np.round(y_pred,1))
-print(f'r2_res : {r2_res}')
+
+# r2_res = r2_score(y_test,np.round(y_pred,1))
+# print(f'r2_res : {r2_res}')
