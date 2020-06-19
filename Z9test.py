@@ -10,6 +10,8 @@ from sklearn.multioutput import MultiOutputRegressor
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import r2_score
+
 from sklearn.preprocessing import RobustScaler
 from hamsu import view_nan
 import pandas as pd
@@ -23,33 +25,36 @@ submission = pd.read_csv('./data/dacon/comp1/sample_submission.csv')
 x = train.loc[:, 'rho':'990_dst']
 test = test.loc[:, 'rho':'990_dst']
 
-view_nan(x)
+# view_nan(x)
 
-print()
+# print()
 x = x.interpolate()
+test = test.interpolate()
 
-view_nan(x)
+# view_nan(x)
 
 index = x.loc[pd.isna(x[x.columns[0]]), :].index
-print(x.iloc[index,:])
+# print(x.iloc[index,:])
 
 y = train.loc[:, 'hhb':'na']
 
 x = x.fillna(0)
+
+# view_nan(test)
 test = test.fillna(0)
 
 
 # 회기 모델
 x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
-                                                    random_state=66)
+                                                    random_state=0)
 
 scaler = RobustScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
-n_estimators = 250
-learning_rate = 0.65
-colsample_bytree = 0.9
+n_estimators = 450
+learning_rate = 0.1
+colsample_bytree = 0.85
 colsample_bylevel = 0.9
 
 max_depth = 5
@@ -66,10 +71,21 @@ model = MultiOutputRegressor(model)
 
 model.fit(x_train,y_train)
 
-score = model.score(x_test,y_test)
-print(f"score : {score}")
+# score = model.score(x_test,y_test)
+# print(f"score : {score}")
 
 test = scaler.transform(test)
+
+y_test_pred = model.predict(x_test)
+
+r2 = r2_score(y_test,y_test_pred)
+print(f"r2 : {r2}")
+
+
+
+
+
+
 
 y_pred = model.predict(test)
 
