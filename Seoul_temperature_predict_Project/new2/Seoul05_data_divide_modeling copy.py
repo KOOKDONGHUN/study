@@ -28,7 +28,7 @@ x_data = data[:,:-1,1:]
 # print(x_data)
 # print(x_data.shape)
 
-y_data = data[:,-1,1:]
+y_data = data[:,-1,1:4]
 # print(y_data.shape)
 
 x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.01,random_state=3)
@@ -102,7 +102,7 @@ model.add(Dropout(0.9))
 model.add(Dense(1024))
 model.add(Dropout(0.7))
 model.add(Dense(512))
-model.add(Dense(5))
+model.add(Dense(3))
 
 
 
@@ -152,7 +152,7 @@ for i in range(len(y_pred)):
     print(f'예측값 : {np.round(y_pred[i],1)}')
 
 print(y_pred.shape)
-y = np.array([[23.4, 20.3, 27.3, 0, 40]])
+y = np.array([[23.4, 20.3, 27.3]])
 print(y.shape)
 
 print(y)
