@@ -4,15 +4,16 @@
 # 3. regularization
 
 from xgboost import XGBClassifier, plot_importance, XGBRegressor
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_boston
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV,RandomizedSearchCV,KFold
+from sklearn.model_selection import KFold
 import matplotlib.pyplot as plt
 
 import numpy as np
 
 # 회기 모델
-dataset = load_iris()
+dataset = load_boston()
 x = dataset.data
 y = dataset.target
 
@@ -22,36 +23,23 @@ print(y.shape)
 x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
                                                     random_state=66)
 
-n_jobs = -1
-
-n_estimators = 220 
-learning_rate = 0.035 
-colsample_bytree = 0.75 
-colsample_bylevel = 0.99 
-max_depth = 4 
-
-parameters = [{"n_estimators": [100, 220, 300],
-              "learning_rate": [0.1, 0.035, 0.001, 0.01],
-              "max_depth": [4, 5, 6],
-                "colsample_bytree": [0.6, 0.9, 0.75],
-              "colsample_bylevel": [0.6, 0.7, 0.99]},
+parameters = [{"n_estimators": [100, 200, 300],
+              "learning_rate": [0.1, 0.3, 0.001, 0.01],
+              "max_depth": [4, 5, 6]},
               
               {"n_estimators": [90, 100, 110],
-              "learning_rate": [0.1, 0.001, 0.01, 0.035],
+              "learning_rate": [0.1, 0.001, 0.01],
               "max_depth": [3, 5, 7, 9],
-              "colsample_bytree": [0.6, 0.9, 1]} ]
-              
-              
-"""               ,
+              "colsample_bytree": [0.6, 0.9, 1]},
 
               {"n_estimators": [90, 100, 110],
               "learning_rate": [0.1, 0.001, 0.01],
               "max_depth": [3, 5, 7, 9],
               "colsample_bytree": [0.6, 0.9, 1],
-              "colsample_bylevel": [0.6, 0.7, 0.9]}    ] """
+              "colsample_bylevel": [0.6, 0.7, 0.9]}    ]
+n_jobs = -1
 
-
-model = GridSearchCV(XGBClassifier(),parameters,cv=3,n_jobs=n_jobs)
+model = GridSearchCV(XGBRegressor(),parameters,cv=3, n_jobs=n_jobs)
 
 model.fit(x_train,y_train)
 
@@ -60,6 +48,9 @@ print(f"score : {score}")
 
 print(f"feature estimator : {model.best_estimator_}")
 print(f"feature param : {model.best_params_}") # 내가 넣은것 중에서 잘나온결과
+
+
+# print(f"feature importance : {model.feature_importances_}")
 
 # plot_importance(model)
 # plt.show()
