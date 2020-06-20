@@ -52,10 +52,15 @@ scaler = RobustScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
-n_estimators = 450
-learning_rate = 0.1
-colsample_bytree = 0.85
-colsample_bylevel = 0.9
+# n_estimators = 450
+# learning_rate = 0.1
+# colsample_bytree = 0.85
+# colsample_bylevel = 0.9
+
+n_estimators = 235
+learning_rate = 0.07
+colsample_bytree = 0.6
+colsample_bylevel = 0.6
 
 max_depth = 5
 n_jobs = -1
