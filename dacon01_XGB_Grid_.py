@@ -1,8 +1,3 @@
-# 과적합 방지
-# 1. 훈련 데이터양을 늘린다.
-# 2. 피처수를 줄인다.
-# 3. regularization
-
 from xgboost import XGBClassifier, plot_importance, XGBRegressor
 
 from sklearn.multioutput import MultiOutputRegressor
@@ -10,7 +5,9 @@ from sklearn.multioutput import MultiOutputRegressor
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import r2_score, mean_absolute_error
+from sklearn.metrics import r2_score
+
+from sklearn.model_selection import GridSearchCV,RandomizedSearchCV,KFold
 
 from sklearn.preprocessing import RobustScaler
 from hamsu import view_nan
@@ -52,20 +49,10 @@ scaler = RobustScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
-# n_estimators = 450
-# learning_rate = 0.1
-# colsample_bytree = 0.85
-# colsample_bylevel = 0.9
-
-# n_estimators = 235
-# learning_rate = 0.07
-# colsample_bytree = 0.75
-# colsample_bylevel = 0.6
-
-n_estimators = 250
-learning_rate = 0.04
-colsample_bytree = 0.75
-colsample_bylevel = 0.7
+n_estimators = 450
+learning_rate = 0.1
+colsample_bytree = 0.85
+colsample_bylevel = 0.9
 
 max_depth = 5
 n_jobs = -1
@@ -91,10 +78,18 @@ y_test_pred = model.predict(x_test)
 r2 = r2_score(y_test,y_test_pred)
 print(f"r2 : {r2}")
 
-mae = mean_absolute_error(y_test,y_test_pred)
-print(f"mae : {mae}")
+parameters = [{'estimator' : {"n_estimators": [90, 100, 110],
+              "learning_rate": [0.1, 0.001, 0.01],
+              "max_depth": [3, 5, 7, 9],
+              "colsample_bytree": [0.6, 0.9, 1],
+              "colsample_bylevel": [0.6, 0.7, 0.9]}  }  ]
 
+n_jobs = -1
 
+model = GridSearchCV(model,parameters,cv=3, n_jobs=n_jobs)
+model.fit(x_train,y_train)
+print(f"feature estimator : {model.best_estimator_}")
+print(f"feature param : {model.best_params_}")
 
 
 

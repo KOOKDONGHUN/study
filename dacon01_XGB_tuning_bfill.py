@@ -25,24 +25,33 @@ submission = pd.read_csv('./data/dacon/comp1/sample_submission.csv')
 x = train.loc[:, 'rho':'990_dst']
 test = test.loc[:, 'rho':'990_dst']
 
+print(x.shape,"000")
+
 # view_nan(x)
 
 # print()
-x = x.interpolate()
-test = test.interpolate()
+# x = x.interpolate()
+# test = test.interpolate()
 
 # view_nan(x)
 
-index = x.loc[pd.isna(x[x.columns[0]]), :].index
+# index = x.loc[pd.isna(x[x.columns[0]]), :].index
 # print(x.iloc[index,:])
 
 y = train.loc[:, 'hhb':'na']
 
-x = x.fillna(0)
+x = x.fillna(method='bfill')
+x = x.fillna(method='ffill')
+# x = x.fillna(0)
 
 # view_nan(test)
-test = test.fillna(0)
+test = test.fillna(method='bfill')
+test = test.fillna(method='ffill')
+# test = test.fillna(0)
 
+view_nan(x)
+print()
+view_nan(test)
 
 # 회기 모델
 x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
@@ -57,15 +66,15 @@ x_test = scaler.transform(x_test)
 # colsample_bytree = 0.85
 # colsample_bylevel = 0.9
 
-# n_estimators = 235
-# learning_rate = 0.07
-# colsample_bytree = 0.75
-# colsample_bylevel = 0.6
+n_estimators = 240
+learning_rate = 0.1
+colsample_bytree = 0.85
+colsample_bylevel = 0.6
 
-n_estimators = 250
-learning_rate = 0.04
-colsample_bytree = 0.75
-colsample_bylevel = 0.7
+# n_estimators = 250
+# learning_rate = 0.04
+# colsample_bytree = 0.75
+# colsample_bylevel = 0.7
 
 max_depth = 5
 n_jobs = -1

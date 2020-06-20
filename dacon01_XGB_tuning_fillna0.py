@@ -28,12 +28,12 @@ test = test.loc[:, 'rho':'990_dst']
 # view_nan(x)
 
 # print()
-x = x.interpolate()
-test = test.interpolate()
+# x = x.interpolate()
+# test = test.interpolate()
 
 # view_nan(x)
 
-index = x.loc[pd.isna(x[x.columns[0]]), :].index
+# index = x.loc[pd.isna(x[x.columns[0]]), :].index
 # print(x.iloc[index,:])
 
 y = train.loc[:, 'hhb':'na']
@@ -57,15 +57,15 @@ x_test = scaler.transform(x_test)
 # colsample_bytree = 0.85
 # colsample_bylevel = 0.9
 
-# n_estimators = 235
-# learning_rate = 0.07
-# colsample_bytree = 0.75
-# colsample_bylevel = 0.6
+n_estimators = 240
+learning_rate = 0.1
+colsample_bytree = 0.85
+colsample_bylevel = 0.6
 
-n_estimators = 250
-learning_rate = 0.04
-colsample_bytree = 0.75
-colsample_bylevel = 0.7
+# n_estimators = 250
+# learning_rate = 0.04
+# colsample_bytree = 0.75
+# colsample_bylevel = 0.7
 
 max_depth = 5
 n_jobs = -1
