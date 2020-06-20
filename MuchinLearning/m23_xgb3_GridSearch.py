@@ -3,6 +3,7 @@
 # 2. 피처수를 줄인다.
 # 3. regularization
 
+'''m22_xgb1_boston.py 와 동일하기 떄문에 따로 작성하지않겠다'''
 from xgboost import XGBClassifier, plot_importance, XGBRegressor
 from sklearn.datasets import load_boston
 from sklearn.model_selection import train_test_split

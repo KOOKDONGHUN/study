@@ -6,27 +6,79 @@ from sklearn.datasets import load_boston
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV,RandomizedSearchCV,KFold
 
-# dataset = load_boston()
-# x = dataset.data
-# y = dataset.target
 
-x, y = load_boston(return_X_y=True)
+from xgboost import XGBClassifier, plot_importance, XGBRegressor
 
+from sklearn.multioutput import MultiOutputRegressor
+
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+
+from sklearn.metrics import r2_score
+
+from sklearn.preprocessing import RobustScaler
+from hamsu import view_nan
+import pandas as pd
+import numpy as np
+
+# 데이터
+train = pd.read_csv('./data/dacon/comp1/train.csv')
+test = pd.read_csv('./data/dacon/comp1/test.csv')
+submission = pd.read_csv('./data/dacon/comp1/sample_submission.csv')
+
+x = train.loc[:, 'rho':'990_dst']
+test = test.loc[:, 'rho':'990_dst']
+
+# view_nan(x)
+
+# print()
+x = x.interpolate()
+test = test.interpolate()
+
+# view_nan(x)
+
+index = x.loc[pd.isna(x[x.columns[0]]), :].index
+# print(x.iloc[index,:])
+
+y = train.loc[:, 'hhb':'na']
+
+x = x.fillna(0)
+
+# view_nan(test)
+test = test.fillna(0)
+
+
+# 회기 모델
 x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
-                                                    random_state=66)
+                                                    random_state=0)
+
+scaler = RobustScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
 
 # XGBRFRegressor??????
 
 model = XGBRegressor()
+
+
+
 model.fit(x_train,y_train)
+model.booster().get_score()
+
+
+thres_holds = np.sort(model.feature_importances_)
+print(thres_holds)
+
+model1 = MultiOutputRegressor(XGBRegressor())
+model1.fit(x_train,y_train)
+
 score = model.score(x_test,y_test)
 
 print(f"r2 : {score}")
 
 '''feature engineering'''
 
-thres_holds = np.sort(model.feature_importances_)
-print("thres_holds : ",thres_holds)
+
 
 
 parameters = [{"n_estimators": [100, 200, 300],
@@ -56,6 +108,7 @@ for thresh in thres_holds:
 
     # selec_model = XGBRegressor()
     selec_model = GridSearchCV(XGBRegressor(),parameters,cv=3, n_jobs=n_jobs)
+    selec_model = MultiOutputRegressor(selec_model)
     selec_model.fit(selec_x_train,y_train)
 
     selec_x_test = selection.transform(x_test)
