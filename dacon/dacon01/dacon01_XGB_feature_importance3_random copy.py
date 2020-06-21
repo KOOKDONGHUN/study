@@ -18,6 +18,17 @@ train = pd.read_csv('./data/dacon/comp1/train.csv')
 test = pd.read_csv('./data/dacon/comp1/test.csv')
 submission = pd.read_csv('./data/dacon/comp1/sample_submission.csv')
 
+train = train.transpose()
+test = test.transpose()
+
+train = train.interpolate()
+test = test.interpolate()
+
+train = train.fillna(0)
+test = test.fillna(0)
+
+train = train.transpose()
+test = test.transpose()
 
 # feature importance columns index setting
 hhb_feature = [0, 51, 52, 50, 49, 53, 16, 54, 70, 14, 17, 68, 15, 48, 55]
@@ -37,11 +48,11 @@ na_feature = plus_one(na_feature)
 
 
 # fill missing value
-train = train.interpolate()
-train = train.dropna(axis=0)
+# train = train.interpolate()
+# train = train.dropna(axis=0)
 
-test = test.interpolate()
-test = test.fillna(0)
+# test = test.interpolate()
+# test = test.fillna(0)
 
 
 # x, y split
