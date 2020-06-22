@@ -1,61 +1,58 @@
-from sklearn.feature_selection import SelectFromModel
-from sklearn.model_selection import train_test_split as tts
-import numpy as np
-from xgboost import XGBClassifier
-from sklearn.datasets import load_iris
-from sklearn.metrics import accuracy_score as acc_score
-import matplotlib.pyplot as plt
+# 과적합 방지
+# 1. 훈련 데이터양을 늘린다.
+# 2. 피처수를 줄인다.
+# 3. regularization
+
+from xgboost import XGBClassifier, plot_importance, XGBRegressor
+
 from sklearn.multioutput import MultiOutputRegressor
 
-dataset = load_iris()
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
-x=dataset.data
-y=dataset.target
+from sklearn.metrics import r2_score, mean_absolute_error
 
-#1)데이터 입력
+from sklearn.preprocessing import RobustScaler
+import pandas as pd
+import numpy as np
 
-x_train,x_test,y_train,y_test = tts(x,y,train_size =0.8, random_state = 66)
+# 데이터
+train = pd.read_csv('./data/dacon/comp1/train.csv')
+test = pd.read_csv('./data/dacon/comp1/test.csv')
+submission = pd.read_csv('./data/dacon/comp1/sample_submission.csv')
 
-#2)모델구성
+x = train.loc[:, 'rho':'990_dst']
+test = test.loc[:, 'rho':'990_dst']
 
-xgb = XGBClassifier(n_estimators=1000,learning_rate=0.1,objective='multi:softmax',n_jobs=-1)
+y = train.loc[:, 'hhb':'na']
 
-#3)훈련
-xgb.fit(x_train,y_train,verbose=True,eval_metric=["mlogloss","merror"],eval_set=[(x_train,y_train),(x_test,y_test)],early_stopping_rounds=20)
+x = x.dropna(axis=1)
+print(x.head(2))
 
-#4)평가 및 예측
+test = test.dropna(axis=1)
+print(test.head(2))
 
-y_pre = xgb.predict(x_test)
-acc = acc_score(y_test,y_pre)
+for i in range(len(x.columns)):
+    print(f'x : {x.columns[i]} \t test : {test.columns[i]}')
 
-results = xgb.evals_result()
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.9,random_state=5)
 
-print(results)
+model = XGBRegressor()
 
+name_ls = ['hhb','hbo2','ca','na']
+tmp_dic = dict()
 
-#6)selectFromModel
+for i in range(4):
+    model.fit(x_train,y_train.iloc[:, i])
+    test_pred = model.predict(x_test)
+    r2_test = r2_score(y_test.iloc[:, i], test_pred)
+    mae_test = mean_absolute_error(y_test.iloc[:, i], test_pred)
 
-thresholds = np.sort(xgb.feature_importances_)
+    print(r2_test, "\t",mae_test)
 
-idx_max = -1
-max = acc
+    true_pred = model.predict(test)
+    tmp_dic[name_ls[i]] = true_pred
 
-
-for idx,thresh in enumerate(thresholds):
-    #데이터 전처리
-    selection = SelectFromModel(xgb,threshold=thresh,prefit=True)
-    #1)데이터입력
-    selection_x_train = selection.transform(x_train)
-    selection_x_test = selection.transform(x_test)
-    #2)모델구성
-    selection_model = XGBClassifier(n_estimators=100,learning_rate = 0.1,n_jobs=-1)
-    
-    #3)훈련
-    selection_model.fit(selection_x_train,y_train,verbose=False,eval_metric=["mlogloss","merror"],eval_set=[(selection_x_train,y_train),(selection_x_test,y_test)],early_stopping_rounds=20)
-    #4)평가 및 예측
-    y_pre = selection_model.predict(selection_x_test)
-    acc = acc_score(y_test,y_pre)
-
-    if max<=acc:
-        max=acc
-        idx_max=idx
+# # submit
+# df = pd.DataFrame(tmp_dic,range(10000,20000),columns=['hhb','hbo2','ca','na'])
+# df.to_csv('./submission_test.csv',index_label='id')
