@@ -40,12 +40,8 @@ test = test.loc[:, 'rho':'990_dst']
 
 y = train.loc[:, 'hhb':'na']
 
-x = x.fillna(0)
-
-test = test.fillna(0)
-
 # 회기 모델
-x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
+x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.9,
                                                     random_state=0)
 
 scaler = RobustScaler()
