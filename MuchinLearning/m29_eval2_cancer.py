@@ -81,6 +81,10 @@ for thresh in thres_holds:
     # print(score)
     # print(f"model.feature_importances_ : {model.feature_importances_}")
 
+    print(f'selec_model.best_estimator_ : {selec_model.best_estimator_}')
+    print(f'selec_model.best_params_ : {selec_model.best_params_}')
+    
+
     print(f"Thresh={np.round(thresh,2)} \t n={selec_x_train.shape[1]} \t r2={np.round(score*100,2)}")
 
 # 메일 제목 : 아무개 **등

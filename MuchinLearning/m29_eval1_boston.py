@@ -15,7 +15,6 @@ SelectfromModel
 
 5. m27 ~ 29까지 완벽히 이해할것 '''
 
-
 from sklearn.feature_selection import SelectFromModel
 import numpy as np
 from xgboost import XGBClassifier,XGBRegressor

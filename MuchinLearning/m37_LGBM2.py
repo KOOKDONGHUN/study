@@ -17,15 +17,14 @@ from sklearn.model_selection import GridSearchCV,RandomizedSearchCV,KFold
 import matplotlib.pyplot as plt
 from sklearn.feature_selection import SelectFromModel
 import os
+from lightgbm import LGBMClassifier,LGBMRegressor
 
 x, y = load_breast_cancer(return_X_y=True)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
                                                     random_state=66)
 
-# XGBRFRegressor??????
-
-model = XGBClassifier(n_estimators=500,learning_rate=0.1,n_jobs=-1)
+model = LGBMClassifier(n_estimators=500,learning_rate=0.1,n_jobs=-1)
 
 model.fit(x_train,y_train)
 
@@ -33,23 +32,16 @@ model.fit(x_train,y_train)
 thres_holds = np.sort(model.feature_importances_)
 print("thres_holds : ",thres_holds)
 
-parameters = [{"n_estimators": [90, 100, 110],
-              "learning_rate": [0.1, 0.001, 0.01],
-              "max_depth": [3, 5, 7, 9],
-              "colsample_bytree": [0.6, 0.9, 1],
-              "colsample_bylevel": [0.6, 0.7, 0.9],
-              'n_jobs' : [-1]}  ]
+'''objestive = regression, binary, multiclass'''
 
-# parameters = [{"n_estimators": [90],
-#               "learning_rate": [0.1,0.2],
-#               "max_depth": [3],
-#               "colsample_bytree": [0.6],
-#               "colsample_bylevel": [0.6],
-#               'n_jobs' : [-1]}  ]
+parameters = [{'colsample_bytree': [1.0], 'learning_rate': [0.1,0.2,0.3], 'max_depth': [-1],
+        'min_child_samples': [20], 'min_child_weight': [0.001], 'min_split_gain': [0.0, 0.1],
+        'n_estimators': [100,150], 'n_jobs': [-1], 'num_leaves': [31,32,33,34], 'objective': ['binary'],
+        'random_state': [0], 'reg_alpha': [0.0], 'silent': [True],
+        'subsample': [1.0], 'subsample_for_bin': [200000], 'subsample_freq': [0]}  ]
 
 n_jobs = -1
 
-# filename = os.path.split(__file__)[1]
 filename =__file__.split("\\")[-1]
 
 print(filename)
@@ -57,23 +49,18 @@ print(filename)
 max =0
 
 for thresh in thres_holds:
-    selection = SelectFromModel(model, threshold=thresh, prefit=True) # 추가 파라미터 median
+    selection = SelectFromModel(model, threshold=thresh, prefit=True) 
 
     selec_x_train = selection.transform(x_train)
 
-    # print(f"selec_x_train.shape : {selec_x_train.shape}") # columns을 한개씩 줄이고 있다 
-
-    # selec_model = XGBClassifier()
     selec_model = GridSearchCV(model,parameters,cv=3, n_jobs=n_jobs)
     selec_model.fit(selec_x_train,y_train)
-    # print(thresh)
 
     selec_x_test = selection.transform(x_test)
     y_pred = selec_model.predict(selec_x_test)
 
     score = r2_score(y_test,y_pred)
-    # print(score)
-    # print(f"model.feature_importances_ : {model.feature_importances_}")
+
 
     if max <= score:
         best_model = selec_model
@@ -83,8 +70,10 @@ for thresh in thres_holds:
 
     print(f"Thresh={np.round(thresh,2)} \t n={selec_x_train.shape[1]} \t r2={np.round(score*100,2)}")
 
-# 메일 제목 : 아무개 **등
+    print(f'selec_model.best_estimator_ : {selec_model.best_estimator_}')
+    print(f'selec_model.best_params_ : {selec_model.best_params_}')
+    
 
 import joblib
 
-joblib.dump(best_model, f'./model/xgb_save/model_{filename}_save_{best_shape}_{np.round(max*100,2)}.dat')
+joblib.dump(best_model, f'./model/LGBM_save/model_{filename}_save_{best_shape}_{np.round(max*100,2)}.dat')
