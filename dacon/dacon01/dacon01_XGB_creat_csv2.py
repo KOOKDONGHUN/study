@@ -54,5 +54,17 @@ for i in range(len(test.columns)):
     for idx_col ,j in enumerate(rows):
         test.iloc[j,i]=np.nan
 
+
 print(train)
 print(test)
+
+train = train.transpose()
+train = train.interpolate()
+train = train.transpose()
+
+test = test.transpose()
+test = test.interpolate()
+test = test.transpose()
+
+train.to_csv('./data/dacon/comp1/new_train_nan_interpolate.csv', index= 0)
+test.to_csv('./data/dacon/comp1/new_test_nan_interpolate.csv', index = 0)
