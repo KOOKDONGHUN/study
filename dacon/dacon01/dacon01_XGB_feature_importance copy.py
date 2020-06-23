@@ -40,10 +40,13 @@ test = test.transpose()
 
 # split x, y
 x = train.loc[:, 'rho':'990_dst']
+print(x.shape)
 test = test.loc[:, 'rho':'990_dst']
 
 y = train.loc[:, 'hhb':'na']
 
+
+""" 
 # split train, test
 x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.9,
                                                     random_state=0)
@@ -159,4 +162,4 @@ for i in range(4):
 
 '''
 {'n_estimators': [310, 350, 390], 'max_depth': [4, 5, 6], 'learning_rate': [0.06, 0.11], 'colsample_bytree': [0.6, 0.7, 0.8, 0.9], 'colsample_bylevel': [0.6, 0.7, 0.8]}
-'''
+''' """

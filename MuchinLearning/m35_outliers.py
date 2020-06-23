@@ -15,4 +15,5 @@ def outlier(data_out):
 a = np.array([1, 2, 3, 4, 10000, 6, 7, 5000, 90, 100])
 b = outlier(a)
 
-print(f"over value locate : {b}")
+print(f"over value locate : {b}") # over value locate : (array([4, 7], dtype=int64),)
+''' index 4, 7 -> over (10000, 5000) '''

@@ -16,22 +16,41 @@ from sklearn.preprocessing import RobustScaler
 import pandas as pd
 import numpy as np
 
+from MuchinLearning.m35_outliers3_KJICode import outliers
+
 # 데이터
 train = pd.read_csv('./data/dacon/comp1/train.csv')
 test = pd.read_csv('./data/dacon/comp1/test.csv')
 submission = pd.read_csv('./data/dacon/comp1/sample_submission.csv')
 
+
+
+
 x = train.loc[:, 'rho':'990_dst']
-test = test.loc[:, 'rho':'990_dst']
+train = outliers(x)
 
-y = train.loc[:, 'hhb':'na']
+# test = test.loc[:, 'rho':'990_dst']
 
-x = x.dropna(axis=1)
-print(x.head(2))
+# y = train.loc[:, 'hhb':'na']
 
-test = test.dropna(axis=1)
-print(test.head(2))
+# x = x.dropna(axis=1)
+# print(x.head(2))
 
+# test = test.dropna(axis=1)
+# print(test.head(2))
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 for i in range(len(x.columns)):
     print(f'x : {x.columns[i]} \t test : {test.columns[i]}')
 
@@ -55,4 +74,4 @@ for i in range(4):
 
 # # submit
 # df = pd.DataFrame(tmp_dic,range(10000,20000),columns=['hhb','hbo2','ca','na'])
-# df.to_csv('./submission_test.csv',index_label='id')
+# df.to_csv('./submission_test.csv',index_label='id') """
