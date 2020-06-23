@@ -110,7 +110,7 @@ x_pred_na = scaler.transform(x_pred_na)
 
 # modelling
 parameters = [{'colsample_bytree':list(np.arange(0.6,0.9,0.1)),
-              'max_depth': [4,5,6],
+              'max_depth': [4,5,6,7,8],
               'n_estimators': list(np.arange(150,400,20)),
               'learning_rate': list(np.arange(0.01,0.5,0.05)),
               'colsample_bylevel': list(np.arange(0.6,0.9,0.1))}
@@ -119,7 +119,7 @@ parameters = [{'colsample_bytree':list(np.arange(0.6,0.9,0.1)),
 n_jobs = -1
 
 model = XGBRegressor()
-model = GridSearchCV(model, parameters,n_jobs=n_jobs, cv=3)
+model = GridSearchCV(model, parameters,n_jobs=n_jobs, cv=6)
 
 # fitting
 name_ls = ['hhb','hbo2','ca','na']
