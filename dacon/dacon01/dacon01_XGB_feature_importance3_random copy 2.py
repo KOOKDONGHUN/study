@@ -119,7 +119,7 @@ parameters = [{'colsample_bytree':list(np.arange(0.6,0.9,0.1)),
 n_jobs = -1
 
 model = XGBRegressor()
-model = GridSearchCV(model, parameters,n_jobs=n_jobs, cv=3)
+model = GridSearchCV(model, parameters,n_jobs=n_jobs, cv=5)
 
 # fitting
 name_ls = ['hhb','hbo2','ca','na']
