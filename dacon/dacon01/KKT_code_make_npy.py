@@ -71,8 +71,8 @@ for i in range(10000):
         if train_src.iloc[i, j] - train_dst.iloc[i, j] < 0:
             train_src.iloc[i,j] = train_dst.iloc[i,j]
 
-        if test_src[i, j] - test_dst[i, j] < 0:
-            test_src[i,j] = test_dst[i,j]
+        if test_src.iloc[i, j] - test_dst.iloc[i, j] < 0:
+            test_src.iloc[i,j] = test_dst.iloc[i,j]
 
     if tmp_x > max_train:
         max_train = tmp_x
