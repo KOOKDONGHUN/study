@@ -32,22 +32,31 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
 # max_depth = 6
 # n_jobs = 6
 
-parameters = [{"n_estimators": [500],
-              "learning_rate": [0.09],
-              "max_depth": [7],
-              "colsample_bytree": [0.8],
-              "colsample_bylevel": [0.8]}]
+parameters = [{"n_estimators": [1000],
+              "learning_rate": [0.2],
+              "max_depth": [5],
+              "colsample_bytree": [0.9],
+              "colsample_bylevel": [0.9]}]
 
-kfold = KFold(n_splits=5, shuffle=True, random_state=66)
+parameters2 = [{"n_estimators": [1100],
+              "learning_rate": [0.3],
+              "max_depth": [8],
+              "colsample_bytree": [0.9],
+              "colsample_bylevel": [0.9]}]
+
+kfold = KFold(n_splits=4, shuffle=True, random_state=66)
 
 model = XGBRegressor(n_jobs=6)
+model2 = XGBRegressor(n_jobs=6)
 
 model = GridSearchCV(model, parameters, cv = kfold)
+model2 = GridSearchCV(model2, parameters2, cv = kfold)
 
 name_ls = ['hhb','hbo2','ca','na']
 tmp_dic = dict()
 
-for i in range(len(y_train.iloc[0,:])):
+## hbb, hbo2
+for i in range(2):
     model.fit(x_train,y_train.iloc[:, i])
 
     y_test_pred = model.predict(x_test)
@@ -59,10 +68,18 @@ for i in range(len(y_train.iloc[0,:])):
     y_pred = model.predict(test)
     tmp_dic[name_ls[i]] = y_pred
 
-    # print(f"feature importance : {model.feature_importances_}")
-    # plot_importance(model)
+## ca, na
+for i in range(2,4):
+    model.fit(x_train,y_train.iloc[:, i])
 
-    # plt.show()
+    y_test_pred = model.predict(x_test)
+    r2 = r2_score(y_test.iloc[:, i],y_test_pred)
+    print(f"r2 : {r2}")
+    mae = mean_absolute_error(y_test.iloc[:, i],y_test_pred)
+    print(f"mae : {mae}")
+    
+    y_pred = model.predict(test)
+    tmp_dic[name_ls[i]] = y_pred
 
 df = pd.DataFrame(tmp_dic,range(10000,20000),columns=['hhb','hbo2','ca','na'])
 

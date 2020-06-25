@@ -14,6 +14,8 @@ test_rho = pd.read_csv('./data/dacon/comp1/test_rho.csv', index_col=0, header=0)
 
 train_y = pd.read_csv('./data/dacon/comp1/train_y.csv', index_col=0, header=0)
 
+train_rho = train_rho**2
+test_rho = test_rho**2
 
 def outliers(data, axis= 0):
     import numpy as np
@@ -113,6 +115,8 @@ test = pd.merge(test,test_fu_j,on='id')
 print(train)
 print(test)
 
+view_nan(train)
+view_nan(test)
 
 ###
 train.to_csv('./data/dacon/comp1/train_new.csv')
