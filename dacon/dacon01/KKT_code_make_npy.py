@@ -95,101 +95,12 @@ for i in range(10000):
     train_fu_imag.append(np.fft.fft(train_dst[i]-train_dst[i].mean(), n=60).imag)
     test_fu_real.append(np.fft.fft(test_dst[i]-test_dst[i].mean(), n=60).real)
     test_fu_imag.append(np.fft.fft(test_dst[i]-test_dst[i].mean(), n=60).imag)
-print(max_train)
-print(max_test)
-print("RHO")
-print(rho_10/nrho_10)
-print(rho_15/nrho_15)
-print(rho_20/nrho_20)
-print(rho_25/nrho_25)
-# print(train_fu_real)
-# print(train_fu_imag)
-# print(test_fu_real)
-# print(test_fu_imag)
-
-# max_test = 0
-# max_train = 0
-# train_fu_real = []
-# train_fu_imag = []
-# test_fu_real = []
-# test_fu_imag = []
-
-# for i in range(10000):
-#     tmp_x = 0
-#     tmp_y = 0
-#     for j in range(35):
-#         if train.iloc[i, j+1] == 0:
-#             tmp_x += 1
-#             train.iloc[i,j+1] = 0
-#             train.iloc[i,j+36] = 0
-#         if train.iloc[i, j+1] - train.iloc[i, j+36] < 0:
-#             train.iloc[i,j+36] = train.iloc[i,j+1]
-#         if test.iloc[i, j+1] == 0:
-#             tmp_y += 1
-#             test.iloc[i,j+1] = 0
-#             test.iloc[i,j+36] = 0
-#         if test.iloc[i, j+1] - test.iloc[i, j+36] < 0:
-#             test.iloc[i,j+36] =test.iloc[i,j+1] 
-#     if tmp_x > max_train:
-#         max_train = tmp_x
-#     if tmp_y > max_test:
-#         max_test = tmp_y
-#     train_fu_real.append(np.fft.ifft(train.iloc[i, 36:71]-train.iloc[i, 36:71].mean(), norm='ortho').real)
-#     train_fu_imag.append(np.fft.ifft(train.iloc[i, 36:71]-train.iloc[i, 36:71].mean(), norm='ortho').imag)
-#     test_fu_real.append(np.fft.ifft(test.iloc[i, 36:71]-test.iloc[i, 36:71].mean(), norm='ortho').real)
-#     test_fu_imag.append(np.fft.ifft(test.iloc[i, 36:71]-test.iloc[i, 36:71].mean(), norm='ortho').imag)
-# print(max_train)
-# print(max_test)
-# print(train_fu_real)
-# print(train_fu_imag)
-# print(test_fu_real)
-# print(test_fu_imag)
-
-# print(train.isnull().sum())
-# train.to_csv('./example.csv',index=False)
-# # print(train)
-
-# train에서 
-# train_src = train.filter(regex='_src$',axis=1).values#.T.interpolate().fillna(method ='ffill').fillna(method ='bfill').T.values # 선형보간법
-# train_dst = train.filter(regex='_dst$',axis=1).values * train.values[:,0:1] * train.values[:,0:1]#.T.interpolate().fillna(method ='ffill').fillna(method ='bfill').T.values # 선형보간법
-# test_src = test.filter(regex='_src$',axis=1).values#.T.interpolate().fillna(method ='ffill').fillna(method ='bfill').T.values
-# test_dst = test.filter(regex='_dst$',axis=1).values* test.values[:,0:1]* test.values[:,0:1]#.T.interpolate().fillna(method ='ffill').fillna(method ='bfill').T.values
-
-print(((train_src - train_dst) < 0).sum())
-print(((test_src - test_dst) < 0).sum())
-
-# train_src_rank = np.argsort(train_src)[::-1][:, :10]
-# train_dst_rank = np.argsort(train_dst)[::-1][:, :10]
-# test_src_rank = np.argsort(test_src)[::-1][:, :10]
-# test_dst_rank = np.argsort(test_dst)[::-1][:, :10]
-# print(np.array(train_src - train_dst)[:2,:])
 
 
-
-
-
-
-small = 1e-20
-
-# x_train = np.concatenate([train.values[:,0:1]**2, train_src/(train.values[:,0:1]**2), train_dst, train_src/(train.values[:,0:1]**2) - train_dst,train_src/(train.values[:,0:1]**2)/(train_dst+small)], axis = 1)
-# x_pred = np.concatenate([test.values[:,0:1]**2, test_src/(train.values[:,0:1]**2), test_dst, test_src/(train.values[:,0:1]**2) - test_dst,test_src/(train.values[:,0:1]**2)/(test_dst+small)], axis = 1)
-
-
+small = 1e-20 # 0인 놈들을 이거로 대체해줌
 
 x_train = np.concatenate([train.values[:,0:1]**2, train_dst, train_dst*train_damp, train_src-train_dst, train_src/(train_dst+small), train_fu_real, train_fu_imag] , axis = 1)
 x_pred = np.concatenate([test.values[:,0:1]**2,train_dst, test_dst*test_damp, test_src-test_dst, test_src/(test_dst+small),test_fu_real,test_fu_imag], axis = 1)
-
-# x_train = np.concatenate([train.values[:,0:1]**2, train_src, train_dst, train_src - train_dst,train_src/(train_dst+small)], axis = 1)
-# x_pred = np.concatenate([test.values[:,0:1]**2, test_src, test_dst, test_src - test_dst,test_src/(test_dst+small)], axis = 1)
-
-# x_train = np.concatenate([train.values[:,0:1]**2, train_src, train_dst, train_src - train_dst,train_src/(train_dst+small), np.log10((train_src + small)/(train_dst+small))], axis = 1)
-# x_pred = np.concatenate([test.values[:,0:1]**2, test_src, train_dst, test_src - test_dst,test_src/(test_dst+small), np.log10((test_src+small)/(test_dst+small))], axis = 1)
-# print(pd.DataFrame(x_train).isnull().sum())
-# print(pd.DataFrame(np.log10(train_src.values) - np.log10(train_dst.values)))
-
-print(x_train.shape)
-print(y_train.shape)
-print(x_pred.shape)
 
 np.save('./dacon/comp1/x_train.npy', arr=x_train)
 np.save('./dacon/comp1/y_train.npy', arr=y_train)

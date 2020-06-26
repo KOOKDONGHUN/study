@@ -32,15 +32,15 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,train_size=0.8,
 # max_depth = 6
 # n_jobs = 6
 
-parameters = [{"n_estimators": [1000],
-              "learning_rate": [0.2],
+parameters = [{"n_estimators": [800],
+              "learning_rate": [0.1],
               "max_depth": [5],
               "colsample_bytree": [0.9],
               "colsample_bylevel": [0.9]}]
 
-parameters2 = [{"n_estimators": [1100],
-              "learning_rate": [0.3],
-              "max_depth": [8],
+parameters2 = [{"n_estimators": [800],
+              "learning_rate": [0.1],
+              "max_depth": [6],
               "colsample_bytree": [0.9],
               "colsample_bylevel": [0.9]}]
 
