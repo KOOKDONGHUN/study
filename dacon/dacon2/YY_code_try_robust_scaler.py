@@ -94,9 +94,16 @@ plt.legend(loc=1)
 # plt.show()
 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import RobustScaler
 
 
 X_train, X_test, Y_train, Y_test = train_test_split(X_data, Y_data, test_size=0.0)
+
+scaler = RobustScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+X_data_test = scaler.transform(X_data_test)
+
 # X_train = X_data
 # Y_train = Y_data
 print(X_train.shape)
@@ -152,16 +159,9 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
 
     model.add(Flatten())
     model.add(Dense(128, activation ='elu'))
-    model.add(Dropout(0.1))
-
     model.add(Dense(64, activation ='elu'))
     model.add(Dense(32, activation ='elu'))
-    model.add(Dropout(0.1))
-    
     model.add(Dense(16, activation ='elu'))
-    model.add(Dense(8, activation ='elu'))
-    model.add(Dense(8, activation ='elu'))
-    model.add(Dense(4, activation ='elu'))
     model.add(Dense(4))
 
     optimizer = keras.optimizers.Adam()

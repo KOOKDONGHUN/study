@@ -93,7 +93,7 @@ plt.legend(loc=1)
 
 # plt.show()
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split,KFold
 
 
 X_train, X_test, Y_train, Y_test = train_test_split(X_data, Y_data, test_size=0.0)
@@ -152,12 +152,10 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
 
     model.add(Flatten())
     model.add(Dense(128, activation ='elu'))
-    model.add(Dropout(0.1))
+    model.add(Dropout(0.3))
 
     model.add(Dense(64, activation ='elu'))
-    model.add(Dense(32, activation ='elu'))
-    model.add(Dropout(0.1))
-    
+    # model.add(Dense(32, activation ='elu'))
     model.add(Dense(16, activation ='elu'))
     model.add(Dense(8, activation ='elu'))
     model.add(Dense(8, activation ='elu'))
@@ -184,6 +182,8 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     model.summary()
 
     return model
+
+skf = KFold(_)
 
 def train(model,X,Y):
     MODEL_SAVE_FOLDER_PATH = './model/'
