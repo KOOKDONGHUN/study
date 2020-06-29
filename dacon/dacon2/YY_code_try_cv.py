@@ -198,7 +198,7 @@ def train(model,X,Y):
                   epochs=100,
                   batch_size=256,
                   shuffle=True,
-                  validation_split=0.2,
+                  validation_split=0.3,
                   verbose = 2,
                   callbacks=[best_save])
 
