@@ -5,6 +5,9 @@ from tqdm import tqdm
 # import jovian
 import numpy as np
 
+res_dic = dict()
+
+
 def kaeri_metric(y_true, y_pred):
     '''
     y_true: dataframe with true values of X,Y,M,V
@@ -51,9 +54,11 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Conv2D, Flatten,MaxPooling2D,BatchNormalization,Lambda, AveragePooling2D, Dropout
 import keras.backend as K
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.models import load_model
 import pandas as pd
+
+els = EarlyStopping(monitor='loss', patience=6, mode='auto') 
 
 # X_data = []
 # Y_data = []
@@ -74,24 +79,6 @@ X_data_test = np.loadtxt('./data/dacon/comp2/test_features.csv',skiprows=1,delim
 X_data_test = X_data_test[:,1:]
 X_data_test = X_data_test.reshape((700,375,5,1))
 
-data_id = 2
-
-# plt.figure(figsize=(8,6))
-
-
-# plt.plot(X_data[data_id,:,0,0], label="Sensor #1")
-# plt.plot(X_data[data_id,:,1,0], label="Sensor #2")
-# plt.plot(X_data[data_id,:,2,0], label="Sensor #3")
-# plt.plot(X_data[data_id,:,3,0], label="Sensor #4")
-
-# plt.xlabel("Time", labelpad=10, size=20)
-# plt.ylabel("Acceleration", labelpad=10, size=20)
-# plt.xticks(size=15)
-# plt.yticks(size=15)
-# plt.xlim(0, 400)
-# plt.legend(loc=1)
-
-# plt.show()
 
 from sklearn.model_selection import train_test_split,KFold
 
@@ -151,15 +138,14 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     model.add(MaxPooling2D(pool_size=(2, 1)))
 
     model.add(Flatten())
-    model.add(Dense(128, activation ='elu'))
-    model.add(Dropout(0.3))
 
+    model.add(Dense(256, activation ='elu'))
+    model.add(Dense(128, activation ='elu'))
     model.add(Dense(64, activation ='elu'))
-    # model.add(Dense(32, activation ='elu'))
+    model.add(Dense(32, activation ='elu'))
     model.add(Dense(16, activation ='elu'))
     model.add(Dense(8, activation ='elu'))
-    model.add(Dense(8, activation ='elu'))
-    model.add(Dense(4, activation ='elu'))
+    # model.add(Dense(4, activation ='elu'))
     model.add(Dense(4))
 
     optimizer = keras.optimizers.Adam()
@@ -183,7 +169,7 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
 
     return model
 
-skf = KFold(n_splits=5, shuffle=True)
+skf = KFold(n_splits=4, shuffle=True)
 
 def train(model,X,Y):
     MODEL_SAVE_FOLDER_PATH = './model/'
@@ -195,71 +181,15 @@ def train(model,X,Y):
 
     for train, val in skf.split(X,Y):
         history = model.fit(X[train], Y[train],
-                    epochs=100,
-                    batch_size=256,
+                    epochs=80,
+                    batch_size=64,
                     shuffle=True,
                     # validation_split=0.3,
                     validation_data=(X[val],Y[val]),
                     verbose = 2,
-                    callbacks=[best_save])
-
-    # fig, loss_ax = plt.subplots()
-    # acc_ax = loss_ax.twinx()
-
-    # loss_ax.plot(history.history['loss'], 'y', label='train loss')
-    # loss_ax.plot(history.history['val_loss'], 'r', label='val loss')
-    # loss_ax.set_xlabel('epoch')
-    # loss_ax.set_ylabel('loss')
-    # loss_ax.legend(loc='upper left')
-    # plt.show()    
+                    callbacks=[best_save,els])
     
     return model
-
-def plot_error(type_id,pred,true):
-    print(pred.shape)
-
-    if type_id == 0:
-        _name = 'x_pos'
-    elif type_id == 1:
-        _name = 'y_pos'
-    elif type_id == 2:
-        _name = 'mass'
-    elif type_id == 3:
-        _name = 'velocity'
-    elif type_id == 4:
-        _name = "distance"
-    else:
-        _name = 'error'
-
-    x_coord = np.arange(1,pred.shape[0]+1,1)
-    if type_id < 2:
-        Err_m = (pred[:,type_id] - true[:,type_id])
-    elif type_id < 4:
-        Err_m = ((pred[:,type_id] - true[:,type_id])/true[:,type_id])*100
-    else:
-        Err_m = ((pred[:,0]-true[:,0])**2+(pred[:,1]-true[:,1])**2)**0.5
-
-
-    # fig = plt.figure(figsize=(8,6))
-    # plt.rcParams["font.family"]="Times New Roman"
-    # plt.rcParams["font.size"]=15
-    # plt.scatter(x_coord, Err_m, marker='o')
-    # plt.title("%s Prediction for Training Data" % _name, size=20)
-    # plt.xlabel("Data ID", labelpad=10, size=20)
-    # plt.ylabel("Prediction Error of %s," % _name, labelpad=10, size=20)
-    # plt.xticks(size=15)
-    # plt.yticks(size=15)
-    # plt.ylim(-100., 100.)
-    # plt.xlim(0, pred.shape[0]+1)
-
-    # plt.show()
-    
-    # print(np.std(Err_m))
-    # print(np.max(Err_m))
-    # print(np.min(Err_m))
-    return Err_m
-
-#  plot_error(type_id,pred,true):
 
 def load_best_model(train_target):
     
@@ -269,26 +199,19 @@ def load_best_model(train_target):
         model = load_model('best_m.hdf5' , custom_objects={'my_loss_E2': my_loss, })
 
     score = model.evaluate(X_data, Y_data, verbose=0)
-    print('loss:', score)
+    # print('loss:', score)
 
     pred = model.predict(X_data)
 
-    i=0
+    res_dic[f'{train_target}'] = [score,E1(pred, Y_data),E2(pred, Y_data)]
 
     # print('정답(original):', Y_data[i])
     # print('예측값(original):', pred[i])
 
-    print(E1(pred, Y_data))
-    print(E2(pred, Y_data))
+    # print(E1(pred, Y_data))
+    # print(E2(pred, Y_data))
     # print(E2M(pred, Y_data))
     # print(E2V(pred, Y_data))    
-    
-    # if train_target ==0:
-    #     plot_error(4,pred,Y_data)
-    # elif train_target ==1:
-    #     plot_error(2,pred,Y_data)
-    # elif train_target ==2:
-    #     plot_error(3,pred,Y_data)    
     
     return model
 
@@ -312,5 +235,7 @@ for train_target in range(3):
 
     elif train_target == 2: # v 학습
         submit.iloc[:,4] = pred_data_test[:,3]
+
+print(res_dic)
 
 submit.to_csv('./submit.csv', index = False)
