@@ -12,8 +12,8 @@ y = np.array([1,2,3,4,5,6,7,8,9,10])
 skf = KFold(n_splits=4, shuffle=True)
 
 for train, validation in skf.split(x,y):
-    print(train, validation)
     print()
+    print(train, validation)
     print(x[train])
     print(x[validation])
     # print()
