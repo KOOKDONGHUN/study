@@ -140,8 +140,11 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     model.add(Flatten())
 
     model.add(Dense(256, activation ='elu'))
+    # model.add(Dropout(0.5))
     model.add(Dense(128, activation ='elu'))
+    # model.add(Dropout(0.5))
     model.add(Dense(64, activation ='elu'))
+    # model.add(Dropout(0.5))
     model.add(Dense(32, activation ='elu'))
     model.add(Dense(16, activation ='elu'))
     model.add(Dense(8, activation ='elu'))
@@ -181,13 +184,13 @@ def train(model,X,Y):
 
     for train, val in skf.split(X,Y):
         history = model.fit(X[train], Y[train],
-                    epochs=80,
-                    batch_size=64,
+                    epochs=60,
+                    batch_size=128,
                     shuffle=True,
                     # validation_split=0.3,
                     validation_data=(X[val],Y[val]),
                     verbose = 2,
-                    callbacks=[best_save,els])
+                    callbacks=[best_save])
     
     return model
 
