@@ -110,8 +110,8 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     activation = 'elu'
     padding = 'valid'
     model = Sequential()
-    nf = 19
-    fs = (4,1)
+    nf = 17
+    fs = (5,1)
 
     model.add(Conv2D(nf,fs, padding=padding, activation=activation,input_shape=(375,5,1)))
     model.add(BatchNormalization())
@@ -134,10 +134,12 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     model.add(MaxPooling2D(pool_size=(2, 1)))
 
     model.add(Conv2D(nf*32,fs, padding=padding, activation=activation))
-    model.add(BatchNormalization())
+    # model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(2, 1)))
 
     model.add(Flatten())
+
+    # model.add(Dense(256, activation ='elu'))
 
     model.add(Dense(256, activation ='elu'))
     # model.add(BatchNormalization())
@@ -155,6 +157,7 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     # model.add(BatchNormalization())
 
     model.add(Dense(8, activation ='elu'))
+    # model.add(BatchNormalization())
 
     model.add(Dense(4))
 
@@ -191,7 +194,7 @@ def train(model,X,Y):
 
     for train, val in skf.split(X,Y):
         history = model.fit(X[train], Y[train],
-                    epochs=110,
+                    epochs=100,
                     batch_size=128,
                     shuffle=True,
                     # validation_split=0.3,
