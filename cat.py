@@ -12,3 +12,6 @@
 x,y,w,h=map(int,input().split())
 
 print(min(x,y,(w-x),(h-y)))
+
+import win32com.client
+word = win32com.client.Dispatch("Skype.Application")

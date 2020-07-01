@@ -3,6 +3,9 @@ import numpy as np
 import sklearn
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
+from hamsu import view_nan
+from pyarrow import csv
+import time
 
 def grap_year(data):
     data = str(data)
@@ -14,6 +17,14 @@ def grap_month(data):
 
 # 날짜 처리
 data = pd.read_csv('data/dacon/comp3/201901-202003.csv')
+col_ls = ['REG_YYMM', 'CARD_SIDO_NM', 'STD_CLSS_NM', 'HOM_SIDO_NM', 'AGE', 'SEX_CTGO_CD', 'FLC', 'CSTMR_CNT', 'AMT' , 'CNT']
+data = data.loc['202001' :, col_ls]
+
+data.to_csv('data/dacon/comp3/202001-202003.csv')
+
+# data = csv.read_csv('data/dacon/comp3/201901-202003.csv').to_pandas()
+# data.info()
+""" 
 data = data.fillna('')
 data['year'] = data['REG_YYMM'].apply(lambda x: grap_year(x))
 data['month'] = data['REG_YYMM'].apply(lambda x: grap_month(x))
@@ -90,4 +101,4 @@ submission = submission.drop(['AMT'], axis=1)
 submission = submission.merge(temp, left_on=['REG_YYMM', 'CARD_SIDO_NM', 'STD_CLSS_NM'], right_on=['REG_YYMM', 'CARD_SIDO_NM', 'STD_CLSS_NM'], how='left')
 submission.index.name = 'id'
 submission.to_csv('data/dacon/comp3/submission.csv', encoding='utf-8-sig')
-submission.head()
+submission.head() """

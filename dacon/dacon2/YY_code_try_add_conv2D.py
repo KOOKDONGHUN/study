@@ -111,7 +111,7 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     padding = 'valid'
     model = Sequential()
     # nf = 19
-    fs = (4,1)
+    fs = (5,1)
 
     model.add(Conv2D(32,fs, padding=padding, activation=activation,input_shape=(375,5,1)))
     model.add(BatchNormalization())
@@ -146,6 +146,7 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     model.add(Dense(64, activation ='elu'))
     model.add(Dense(32, activation ='elu'))
     model.add(Dense(16, activation ='elu'))
+    # model.add(Dense(8, activation ='elu'))
     model.add(Dense(4))
 
     optimizer = keras.optimizers.Adam()
@@ -181,7 +182,7 @@ def train(model,X,Y):
 
     for train, val in skf.split(X,Y):
         history = model.fit(X[train], Y[train],
-                    epochs=90,
+                    epochs=50,
                     batch_size=128,
                     shuffle=True,
                     # validation_split=0.3,
