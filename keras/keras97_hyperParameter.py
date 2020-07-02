@@ -44,8 +44,9 @@ def create_hyperparameters():
     batchs = [10, 20, 30, 40, 50]
     optimizer = ['rmsprop','adam', 'adadelta']
     dropout = np.linspace(0.1, 0.5, 5)
+    epoch = [20,30]
     
-    return {'batch_size' : batchs,'optimizer' : optimizer, 'drop': dropout}
+    return {'batch_size' : batchs,'optimizer' : optimizer, 'drop': dropout, 'epochs' : epoch}
 
 # 케라스를 그냥 쓰면 안된다? sklearn형식으로 wrap한다 gridsearch, randomsearch를 사용하기 위해서 
 

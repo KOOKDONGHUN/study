@@ -1,8 +1,19 @@
 import numpy as np
 from keras.utils import np_utils
 import tensorflow as tf
+from keras.activations import elu,selu
 
 leaky_relu = tf.nn.leaky_relu
+
+def binarystep_func(x): # 계단함수
+    # return (x>=0)*1
+
+    # return np.array(x>=0, dtype = np.int) # same result
+
+    y = x >= 0
+    return y.astype(np.int) # Copy of the array, cast to a specified type.
+
+
 # from keras.optimizers import SGD
 '''(10,) 와 (10,1)은 다르다 '''
 
@@ -20,15 +31,18 @@ print(f" y.shape : {y.shape}")
 
 # 2. 모델
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, BatchNormalization
 # ,activation='relu'
 
 model = Sequential()
-model.add(Dense(256,activation = leaky_relu, input_dim = 1))
-model.add(Dense(128,activation = leaky_relu))
-model.add(Dense(64,activation = leaky_relu))
-model.add(Dense(32,activation = leaky_relu))
-model.add(Dense(16,activation = leaky_relu))
+model.add(Dense(64, input_dim = 1,activation='tanh'))
+model.add(BatchNormalization())
+model.add(Dense(32,activation='tanh'))
+model.add(BatchNormalization())
+model.add(Dense(16,activation='tanh'))
+model.add(BatchNormalization())
+model.add(Dense(16,activation='tanh'))
+model.add(BatchNormalization())
 model.add(Dense(2,activation = 'sigmoid'))
 
 
@@ -43,7 +57,7 @@ from keras.callbacks import EarlyStopping
 els = EarlyStopping(monitor='loss', patience=5, mode='auto')
 model.compile(optimizer='adam',loss = 'binary_crossentropy', metrics = ['acc']) # loss에 바이너리??
 # model.compile(optimizer=SGD(lr=0.2),loss = 'binary_crossentropy', metrics = ['acc'])
-hist = model.fit(x,y,epochs=500)#,callbacks=[],validation_split=0.1)
+hist = model.fit(x,y,epochs=100)#,callbacks=[],validation_split=0.1)
 
 
 from matplotlib import pyplot as plt
