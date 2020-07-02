@@ -4,6 +4,11 @@ import numpy as np
 from tqdm import tqdm
 # import jovian
 import numpy as np
+import tensorflow as tf
+from keras.activations import selu,elu
+leaky_relu = tf.nn.leaky_relu
+# leaky_relu = tf.nn.selu
+
 
 res_dic = dict()
 
@@ -107,7 +112,7 @@ def my_loss_E2(y_true, y_pred):
 
 def set_model(train_target):  # 0:x,y, 1:m, 2:v
     
-    activation = 'elu'
+    activation = selu
     padding = 'valid'
     model = Sequential()
     # nf = 19
@@ -149,7 +154,7 @@ def set_model(train_target):  # 0:x,y, 1:m, 2:v
     # model.add(Dense(8, activation ='elu'))
     model.add(Dense(4))
 
-    optimizer = keras.optimizers.Adam()
+    optimizer = keras.optimizers.Adam(learning_rate=0.01)
 
     global weight2
     if train_target == 1: # only for M
