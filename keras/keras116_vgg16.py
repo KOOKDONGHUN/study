@@ -31,9 +31,18 @@ vgg16 = VGG16()#weights='imagenet' , include_top=False)
 model = Sequential()
 model.add(vgg16)
 # model.add(Flatten())
-model.add(Dense(256))
+model.add(Dense(2048))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
+
+model.add(Dense(1024))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+
+model.add(Dense(512))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
+
 model.add(Dense(10, activation='softmax'))
 
 model.summary()

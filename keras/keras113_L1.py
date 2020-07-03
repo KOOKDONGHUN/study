@@ -124,7 +124,7 @@ plt. grid()
 plt.ylabel('acc')
 plt.xlabel('epoch')
 
-plt.legend(['train acc','val acc'])
+plt.legend(['val acc','train acc'])
 
 plt.show()
 
