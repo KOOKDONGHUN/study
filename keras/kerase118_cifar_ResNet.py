@@ -26,19 +26,24 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255.0
 vgg16 = ResNet50(weights='imagenet' , include_top=False,input_shape=(32,32,3))
 vgg16.summary()
 
+# vgg16 = Dense(10,activation='softmax')(vgg16)
+
+
 model = Sequential()
 model.add(vgg16)
 
 model.add(Flatten())
 
 model.add(Dense(256))
-model.add(BatchNormalization())
-# model.add(Dropout(0.1))
+# model.add(BatchNormalization())
+model.add(Dropout(0.1))
 model.add(Activation('relu'))
 
 model.add(Dense(10, activation='softmax'))
 
-model.summary()
+# model.summary()
+# vgg16.summary()
+
 
 
 # 3. 컴파일(훈련준비),실행(훈련)
