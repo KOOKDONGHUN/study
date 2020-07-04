@@ -62,7 +62,8 @@ for i in range(MaxIter):
 
 
 print("step\tx\tf(x)")
-print("{:02d}\t{:6.5f}\t{:6.5f}".format(0,x0,f(x0)))
+# print("{:02d}\t{:6.5f}\t{:6.5f}".format(0,x0,f(x0)))
+print(f"{0:02d}\t{x0:6.5f}\t{f(x0):6.5f}")
 for i in range(MaxIter):
     x1 = x0-learning_rate*gradient(x0)
     x0 = x1

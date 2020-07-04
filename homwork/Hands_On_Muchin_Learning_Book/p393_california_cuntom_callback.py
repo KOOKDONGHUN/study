@@ -46,8 +46,14 @@ model = WideAndDeepModel() # 함수형과 비슷하지만 Input클래스의 객�
 
 
 # compile, fit
+class PrintValTrainRatioCallback(keras.callbacks.Callback):
+    def on_epoch_end(self, epoch, logs):
+        print(f'{epoch}\tval/train : {logs["val_loss"]/logs["loss"]}\n')
+
 model.compile(loss=['mse','mse'], loss_weights=[0.9, 0.1], optimizer='adam')
-hist = model.fit([x_train[:, :5],x_train[:, 2:]],[y_train,y_train], epochs=20, validation_data=([x_valid[:, :5],x_valid[:, 2:]],[y_valid,y_valid]))
+hist = model.fit([x_train[:, :5],x_train[:, 2:]],[y_train,y_train], epochs=20,
+                  validation_data=([x_valid[:, :5],x_valid[:, 2:]],[y_valid,y_valid]),
+                  callbacks=[PrintValTrainRatioCallback()])
 
 mse_test = model.evaluate([x_test[:, :5],x_test[:, 2:]], [y_test, y_test])
 print(mse_test)
