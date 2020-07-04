@@ -22,7 +22,7 @@ model.add(keras.layers.Dense(300, activation='relu'))
 model.add(keras.layers.Dense(100, activation='relu'))
 model.add(keras.layers.Dense(10, activation='softmax')) """
 
-# 이렇게 하면 레이어도 랜덤서치나 그리드 서치에 추가 할 수 있을것 같다??
+# 이렇게 하면 레이어도 랜덤서치나 그리드 서치에 추가 할 수 있을것 같다?? -> 서브클래싱이라는게 있는 것을 보니 이것은 아닌듯
 model = keras.models.Sequential([
     keras.layers.Flatten(input_shape=[28,28]),
     keras.layers.Dense(300, activation='relu'),
