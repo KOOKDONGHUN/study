@@ -6,9 +6,10 @@ from tqdm import tqdm
 import numpy as np
 import tensorflow as tf
 from keras.activations import selu,elu
-leaky_relu = tf.nn.leaky_relu
+import keras
+# leaky_relu = tf.nn.leaky_relu(feature,alpha=0.1)
 # leaky_relu = tf.nn.selu
-
+leaky_relu = keras.layers.LeakyReLU(alpha=0.1)
 
 res_dic = dict()
 
