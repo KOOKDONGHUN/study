@@ -7,9 +7,11 @@ import numpy as np
 import tensorflow as tf
 from keras.activations import selu,elu
 import keras
+# leaky_relu = tf.nn.leaky_relu(alpha=0.2, name=None)
 # leaky_relu = tf.nn.leaky_relu(feature,alpha=0.1)
 # leaky_relu = tf.nn.selu
-leaky_relu = keras.layers.LeakyReLU(alpha=0.1)
+# leaky_relu = keras.layers.LeakyReLU(alpha=0.1)
+leaky_relu = lambda x: tf.nn.leaky_relu(x, alpha=0.01)
 
 res_dic = dict()
 
@@ -113,7 +115,7 @@ def my_loss_E2(y_true, y_pred):
 
 def set_model(train_target):  # 0:x,y, 1:m, 2:v
     
-    activation = selu
+    activation = leaky_relu
     padding = 'valid'
     model = Sequential()
     # nf = 19
@@ -201,7 +203,7 @@ def train(model,X,Y):
 def load_best_model(train_target):
     
     if train_target == 0:
-        model = load_model('best_m.hdf5' , custom_objects={'my_loss_E1': my_loss, })
+        model = load_model('best_m.hdf5' , custom_objects={'my_loss_E1': my_loss, 'leaky_relu' : leaky_relu})
     else:
         model = load_model('best_m.hdf5' , custom_objects={'my_loss_E2': my_loss, })
 
