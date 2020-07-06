@@ -5,11 +5,11 @@ from keras.applications import VGG16, VGG19, Xception, ResNet101,ResNet101V2, Re
 from keras.models import Model, Sequential
 from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, BatchNormalization, Activation
 
-model = VGG19()
-model = Xception()
-model =  ResNet101()
-model = ResNet101V2()
-model = ResNet152()
+# model = VGG19()
+# model = Xception()
+# model =  ResNet101()
+# model = ResNet101V2()
+# model = ResNet152()
 # model = ResNet152V2()
 # model = ResNet50()
 # model = ResNet50V2()
@@ -23,7 +23,7 @@ model = ResNet152()
 # model = NASNetLarge()
 # model = NASNetMobile()
 
-vgg16 = VGG16()#weights='imagenet' , include_top=False)
+vgg16 = VGG16(weights='imagenet' , include_top=False)
 # vgg16.trainable = False
 
 # model.summary()
