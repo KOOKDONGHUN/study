@@ -89,9 +89,14 @@ model.summary()
 
 # compile
 from keras.optimizers import Adam
-model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=0.01), metrics=['acc'])
 
-history = model.fit(x_train, y_train, batch_size=64, epochs=10,validation_split=0.3,verbose=2)
+from keras.callbacks import EarlyStopping
+els = EarlyStopping(monitor='loss', patience=6, mode='auto')
+
+model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=0.009), metrics=['acc'])
+
+# history = model.fit(x_train, y_train, batch_size=64, epochs=30,validation_split=0.3,verbose=2,callbacks=[els])
+history = model.fit(x_train, y_train, batch_size=64, epochs=30,validation_split=0.3,verbose=2,callbacks=[])
 
 acc = model.evaluate(x_test,y_test)[1]
 print(f'acc : {acc}')

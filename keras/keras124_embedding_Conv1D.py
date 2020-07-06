@@ -52,7 +52,7 @@ model.add(Embedding(250, 10, input_length=5)) # (None, 5, 10) // 레이어의 �
 # Embedding에 parameter calc -> 사이즈(토큰의 개수) * 아웃풋 노드
 # input_length를 지정해줘도 파라미터의 ※연산※에는 반영되지 않는다. 
 
-
+# 타임스텝 개수를 LSTM은 알아서 지정해줌 명시해주지 않으면 
 model.add(Conv1D(10,2))
 # 4* (3 + 5 + 1)
 model.add(Flatten())
