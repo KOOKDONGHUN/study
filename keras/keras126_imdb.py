@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # 1. data
 
-(x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=2000,skip_top=2) # skip_top 최상위 단어 2개는 삭제하고 가져옴
+(x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=1500,skip_top=1) # skip_top 최상위 단어 2개는 삭제하고 가져옴
 
 print(x_train.shape, x_test.shape) # (2500,) (2500,)
 print(y_train.shape, y_test.shape) # (2500,) (2500,)
@@ -33,10 +33,15 @@ print('bbb.shape',bbb.shape) # (2,)
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 
-print(len(x_train[-1])) # 153
+# mx = 0
+# for i in range(len(x_train)):
+#     l = len(x_train[i])
+#     if mx < l:
+#         mx = l
+# print(f'mx : {mx}')
 
-x_train = pad_sequences(x_train, maxlen=200, padding='pre') # maxlen 최대 개수, truncating 자른다? 앞에서 부터? maxlen 보다 크다면 잘림
-x_test = pad_sequences(x_test, maxlen=200, padding='pre') # maxlen 최대 개수, truncating 자른다? 앞에서 부터? maxlen 보다 크다면 잘림
+x_train = pad_sequences(x_train, maxlen=1500, padding='pre') # maxlen 최대 개수, truncating 자른다? 앞에서 부터? maxlen 보다 크다면 잘림
+x_test = pad_sequences(x_test, maxlen=1500, padding='pre') # maxlen 최대 개수, truncating 자른다? 앞에서 부터? maxlen 보다 크다면 잘림
 
 print(len(x_train[0])) # 200
 print(len(x_train[-1])) # 200
@@ -51,24 +56,32 @@ print(x_test.shape) # (25000, 200)
 
 # 2. model
 from keras.models import Sequential
-from keras.layers import Dense, Flatten, Embedding, LSTM, BatchNormalization, Dropout
+from keras.layers import Dense, Flatten, Embedding, LSTM, BatchNormalization, Dropout, Conv1D, MaxPooling1D
 
 model = Sequential()
 
 # word_size -> 1000
-model.add(Embedding(2000, 512, input_length=200)) # input_length == maxlen
+model.add(Embedding(2000, 512, input_length=1500)) # input_length == maxlen
 # model.add(Embedding(2000, 128)) # input_length == maxlen
 
-model.add(LSTM(256))
+model.add(Conv1D(512,1))
+model.add(MaxPooling1D())
 model.add(BatchNormalization())
 
-model.add(Dense(512))
-model.add(Dropout(0.3))
+model.add(Conv1D(256,1))
+model.add(MaxPooling1D())
+model.add(BatchNormalization())
 
-model.add(Dense(256))
-model.add(Dropout(0.3))
+model.add(Conv1D(128,1))
+model.add(MaxPooling1D())
+model.add(BatchNormalization())
+
+model.add(Flatten())
 
 model.add(Dense(128))
+model.add(Dense(64))
+model.add(Dense(32))
+
 model.add(Dense(1, activation='sigmoid'))
 
 model.summary()
@@ -76,26 +89,24 @@ model.summary()
 # compile
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 
-history = model.fit(x_train, y_train, batch_size=64, epochs=10,validation_split=0.3)
+history = model.fit(x_train, y_train, batch_size=64, epochs=10,validation_split=0.3,verbose=2)
 
 acc = model.evaluate(x_test,y_test)[1]
 print(f'acc : {acc}')
 
 # predict
-word_index = imdb.get_word_index()
+# word_index = imdb.get_word_index()
 
-word_index = {k : (v+3) for k,v in word_index.items()}
-word_index['<PAD>'] = 0
-word_index['<START>'] = 1
-word_index['<UNK>'] = 2
-word_index['<UNUSED>'] = 3
+# word_index = {k : (v+3) for k,v in word_index.items()}
+# word_index['<PAD>'] = 0
+# word_index['<START>'] = 1
+# word_index['<UNK>'] = 2
+# word_index['<UNUSED>'] = 3
 
-reverse_word_index = dict([(value, key) for (key, value) in word_index.items()])
+# reverse_word_index = dict([(value, key) for (key, value) in word_index.items()])
 
-def decode_review(text):
-    return ' '.join([reverse_word_index.get(i, '?') for i in text])
-
-decode_review(x_train[0])
+# def decode_review(text):
+#     return ' '.join([reverse_word_index.get(i, '?') for i in text])
 
 # plot
 y_val_loss = history.history['val_loss']
