@@ -205,7 +205,7 @@ def load_best_model(train_target):
     if train_target == 0:
         model = load_model('best_m.hdf5' , custom_objects={'my_loss_E1': my_loss, 'leaky_relu' : leaky_relu})
     else:
-        model = load_model('best_m.hdf5' , custom_objects={'my_loss_E2': my_loss, })
+        model = load_model('best_m.hdf5' , custom_objects={'my_loss_E2': my_loss, 'leaky_relu' : leaky_relu})
 
     score = model.evaluate(X_data, Y_data, verbose=0)
     # print('loss:', score)
