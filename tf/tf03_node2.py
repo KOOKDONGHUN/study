@@ -1,8 +1,9 @@
 import tensorflow as tf
 
-node1 = tf.constant(3.0, tf.float32)
-node2 = tf.constant(4.0)
-node3 = tf.constant(5.0)
+node1 = tf.constant(3)
+node2 = tf.constant(4)
+node3 = tf.constant(5)
+n2 = tf.constant(2)
 
 # node3 = tf.add_n(node1, node2, node3)
 node4 = tf.add_n([node1, node2, node3])
@@ -20,5 +21,8 @@ print(res)
 mul = tf.multiply(node1,node2)
 print(f'3 * 4 : {sess.run(mul)}')
 
-sub = tf.subtract(node1,node2)
-print(f'3 * 4 : {sess.run(sub)}')
+sub = tf.subtract(node2,node1)
+print(f'4 - 3 : {sess.run(sub)}')
+
+div = tf.divide(node2,n2)
+print(f'4 / 2 : {sess.run(div)}')
