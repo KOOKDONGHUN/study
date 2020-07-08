@@ -43,4 +43,4 @@ for step in range(2001):
 sess.close()
 
 # 딥러닝에서 딥이 빠진 러닝으로 activation은 Linear
-# 텐서플로를 이용한 단순 선형 회기 모델링 
+# 텐서플로를 이용한 단순 선형 회기 모델
