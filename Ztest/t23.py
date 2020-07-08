@@ -17,4 +17,4 @@ with open('./test.csv', 'w') as f:
         source = ar.select_one("span._sp_each_source").text
         line = str(title) + ',' + str(source) + '\n'
         f.write(line)
-        print(title, source)
+        print(title, sou

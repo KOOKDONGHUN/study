@@ -32,7 +32,3 @@ with tf.Session() as sess: # 전체가 범위안에 포함된다? 이해안됨 �
 
         if step % 20 == 0:
             print(step, cost_val, w_val, b_val)
-
-
-
-
