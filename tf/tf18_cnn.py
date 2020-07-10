@@ -24,13 +24,13 @@ y_test = tf.one_hot(y_test,depth=10,on_value=1,off_value=0).eval(session=sess)
 sess.close()
 print(y_data.shape)
 
-x_data = x_data.reshape(-1,x_data.shape[1]*x_data.shape[2]).astype('float32')/255.
+x_data = x_data.reshape(-1,x_data.shape[1],x_data.shape[2], 1).astype('float32')/255.
 print(x_data.shape)
-x_test = x_test.reshape(-1,x_test.shape[1]*x_test.shape[2]).astype('float32')/255.
+x_test = x_test.reshape(-1,x_test.shape[1],x_test.shape[2], 1).astype('float32')/255.
 print(x_test.shape)
 
-x_col_num = x_data.shape[1] # 4
-y_col_num = y_data.shape[1] # 3
+x_col_num = x_data.shape[1] # 28
+y_col_num = y_data.shape[1] # 10
 
 print(x_col_num)
 print(y_col_num)
@@ -41,52 +41,42 @@ batch_size = 50
 total_batch = int(len(x_data) / batch_size)
 
 x = tf.compat.v1.placeholder(tf.float32, shape=[None, x_col_num])
+x = tf.reshape(x , [-1, x_col_num, x_col_num,1])
 y = tf.compat.v1.placeholder(tf.float32, shape=[None, y_col_num])
 drop_rate = tf.compat.v1.placeholder(tf.float32)
 
 #### -- layers1
-w1 = tf.get_variable('w1', shape=[x_col_num, 256],
-                      initializer=tf.contrib.layers.xavier_initializer()) # variable보다 진화된것? 둘의 차이  커널에 대한 초기화?
-print(w1) # <tf.Variable 'w1:0' shape=(784, 256) dtype=float32_ref> // shape 확인
-# b1 = tf.get_variable('b1', )
-b1 = tf.Variable(tf.random.normal([256]))
-print(b1) # <tf.Variable 'Variable:0' shape=(256,) dtype=float32_ref> // shape 확인
-l1 = tf.nn.selu(tf.matmul(x,w1)+b1)
-print(l1) # Tensor("Selu:0", shape=(?, 256), dtype=float32) // shape 확인
-l1 = tf.nn.dropout(l1,keep_prob=drop_rate)
-print(l1) # Tensor("dropout/mul_1:0", shape=(?, 256), dtype=float32) // shape 확인
+w1 = tf.get_variable('w1', shape=[3, 3, 1, 256])
+l1 = tf.nn.conv2d(x, w1, padding='SAME')
+l1 = tf.nn.selu(l1)
+l1 = tf.nn.max_pool2d(l1, ksize=[1,2,2,1], strides=[1,2,2,1],padding='SAME')
+
+# b1 = tf.Variable(tf.random.normal([256]))
+# l1 = tf.nn.selu(tf.matmul(x,w1)+b1)
+# l1 = tf.nn.dropout(l1,keep_prob=drop_rate)
 #### -- layers1
 
 #### -- layers2
-w2 = tf.get_variable('w2', shape=[256, 256],
-                      initializer=tf.contrib.layers.xavier_initializer())
-b2 = tf.Variable(tf.random.normal([256]))
-l2 = tf.nn.selu(tf.matmul(l1,w2)+b2)
-l2 = tf.nn.dropout(l2,keep_prob=drop_rate)
+w2 = tf.get_variable('w2', shape=[3, 3, 256, 256]) # 3번째 shape 이전 노드의 개수
+l2 = tf.nn.conv2d(l1, w2, padding='SAME')
+l2 = tf.nn.selu(l2)
+l2 = tf.nn.max_pool2d(l2, ksize=[1,2,2,1], strides=[1,2,2,1],padding='SAME')
+
+# b2 = tf.Variable(tf.random.normal([256]))
+# l2 = tf.nn.selu(tf.matmul(l1,w2)+b2)
+# l2 = tf.nn.dropout(l2,keep_prob=drop_rate)
+
+l2 = tf.reshape(l2, [-1, 7*7*256])
 #### -- layers2
 
-#### -- layers3
-w3 = tf.get_variable('w3', shape=[256, 512],
-                      initializer=tf.contrib.layers.xavier_initializer())
-b3 = tf.Variable(tf.random.normal([512]))
-l3 = tf.nn.selu(tf.matmul(l2,w3)+b3)
-l3 = tf.nn.dropout(l3,keep_prob=drop_rate)
-#### -- layers3
+## // 컨볼루션에는 bias연산을 알아서 해줌으로 따로 명시할 필요는 없다 ... is it True?
 
-#### -- layers4
-w4 = tf.get_variable('w4', shape=[512, 256],
-                      initializer=tf.contrib.layers.xavier_initializer())
-b4 = tf.Variable(tf.random.normal([256]))
-l4 = tf.nn.selu(tf.matmul(l3,w4)+b4)
-l4 = tf.nn.dropout(l4,keep_prob=drop_rate)
-#### -- layers4
-
-#### -- layers5
-w5 = tf.get_variable('w5', shape=[256, 10],
+#### -- layers3
+w3 = tf.get_variable('w3', shape=[7*7*256, 10],
                       initializer=tf.contrib.layers.xavier_initializer()) 
-b5 = tf.Variable(tf.random.normal([10]))
-h = tf.nn.softmax(tf.matmul(l4,w5)+b5)
-#### -- layers5
+b3 = tf.Variable(tf.random.normal([10]))
+h = tf.nn.softmax(tf.matmul(l2,w3)+b3)
+#### -- layers3
 
 loss = tf.reduce_mean(-tf.reduce_sum(y * tf.log(h),axis=1)) # loss ... 계산 방법 ...
 opt = tf.train.GradientDescentOptimizer(learning_rate=lr).minimize(loss) # 어떻게 쓰는지 어떻게 계산하는지 지금은 일단 쓰고 시간이 많을때 꼭!!! 공부하라 경사하강법
