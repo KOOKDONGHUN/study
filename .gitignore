@@ -6,3 +6,6 @@
 *.jpg
 *.jpeg
 *.json
+
+## directory
+.vscode/
