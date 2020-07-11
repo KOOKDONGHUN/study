@@ -9,3 +9,4 @@
 
 ## directory
 .vscode/
+__pycache__/
