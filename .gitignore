@@ -6,6 +6,8 @@
 *.jpg
 *.jpeg
 *.json
+*.html
+*.txt
 
 ## directory
 .vscode/
