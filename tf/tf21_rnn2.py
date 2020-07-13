@@ -89,10 +89,17 @@ batch_size = x_data.shape[0] # 전체 행??
 lr = 0.01
 
 cell = tf.keras.layers.LSTMCell(output_node) # _lstm  ## 여기가 첫번째 연산
+# cell = tf.reshape(cell, [7,3,1])
 h, _states = tf.nn.dynamic_rnn(cell, X, dtype=tf.float32) # == model.add(LSTM()) ## 여기가 두번째 연산?
-print(h) # Tensor("rnn/transpose_1:0", shape=(?, 3, 1), dtype=float32)
+print('ㅗㅗㅗㅗ',h) # Tensor("rnn/transpose_1:0", shape=(?, 3, 1), dtype=float32)
+sess = tf.Session()
+test = sess.run(h, feed_dict={X:x_data, Y:y_data})
+print('hhh',test)
+sess.close()
 
-w = tf.ones([batch_size, sequence_length]) # == Y.shape // 1로 해도 값의 변화가 크지 않다 
+# w = tf.ones([batch_size, sequence_length, input_dim]) # == Y.shape // 1로 해도 값의 변화가 크지 않다
+
+w = tf.Variable(tf.random_normal([7, 3]), name = 'weights')
 
 sequence_loss = tf.contrib.seq2seq.sequence_loss(logits=h, targets=Y, weights=w) #LSTM에서는 loss를 무조건 이거를 써야한다?  mse를 풀어썻다? // loss = h - y 가 기본
 
@@ -102,10 +109,9 @@ train = tf.compat.v1.train.AdamOptimizer(learning_rate=lr).minimize(cost)
 
 prediction = tf.math.argmax(h, axis=2)
 
-'''
 with tf.compat.v1.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for i in range(201):
         loss, _ = sess.run([cost, train], feed_dict={X:x_data, Y:y_data})
         result = sess.run(prediction, feed_dict={X:x_data})
-        print(f'epochs : {i}\t loss : {loss}\t prediction : {result}\t y_true : {y_data}') '''
+        print(f'epochs : {i}\t loss : {loss}\t prediction : {result}\t y_true : {y_data}')
