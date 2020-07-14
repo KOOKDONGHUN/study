@@ -84,7 +84,7 @@ print(X)
 print(Y)
 
 # model
-output_node = 1
+output_node = 11
 batch_size = x_data.shape[0] # 전체 행??
 lr = 0.01
 
