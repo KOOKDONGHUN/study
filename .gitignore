@@ -8,6 +8,7 @@
 *.json
 *.html
 *.txt
+*.db
 
 ## directory
 .vscode/
