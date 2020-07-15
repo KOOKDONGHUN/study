@@ -18,8 +18,8 @@ app = Flask(__name__)
 def mypic():
     return render_template('mypic.html')
 
-@app.route('/plot')
-def plot():
+@app.route('/plot2')
+def plot2():
 
     fig, axis = plt.subplots(1)
 

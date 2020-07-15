@@ -9,6 +9,7 @@
 *.html
 *.txt
 *.db
+*.sqlite3
 
 ## directory
 .vscode/
