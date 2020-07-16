@@ -75,10 +75,25 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    'default': {  # 2019.06.21 추가
+        'ENGINE': 'sql_server.pyodbc',  # mysql 드라이버? 엔진? 같은거 # 2019.06.21 추가
+        # 'ENGINE': 'django.db.backends.mssql',  # mysql 드라이버? 엔진? 같은거 # 2019.06.21 추가
+        'NAME': 'bitdb',  # 스키마 이름  # 2019.06.21 추가
+        'USER': 'bit2',  # 2019.06.21 추가
+        'PASSWORD': '1234',  # 2019.06.21 추가
+        'HOST': '192.168.0.176',  # localhost  # 2019.06.21 추가
+        'PORT': '1433',
+        'OPTIONS' : {
+            # 'driver' : 'SQL Server Native Client 11.0',
+            'driver' : 'ODBC Driver 17 for SQL Server',
+            # 'MARS_Connection' : True,
+            # 'driver_supports_utf8' : True,
+            # 'unicode_results' : True,
+        },
+    } ,
 }
 
 
