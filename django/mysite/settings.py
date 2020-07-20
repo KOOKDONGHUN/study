@@ -63,6 +63,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # 20.07.19 첫 화면에서 템플릿을 못찾아서 추가해봄//# Enable {{ STATIC_URL }} and {{ MEDIA_URL }}
+                # 'django.template.context_processors.media',
+                # 'django.template.context_processors.static',
             ],
         },
     },
@@ -141,3 +145,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 20.07.19 // 첫화면 템플릿 못찾는 현상 추가 
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# LOGIN_REDIRECT_URL= '/'
