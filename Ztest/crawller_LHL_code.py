@@ -42,7 +42,7 @@ f.close()
 for k in range(1,11):
     for i in range(start,end):
         driver.get("https://people.incruit.com/resumeguide/pdsview.asp?pds1=1&pds2=11&pdsno="+ f"{name_ls[i]}" +"&listseq=&page="+f"{k}"+"&sot=0&pass=y")
-        https://people.incruit.com/resumeguide/pdsview.asp?pds1=1&pds2=11&pdsno=365502&listseq=&page=1&sot=0&pass=y
+        # https://people.incruit.com/resumeguide/pdsview.asp?pds1=1&pds2=11&pdsno=365502&listseq=&page=1&sot=0&pass=y
         html = driver.page_source
         soup = BeautifulSoup(html,'lxml')
         resume = list(soup.find_all(class_='cont').find_all('p',string=True))
