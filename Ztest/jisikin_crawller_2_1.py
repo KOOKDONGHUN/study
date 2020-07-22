@@ -7,7 +7,7 @@ driver.implicitly_wait(3)
 num_per_page = list(range(1,21))
 pages = list(range(1,5))# 1425페이지
 
-# num_per_page = [13]
+# num_per_page = [20]
 # pages = [4]
 
 data_ls = list()
@@ -34,10 +34,12 @@ for page in pages:
         try :
             question = driver.find_element_by_css_selector(question_selector).text
         except :
-            
-            question = driver.find_element_by_css_selector('#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default > div.c-heading__title > div > div').text
-            # question = 'Null'
-            pass
+            try :
+                question = driver.find_element_by_css_selector('#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default > div.c-heading__title > div > div').text
+            except :
+                question = driver.find_element_by_css_selector('#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--multiple > div.c-heading__title > div > div').text
+                # question = 'Null'
+                pass
         question = question+'\n'
 
         try :
