@@ -5,7 +5,7 @@ driver  = webdriver.Chrome("c:/PythonHome/chromedriver.exe")
 driver.implicitly_wait(3)
 
 num_per_page = list(range(1,21))
-pages = list(range(5,11))# 1425페이지
+pages = list(range(11,21))# 1425페이지
 
 # num_per_page = [20]
 # pages = [4]
@@ -95,7 +95,7 @@ for page in pages:
     
 driver.quit()
 
-file = open("resume.txt",'a',encoding='utf-8')
+file = open("page11-page20.txt",'a',encoding='utf-8')
 for resum in data_ls:
     file.write(resum)
 file.close()
