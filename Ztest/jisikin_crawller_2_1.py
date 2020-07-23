@@ -4,11 +4,11 @@ import time
 driver  = webdriver.Chrome("c:/PythonHome/chromedriver.exe")
 driver.implicitly_wait(3)
 
-num_per_page = list(range(1,21))
-pages = list(range(11,21))# 1425페이지
+# num_per_page = list(range(1,21))
+# pages = list(range(11,21))# 1425페이지
 
-# num_per_page = [20]
-# pages = [4]
+num_per_page = [1,2,3,4,5]
+pages = [18]
 
 data_ls = list()
 
@@ -55,6 +55,9 @@ for page in pages:
         answer_num = 1
 
         while True:
+            if answer_num >= 15:
+                data_ls.append(f'\n{page}page {num}번째 질문은 답변이 삭제 된듯 하다\n')
+                break
 
             answer_writer_selector = '#answer_'+f'{answer_num}'+' > div.c-heading-answer > div.c-heading-answer__body > div.c-heading-answer__title > p'
             answer_detail_selector = '#answer_'+f'{answer_num}'+' > div._endContents.c-heading-answer__content'
@@ -87,6 +90,7 @@ for page in pages:
                 break
 
             answer_num += 1
+
 
         driver.close()
         time.sleep(1)
