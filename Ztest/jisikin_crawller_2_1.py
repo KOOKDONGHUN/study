@@ -5,7 +5,7 @@ driver  = webdriver.Chrome("c:/PythonHome/chromedriver.exe")
 driver.implicitly_wait(3)
 
 num_per_page = list(range(1,21))
-pages = list(range(1,5))# 1425페이지
+pages = list(range(5,11))# 1425페이지
 
 # num_per_page = [20]
 # pages = [4]
