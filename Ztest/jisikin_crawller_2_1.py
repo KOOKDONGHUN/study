@@ -16,14 +16,16 @@ driver.implicitly_wait(3)
 # num_per_page = list(range(1,21))
 # pages = list(range(41,61))# 1425페이지
 
-num_per_page = [1]
-pages = [18]
+# num_per_page = [1]
+num_per_page = range(1,21)
+pages = [1]
 
 data_ls = list()
 
 for page in pages:
     for num in num_per_page:
-        url = 'https://kin.naver.com/userinfo/answerList.nhn?u=w6lLUADsTiE2WDOrNVtf1Qxgc3ft9bDXpkXY1Mua2f4%3D&isSearch=true&query=%EC%9E%90%EA%B2%A9%EC%A6%9D&sd=answer&y=0&section=qna&isWorry=false&x=0&page='+f'{page}'
+        # url = 'https://kin.naver.com/userinfo/answerList.nhn?u=w6lLUADsTiE2WDOrNVtf1Qxgc3ft9bDXpkXY1Mua2f4%3D&isSearch=true&query=%EC%9E%90%EA%B2%A9%EC%A6%9D&sd=answer&y=0&section=qna&isWorry=false&x=0&page='+f'{page}'
+        url = 'https://kin.naver.com/userinfo/answerList.nhn?u=6oCfeacJKVQGwsBB7OHEIS4miiPixwQ%2FoueervNeYrg%3D&page='+f'{page}'
         xpath = '//*[@id="au_board_list"]/tr['+f'{num}'+']/td[1]/a'
 
         question_selector = '#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default-old > div.c-heading__title > div > div.title'
@@ -37,7 +39,7 @@ for page in pages:
         search_res.click()
         time.sleep(2)
         
-        driver.switch_to_window(driver.window_handles[1])
+        # driver.switch_to_window(driver.window_handles[1])
         time.sleep(1)
 
         try :
@@ -68,8 +70,10 @@ for page in pages:
                 data_ls.append(f'\n{page}page {num}번째 질문은 답변이 삭제 된듯 하다\n')
                 break
 
-            answer_writer_selector = '#answer_'+f'{answer_num}'+' > div.c-heading-answer > div.c-heading-answer__body > div.c-heading-answer__title > p'
-            answer_detail_selector = '#answer_'+f'{answer_num}'+' > div._endContents.c-heading-answer__content'
+            # answer_writer_selector = '#answer_'+f'{answer_num}'+' > div.c-heading-answer > div.c-heading-answer__body > div.c-heading-answer__title > p'
+            answer_writer_selector = f'#answer_{answer_num} > div.c-heading-answer > div.c-heading-answer__body > div > p > a'
+            # answer_detail_selector = '#answer_'+f'{answer_num}'+' > div._endContents.c-heading-answer__content'
+            answer_detail_selector = f'#answer_{answer_num} > div._endContents.c-heading-answer__content > div > div'
             # print(answer_num)
             try :
                 answer_writer = driver.find_element_by_css_selector(answer_writer_selector).text
@@ -81,7 +85,8 @@ for page in pages:
             except:
                 pass
 
-            if answer_writer == '자격증 따기 님 답변' and answer_writer != '비공개 답변':
+            # if answer_writer == '자격증 따기 님 답변' and answer_writer != '비공개 답변':
+            if answer_writer == '여성가족부.한국청소년상담복지개발원 님 답변' and answer_writer != '비공개 답변':
                 answer_detail = answer_detail[:-74]+'\n'
                 answer_writer = answer_writer+'\n'
 
@@ -101,10 +106,10 @@ for page in pages:
             answer_num += 1
 
 
-        driver.close()
+        # driver.close()
         time.sleep(1)
-        driver.switch_to_window(driver.window_handles[0])
-        time.sleep(1)
+        # driver.switch_to_window(driver.window_handles[0])
+        # time.sleep(1)
     
 driver.quit()
 
