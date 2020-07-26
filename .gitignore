@@ -10,6 +10,7 @@
 *.txt
 *.db
 *.sqlite3
+*.zip
 
 ## directory
 .vscode/

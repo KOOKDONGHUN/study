@@ -191,3 +191,9 @@ padding 토큰화 0
 블록으로 표현한다면 예제에서는 문장의 길이가 200 단어이므로, LSTM 블록 200개가 이어져있다고 생각하면 됩니다.
 
 tensorflow 2.x from keras.layers import Dense -> from tensorflow.keras.layers import Dense (패치완료)
+
+src == source
+dst = destination
+
+rb -> read to binary type
+rt -> read to text type

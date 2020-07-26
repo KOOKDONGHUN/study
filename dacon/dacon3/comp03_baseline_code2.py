@@ -58,7 +58,7 @@ train_ds = lgb.Dataset(x_train, label=y_train)
 val_ds = lgb.Dataset(x_val, label=y_val)
 
 params = {
-            'learning_rate' : 0.05,
+            'learning_rate' : 0.04,
             'boosting_type': 'gbdt',
             'objective': 'tweedie',
             'tweedie_variance_power': 1.1,
@@ -69,9 +69,9 @@ params = {
 
 model = lgb.train(params,
                   train_ds,
-                  1000,
+                  1200,
                   val_ds,
-                  verbose_eval = 100,
+                  verbose_eval = 110,
                   early_stopping_rounds = 100
                  )
 # 예측 템플릿 만들기
