@@ -114,3 +114,4 @@ max_src_len = max([len(line) for line in lines.src])
 max_tar_len = max([len(line) for line in lines.tar])
 print(max_src_len)
 print(max_tar_len)
+
