@@ -30,11 +30,13 @@ driver  = webdriver.Chrome("c:/PythonHome/chromedriver.exe")
 driver.implicitly_wait(3)
 
 num_per_page = range(1,21)
-pages = range(1,501) # 1425페이지
+pages = range(34,501) # 1425페이지
+
+## 33페이지에 9번 에러 이전까지 db삽입 완료
 
 # num_per_page = [1]
-# num_per_page = [16]
-# pages = [118]
+# num_per_page = [10,11,12,13,14,15,16,17,18,19,20]
+# pages = [33]
 
 for page in pages:
     for num in num_per_page:
@@ -87,10 +89,6 @@ for page in pages:
         answer_num = 1
 
         while True:
-            if answer_num >= 15:
-                ''' 답변이 삭제되었는지 자격증 따기의 답변이 없음 때문에 답변의 최대 갯수를 15개로 생각하고 15번이상 돌면 더이상 답변을 찾지 않도록함'''
-                break
-
             answer_writer_selector = f'#answer_{answer_num} > div.c-heading-answer > div.c-heading-answer__body > div.c-heading-answer__title > p'
             answer_detail_selector = f'#answer_{answer_num} > div._endContents.c-heading-answer__content'
 
@@ -123,6 +121,13 @@ for page in pages:
                 print(answer_detail,'\n')
                 print()
 
+                break
+            if answer_num >= 10:
+                data_ls.append('Null')
+                data_ls.append('Null')
+                print('data_ls',data_ls)
+                ''' 답변이 삭제되었는지 자격증 따기의 답변이 없음 때문에 답변의 최대 갯수를 10개로 생각하고
+                    10번이상 돌면 더이상 답변을 찾지 않도록하고 여기까지 왔다는건 없다는 뜻임으로 Null을 넣음'''
                 break
 
             answer_num += 1
