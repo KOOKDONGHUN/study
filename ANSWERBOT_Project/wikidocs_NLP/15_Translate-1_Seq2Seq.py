@@ -6,6 +6,10 @@ import os
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 
+from tensorflow.keras.layers import Input, LSTM, Embedding, Dense
+from tensorflow.keras.models import Model
+import numpy as np
+
 
 http = urllib3.PoolManager()
 url = 'http://www.manythings.org/anki/fra-eng.zip'
@@ -87,7 +91,7 @@ for line in lines.src :
     for w in line :
         temp_x.append(src_to_index[w])
     encoder_input.append(temp_x)
-print(f'encoder_input : {encoder_input}')
+print(f'encoder_input : {encoder_input[:5]}')
 
 decoder_input = []
 for line in lines.tar :
@@ -114,4 +118,38 @@ max_src_len = max([len(line) for line in lines.src])
 max_tar_len = max([len(line) for line in lines.tar])
 print(max_src_len)
 print(max_tar_len)
+
+# 각각의 데이터에 대해 패딩 처리
+encoder_input = pad_sequences(encoder_input, maxlen=max_src_len, padding='post')
+decoder_input = pad_sequences(decoder_input, maxlen=max_tar_len, padding='post')
+decoder_target = pad_sequences(decoder_target, maxlen=max_tar_len, padding='post')
+
+encoder_input = to_categorical(encoder_input)
+decoder_input = to_categorical(decoder_input)
+decoder_target = to_categorical(decoder_target)
+
+# 디코더의 경우 인풋과 타겟이 있는 이유 -> 이전 시점의 디코더 셀의 출력을 현재 시점의 디코더 셀의 입력으로 바로 넣어주지 않고,
+# 이전 시점의 실제값을 현재 시점의 디코더 셀의 입력값으로 하는 방법을 사용하기 때문이다. 이렇게 하는 이유도 잘 모르겠다....
+
+# model
+encoder_inputs = Input(shape=(None, src_vocab_size))
+encoder_lstm = LSTM(units=256, return_state=True)
+encoder_outputs, state_h, state_c = encoder_lstm(encoder_inputs)
+encoder_states = [state_h, state_c] # 이 부분이 컨텍스트 벡터이다.
+
+# seq2seq는 히든스테이스와 셀스테이트를 디코더로 넘겨줌 ...
+decoder_inputs = Input(shape=(None, tar_vocab_size))
+decoder_lstm = LSTM(units=256, return_sequences=True, return_state=True)
+decoder_outputs, _, _ = decoder_lstm(decoder_inputs, initial_state=encoder_states)
+
+# 디코더의 첫 상태를 인코더의 은닉 상태, 셀 상태로 한다?? 인코더와 디코더의 연결을 말하는 건가
+# 디코더는 인코더의 마지막 은닉 상태를 초기 은닉 상태로 사용한다.
+decoder_softmax_layer = Dense(tar_vocab_size, activation='softmax') # 근데 함수 형이면 이친구 뒤에
+decoder_outputs = decoder_softmax_layer(decoder_outputs)
+
+model = Model([encoder_inputs, decoder_inputs], decoder_outputs)
+
+# compile, fit
+model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
+model.fit(x=[encoder_input, decoder_input], y=decoder_target, batch_size=64, epochs=50, validation_split=0.2)
 
