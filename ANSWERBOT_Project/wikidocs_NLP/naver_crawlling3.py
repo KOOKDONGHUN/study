@@ -50,11 +50,11 @@ data_col_name = ['id','que_title', 'que_detail', 'ans_writer','ans_detail']
 
 # 전체 페이지의 개수와 페이지당 개수 입력
 num_per_page = range(1,21)
-pages = range(341,381)
+pages = range(1000,1041)
 
 # num_per_page = range(1,21)
-# num_per_page = range(4,21)1
-# pages = [277]
+# num_per_page = range(8,21)
+# pages = [375] ## 358_1 중복 ㅋㅋ잘못누름 ㅋ 378_1 중복 잘못누름
 
 # db없으면 생성
 create_table(tablename)
@@ -80,7 +80,6 @@ for page in pages:
 
         # 페이지 마다 url이 다름
         url = f'https://kin.naver.com/userinfo/answerList.nhn?u=w6lLUADsTiE2WDOrNVtf1Qxgc3ft9bDXpkXY1Mua2f4%3D&isSearch=true&query=%EC%9E%90%EA%B2%A9%EC%A6%9D&sd=answer&y=0&section=qna&isWorry=false&x=0&page={page}'
-
         # 페이지에 있는 각 질문들에 대한 번호
         xpath = f'//*[@id="au_board_list"]/tr[{num}]/td[1]/a'  # xml path language // local path or absolute path?
 
