@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D,Dropout,Input
+from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D,Dropout,Input, UpSampling2D
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import EarlyStopping
@@ -26,7 +26,11 @@ from sklearn.model_selection import train_test_split
 def autoencoder(hidden_layer_size):
     model = Sequential()
     model.add(Conv2D(filters=hidden_layer_size, kernel_size=(3,3), padding='same',input_shape=(28,28,1),activation='relu'))
+    model.add(MaxPooling2D((2,2), padding='same'))
+
     model.add(Conv2D(filters=32, kernel_size=(3,3), padding='same',activation='relu'))
+    model.add(UpSampling2D((2,2)))
+
     model.add(Conv2D(filters=1, kernel_size=(3,3), padding='same',activation='sigmoid')) ## ???
 
     return model

@@ -50,11 +50,11 @@ data_col_name = ['id','que_title', 'que_detail', 'ans_writer','ans_detail']
 
 # 전체 페이지의 개수와 페이지당 개수 입력
 num_per_page = range(1,21)
-pages = range(1000,1041)
+pages = range(1071,1101)
 
 # num_per_page = range(1,21)
-# num_per_page = range(8,21)
-# pages = [375] ## 358_1 중복 ㅋㅋ잘못누름 ㅋ 378_1 중복 잘못누름
+# num_per_page = range(9,21)
+# pages = [1036] ## 358_1 중복 ㅋㅋ잘못누름 ㅋ 378_1 중복 잘못누름
 
 # db없으면 생성
 create_table(tablename)
