@@ -1,10 +1,3 @@
-# import torch
-# print(torch.cuda.current_device())
-# print(torch.cuda.device(0))
-# print(torch.cuda.device_count())
-# print(torch.cuda.get_device_name(0))
-# print(torch.cuda.is_available())
-
 import pymssql as ms
 
 def select_data(tablename, col1, col2, col3, col4):
@@ -16,19 +9,23 @@ def select_data(tablename, col1, col2, col3, col4):
     rows = list()
     row = cursor.fetchone()
     rows.append(row)
-    cnt = 0
+    cnt = 1
     while row :
-        if cnt >= 100 :
-            break
+        # if cnt > 10 :
+        #     break
         row = cursor.fetchone()
         rows.append(row)
         cnt += 1
     conn.close()
 
-    print(rows)
+    print(rows[-1])
     print(len(rows))
+    print(cnt)
 
-    return rows[:-1]
+    if rows[-1] == None :
+        return rows[:-1]
+
+    return rows
 
 tablename = 'KDH_Certificate'
 col_ls = ['id', 'que', 'que_detail', 'ans_detail']
@@ -40,6 +37,12 @@ def replace_str(data):
     data = data.replace('//','')
     data = data.replace('ㅠ','')
     data = data.replace('ㅋ','')
+
+    data = data.split('.')[:2]
+
+    data = ' '.join(data)
+    data = data.replace('  ',' ')
+    data = data.replace('  ',' ')
 
     return data
 
@@ -54,14 +57,24 @@ def convert_dict(origin_data):
         # print(data[0])
         if data[2] == 'Null':
             t1 = replace_str(data[1])
-            col1_ls.append(t1[:30])
+            if len(t1) > 200 or len(t1) <= 5:
+                col1_ls.append('')
+            else : 
+                col1_ls.append(t1[:])
+
         elif data[2] != 'Null':
-            t2 = data[1]+' '+data[2]
+            t2 = data[2]
             t2 = replace_str(t2)
-            col1_ls.append(t2[:30])
+            if len(t2) > 200 or len(t2) <= 5:
+                col1_ls.append('')
+            else : 
+                col1_ls.append(t2[:])
         t3 = data[-1]
         t3 = replace_str(t3)
-        col2_ls.append(t3[:30])
+        if len(t3) > 200 or len(t3) <= 5:
+            col2_ls.append('')
+        else : 
+            col2_ls.append(t3[:])
     
     data_dic['Q'] = col1_ls
     data_dic['A'] = col2_ls
@@ -79,5 +92,5 @@ converted_origin_data = convert_dict(origin_data)
 
 import pandas as pd
 
-# df = pd.DataFrame(converted_origin_data)
-# df.to_csv('./Chatbot_data/ChatbotData.csv',index=None)
+df = pd.DataFrame(converted_origin_data)
+df.to_csv('./ANSWERBOT_Project/data/ChatbotData.csv',index=None)
