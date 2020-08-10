@@ -17,3 +17,4 @@
 .vscode/
 __pycache__/
 LightGBM/
+mnist_data/
