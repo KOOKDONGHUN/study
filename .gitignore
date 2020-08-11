@@ -12,6 +12,7 @@
 *.sqlite3
 *.zip
 *.log
+*.ipynb
 
 ## directory
 .vscode/
