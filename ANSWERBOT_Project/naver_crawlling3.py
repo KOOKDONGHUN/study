@@ -50,7 +50,7 @@ data_col_name = ['id','que_title', 'que_detail', 'ans_writer','ans_detail']
 
 # 전체 페이지의 개수와 페이지당 개수 입력
 num_per_page = range(1,21)
-pages = range(1425,1451)
+pages = range(1481,1511)
 
 # num_per_page = range(1,21)
 # num_per_page = range(9,21)
