@@ -1,27 +1,39 @@
 import torch
 
-# dtype = torch.float
-# device = torch.device('cpu')
+class TwoLayerNet(torch.nn.Module):
+    def __init__(self, D_in, H, D_out):
+        """ 생성자에서 2개의 nn.Linear 모듈을 생성하고, 멤버 변수로 지정한다. """
+
+        super(TwoLayerNet, self).__init__()
+        self.linear1 = torch.nn.Linear(D_in,H)
+        self.linear2 = torch.nn.Linear(H, D_out)
+
+    def forward(self, x):
+        """순전파 함수에서는 입력 데이터의 Tensor를 받고 출력 데이터의 Tensor를 반환해야 한다.
+           Tensor 상의 임의의 연산자뿐만 아니라 생성자에서 정의한 Module도 사용할 수 있다."""
+        h_relu = self.linear1(x).clamp(min=0) # Tensor의 최소값이 0이 되도록 한다.
+        y_pred = self.linear2(h_relu)
+
+        return y_pred
 
 # n은 배치 크기이며, D_in은 입력의 차원이다.
 # H는 은닉층의 차원이며, D_out은 출력 차원이다. 여기서 말하는 은닉층의 차원은 무엇? 내가아는 노드의 갯수를 말하는건가 ㅎㅎ
 N, D_in, H, D_out = 64, 1000, 100, 10
 
 # 무작위의 입력과 출력 데이터를 생성한다. 
-x = torch.randn(N, D_in)#,device=device, dtype=dtype)
-y = torch.randn(N, D_out)#,device=device, dtype=dtype)
+x = torch.randn(N, D_in)
+y = torch.randn(N, D_out)
 
 # 무작위로 가중치를 초기화 한다.
 # w1 = torch.randn(D_in, H, device=device, dtype=dtype, requires_grad=True) # requires_grad=True 역전파시 가중치에 대한 변화도를 계산할 필요가 있음을 나타낸다.
 # w2 = torch.randn(H, D_out, device=device, dtype=dtype, requires_grad=True)
-model = torch.nn.Sequential(torch.nn.Linear(D_in,H),
-                            torch.nn.ReLU(),
-                            torch.nn.Linear(H, D_out),)
-
-loss_fn = torch.nn.MSELoss(reduction='sum')
-
 learning_rate = 1e-04
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+model = TwoLayerNet(D_in, H, D_out)
+
+criterion = torch.nn.MSELoss(reduction='sum')
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+
 for time_step in range(500):
 # for time_step in range(5):
 
@@ -40,7 +52,7 @@ for time_step in range(500):
 
     # loss를 계산하고 출력합니다.
     # loss = (y_pred - y).pow(2).sum() # 
-    loss = loss_fn(y_pred, y)
+    loss = criterion(y_pred, y)
 
     print(time_step, loss.item()) # item() == loss의 스칼라 값
 
