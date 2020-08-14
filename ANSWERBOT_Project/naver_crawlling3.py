@@ -105,14 +105,6 @@ for page in pages:
                 print(f'{num}/20 -- /{page} {selector[-8:]} question Title Error !!!!')
                 pass
         
-        # 질문 세부내용에 대한 text 추출 이건 에러 발생했다는건 사진만 있거나 내용이 없거나 때문에 그냥 Null 처리
-        question_detail_selector = '#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default-old > div.c-heading__content'
-        try :
-            insert_data['que_detail'] = driver.find_element_by_css_selector(question_detail_selector).text
-        except :
-            print(f'{num}/20 -- /{page} question Detail Error !!!!')
-            pass
-
         # data_ls.append(question)
         # data_ls.append(question_detail)
 
