@@ -4,9 +4,9 @@ from urllib.parse import quote
 import bs4
 
 # name = __file__.split("\\")[-1][:-3]
-name = "요리+레시피"
+name = "Certificate2"
 num_per_page = range(1,11)#한페이지 10개
-pages = range(1,301)# 10개 페이지
+pages = range(1,501)# 10개 페이지
 detail_address="D:\private\project\main_project\\"
 
 
