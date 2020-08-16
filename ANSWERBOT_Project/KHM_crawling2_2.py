@@ -2,135 +2,139 @@
 from urllib.request import urlopen
 from urllib.parse import quote
 import bs4
+import pandas as pd
+import pymssql as ms
+import time
 
-# name = __file__.split("\\")[-1][:-3]
+def insert_db(tablename, insert_data : dict()):
+    conn = ms.connect(server='192.168.0.176', user='bit2', password='1234',database='bitdb')
+    cursor = conn.cursor()
+    sql = f'INSERT INTO {tablename} values(%s, %s ,%s ,%s ,%s)'
+    cursor.execute(sql, (insert_data['id'], insert_data['que_title'], insert_data['que_detail'], insert_data['ans_writer'], insert_data['ans_detail']))
+    conn.commit()
+    conn.close()
+
+def create_table(tablename):
+    conn = ms.connect(server='192.168.0.176', user='bit2', password='1234',database='bitdb')
+    cursor = conn.cursor()
+    sql = f"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='{tablename}' AND xtype='U')\
+         CREATE TABLE {tablename} (id text null, que text null, que_detail text null,\
+             ans_writer text null, ans_detail text null)"
+    cursor.execute(sql)
+    conn.commit()
+    conn.close()
+
+def select_data(tablename):
+    conn = ms.connect(server='192.168.0.176', user='bit2', password='1234',database='bitdb')
+    cursor = conn.cursor()
+    sql = f'SELECT * FROM {tablename}'
+    cursor.execute(sql)
+    row = cursor.fetchone()
+    while row :
+        print(row)
+        row = cursor.fetchone()
+    conn.close()
+
 name = "Certificate2"
-num_per_page = range(1,11)#한페이지 10개
-pages = range(1,501)# 10개 페이지
-detail_address="D:\private\project\main_project\\"
 
+# 테이블 명
+tablename = 'KDH_Certificate3'
 
+# 내가 원하는 답변자
+i_want_writer = '자격증 따기 님 답변'
+
+detail_address="D:/Study/ANSWERBOT_Project/data/"
+
+que_title_selestor_ls=['div.c-heading._questionContentsArea.c-heading--default-old', # 기본
+                         'div.c-heading._questionContentsArea.c-heading--default', # 질문 세부내용이 없는경우
+                         'div.c-heading._questionContentsArea.c-heading--multiple']
 
 # 2. 긁어온 url 통해서 자료추출
+data = pd.read_csv(f"{detail_address}urls_{name}.txt", sep=',',header=None, encoding='utf-8')
 
-with open(f"{detail_address}urls_{name}.txt",'r') as file:
-    lines=file.readlines()
-    start=0
-    end=3000
-    for index,line in enumerate(lines):
-    # for index,line in enumerate(lines[start:end]):
-        # index+=start
-        url=line.split(",")[-1]
-        # print(url)
-        source = urlopen(url).read()
-        source_bs4 = bs4.BeautifulSoup(source,"html.parser")
-        question_title_selector_list=['''#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default-old >div.c-heading__title > div > div.title''',
-        '#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default-old > div.c-heading__title > div > div',
-        '#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default > div.c-heading__title > div > div',
-         '#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--multiple > div.c-heading__title > div > div',
-         '#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--multiple-old > div.c-heading__content',
-         ]
-        question_context_selector_list=['''#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default-old > div.c-heading__content'''
-        ]
-        # print(source_bs4.select(question_title_selector_list[0])[0].text.strip())
-        # print(source_bs4.select('#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default-old > div.c-heading__title > div > div'))
-        for i in range(0,len(question_title_selector_list)):
-            # question_title=source_bs4.select(question_title_selector_list[i])[0].text.strip()
-            try:
-                
-                question_title=source_bs4.select(question_title_selector_list[i])[0].text.strip()
-                break
-            except:
-                if i==len(question_title_selector_list)-1:
-                    print(f"error.{line.split(',')[0]}")
-                question_title="null"
-                
-        try:
-            question_context=source_bs4.select(question_context_selector_list[0])[0].text.strip()
-            # print(context)
-        except:
-            question_context='null'
-        print(index)
-        # print("question_title")
-        # print(question_title)
-        # print("question_context")
-        # print(question_context)
+page_num = data[0].values.tolist()
+urls = data[1].values.tolist()
 
-        page_dict=dict()
+print(len(page_num)) # 11660
 
-        page_dict["question_title"]=question_title
-        page_dict["question_context"]=question_context
+# db없으면 생성
+create_table(tablename)
 
-        cnt_selector="#answerArea > div.answer-content__inner > div.c-classify.c-classify--sorting > div.c-classify__title-part > h3 > em"
-        cnt=source_bs4.select(cnt_selector)[0].text
-        cnt=int(cnt)
+a = 140
+b = 20
+c = 1
 
-        answer_writer_selector_list= [f'#answer_{cnt} > div.c-heading-answer > div.c-heading-answer__body > div > p > a',
-        f'#answer_{cnt-1} > div.c-heading-answer > div.c-heading-answer__body > div > p > a',
-        f'#answer_{cnt} > div.c-heading-answer.c-heading-answer--backout > div.c-heading-answer__body > div.c-heading-answer__title > p',
-        f'#answer_1 > div.c-heading-answer > div.c-heading-answer__body > div.c-heading-answer__title > p']
-                                    #answer_1 > div.c-heading-answer > div.c-heading-answer__body > div.c-heading-answer__title > p > a
-        answer_context_selector_list = [f'#answer_{cnt} > div._endContents.c-heading-answer__content > div._endContentsText.c-heading-answer__content-user',
-        f'#answer_{cnt-1} > div._endContents.c-heading-answer__content > div._endContentsText.c-heading-answer__content-user',
-        f'#answer_{cnt-1} > div._endContents.c-heading-answer__content > div._endContentsText.c-heading-answer__content-user> div > div']
-                                    #answer_2 > div._endContents.c-heading-answer__content > div._endContentsText.c-heading-answer__content-user            
+starts = ((a-1)*b) + c - 1 
 
+'''나중에 제거 해야할 토큰 "\xa0"'''
+for idx, url in enumerate(urls[starts:]):
+# for idx, url in enumerate(urls):
+    time.sleep(10)
+    # idx += starts
+    print(url)
+    url = url.replace('§', f'{quote("§")}')
+    print(url)
+    insert_data = {'id' : f'{page_num[idx]}',
+                'que_title' : 'Null',
+                'que_detail' : 'Null',
+                'ans_writer' : 'Null',
+                    'ans_detail' : 'Null',
+                }
 
+    source = urlopen(url.strip()).read()
+    source_bs4 = bs4.BeautifulSoup(source,"html.parser")
 
+    # 위에 언급한대로 경우에 따라 질문의 큰 제목이 다름 // 반복
+    for selector in que_title_selestor_ls :
+        question_selector = f'#content > div.question-content > div > {selector} > div.c-heading__title > div > div.title'
         try :
-            answer_writer = source_bs4.select(answer_writer_selector_list[0])[0].text
-            # print("answer_writer")
-            # print(answer_writer)
-        except:
-            # print("test2")
-            if cnt!=1:
-                try:
-                    answer_writer = source_bs4.select(answer_writer_selector_list[1])[0].text
-                    # print("test4")
-                except:
-                    # print("test3")
+            insert_data['que_title'] = source_bs4.select(question_selector)[0].text.strip()
+        except :
+            print(f'{page_num[idx]}--{selector[-8:]} question Title Error !!!!')
+            pass
+
+    # 질문 세부내용에 대한 text 추출 이건 에러 발생했다는건 사진만 있거나 내용이 없거나 때문에 그냥 Null 처리
+    question_detail_selector = '#content > div.question-content > div > div.c-heading._questionContentsArea.c-heading--default-old > div.c-heading__content'
+    try :
+        insert_data['que_detail'] = source_bs4.select(question_detail_selector)[0].text.strip()
+    except :
+        print(f'{page_num[idx]} answer Writer Error !!!!')
+        pass
+    
+
+    # 왜 그런지는 모르겠는데 내가 선택한 답변자의 답변이 없는 경우 무한 반복을 방지하기 위해 answer_num 변수 선언
+    answer_num = 1
+    while answer_num <= 10:
         
-                    answer_writer='null'
-            elif cnt==1:
-                try:
-                    answer_writer = source_bs4.select(answer_writer_selector_list[2])[0].text
-                except:
-                    try:
-                        
-                        answer_writer = source_bs4.select(answer_writer_selector_list[3])[0].text
-                    except:
-                        answer_writer='null'
+        # 답변자의 이름 선택자
+        answer_writer_selector = f'#answer_{answer_num} > div.c-heading-answer > div.c-heading-answer__body > div.c-heading-answer__title > p'
 
-                
         try :
-            answer_context = source_bs4.select(answer_context_selector_list[0])[0].text
+            insert_data['ans_writer'] = source_bs4.select(answer_writer_selector)[0].text.strip()
         except:
-            if cnt!=1:
-                try:
-                    answer_context = source_bs4.select(answer_context_selector_list[1])[0].text
-                except:
-                    try:  
-                        answer_context = source_bs4.select(answer_context_selector_list[2])[0].text
-                    except:
-                        answer_context ='null'
-        if answer_writer=="null":
-            page_dict["answer_writer"]=answer_writer
-        else:
-            page_dict["answer_writer"]=answer_writer[:-len(" 님 답변")]
-        page_dict["answer_context"]=answer_context
-        page_dict["url"]=url[:-1]
-        page_dict["index"]=line.split(",")[0]
-        print("-"*20)
-        # for i in page_dict.values():
-            # print(i)
-        print("-"*20)
-        print()
+            print(f'{page_num[idx]} answer Writer Error !!!!')
+            pass
+            
+        # 답변 내용
+        # answer_detail_selector = f'#answer_{answer_num} > div._endContents.c-heading-answer__content' # 기존에 사용하던거 뒤에 '알아두세요 이게 출력됨'
+        # answer_detail_selector = f'#answer_{answer_num} > div._endContents.c-heading-answer__content > div._endContentsText.c-heading-answer__content-user > div' # 채택된 답변일 경우
+        answer_detail_selector = f'#answer_{answer_num} > div._endContents.c-heading-answer__content > div._endContentsText.c-heading-answer__content-user' # 위에꺼는 공백을 가져오네 ㅋ...
 
-        filenumber=index//100+1
-        with open(f"data/crawling_data/a_{filenumber}.txt",'a',encoding='utf-8') as file:
-            file.write(str(page_dict))
-            file.write(",\n")
+        try :
+            insert_data['ans_detail'] = source_bs4.select(answer_detail_selector)[0].text.strip()
+        except:
+            print(f'{page_num[idx]} answer Detail Error !!!!')
+            pass
+        
+        # 왜인지는 모르겠으나 비공개 답변인 경우로 답변내용이 추출됨을 방지
+        if insert_data['ans_writer'] == i_want_writer and insert_data['ans_writer'] != '비공개 답변':
+            
+            # text 추출이 완료된 시점에서 db에 insert
+            insert_db(tablename, insert_data)
 
+            break # while 탈출 -- 답변에 대한 크롤링 stop
 
+        # while cnt
+        answer_num += 1
 
-
+    print(insert_data)

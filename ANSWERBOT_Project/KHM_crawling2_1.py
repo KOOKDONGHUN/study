@@ -60,15 +60,15 @@ print(len(page_num)) # 11660
 # db없으면 생성
 create_table(tablename)
 
-a = 261
+a = 280
 b = 20
-c = 6
+c = 1
 
 starts = ((a-1)*b) + c - 1 
 
 '''나중에 제거 해야할 토큰 "\xa0"'''
 for idx, url in enumerate(urls[starts:]):
-    time.sleep(2)
+    time.sleep(10)
     idx += starts
     print(url)
     url = url.replace('§', f'{quote("§")}')
