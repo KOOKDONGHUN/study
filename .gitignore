@@ -19,3 +19,5 @@
 __pycache__/
 LightGBM/
 mnist_data/
+logs/
+training_checkpoints/
