@@ -55,7 +55,7 @@ data = pd.read_csv(f"{detail_address}urls_{name}.txt", sep=',',header=None, enco
 page_num = data[0].values.tolist()
 urls = data[1].values.tolist()
 
-print(len(page_num)) # 11660
+print(len(page_num)) # 30000
 
 # db없으면 생성
 create_table(tablename)
