@@ -60,9 +60,9 @@ print(len(page_num)) # 11660
 # db없으면 생성
 create_table(tablename)
 
-a = 140
+a = 489
 b = 20
-c = 1
+c = 8
 
 starts = ((a-1)*b) + c - 1 
 
@@ -70,7 +70,7 @@ starts = ((a-1)*b) + c - 1
 for idx, url in enumerate(urls[starts:]):
 # for idx, url in enumerate(urls):
     time.sleep(10)
-    # idx += starts
+    idx += starts
     print(url)
     url = url.replace('§', f'{quote("§")}')
     print(url)
