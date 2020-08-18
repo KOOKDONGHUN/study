@@ -60,9 +60,9 @@ print(len(page_num)) # 30000
 # db없으면 생성
 create_table(tablename)
 
-a = 538
+a = 870
 b = 20
-c = 4
+c = 9
 
 starts = ((a-1)*b) + c - 1 
 
