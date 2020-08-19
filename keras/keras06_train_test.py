@@ -21,6 +21,7 @@ model.add(Dense(2400))
 model.add(Dense(2000))
 model.add(Dense(1)) 
 
+model.summary()
 #3. 훈련
 from keras.callbacks import EarlyStopping
 els = EarlyStopping(monitor='loss', patience=10, mode='auto')

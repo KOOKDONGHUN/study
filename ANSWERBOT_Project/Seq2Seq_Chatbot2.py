@@ -1,11 +1,15 @@
 from tensorflow import keras
-from keras import models, layers, optimizers, losses, metrics
+from keras import models
+from keras import layers
+from keras import optimizers, losses, metrics
 from keras import preprocessing
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import pickle, os, re
+import pickle
+import os
+import re
 
 from konlpy.tag import Okt
 
@@ -31,12 +35,12 @@ decoder_target = 2
 
 # 한 문장에서 단어의 최대 개수 ex) 안녕하세요 국동훈입니다. == 2 
 # 3개라면 앞이나 뒤에 패딩을 추가하여 길이를 맞춰줌 padding 안녕하세요 국동훈입니다.
-max_sequences = 0
+max_sequences = 67
 
 # 임베딩 벡터 차원
 embedding_dim = 100 # 단어 하나가 나타내는 임베딩 차원의 크기?
 
-# LSTM 히든레이어 차원 // 내가 아는건 노드의 개수인데 멘토님은 노드? 항상 이러심 셀이라고 표현하는게 맞을까...
+# LSTM 히든레이어 차원 // 내가 아는건 노드의 개수인데 멘토님은 노드? 항상 이러심 셀이라고 표현하는게 맞을까...?
 lstm_hidden_dim = 128
 
 # 정규 표현식 필터 // 문장의 특수문자 들을 제거해주기 위함 // 근데 특수문자를 포함해서 학습하면 결과가 안좋아서 그런것인가?
@@ -96,7 +100,7 @@ for i in range(3):
     print('A : ' + answer[i])
     print()
 
-# 질문과 대답 문장들을 하나로 합침 // 와닿지는 않음 왜 하는지 잘 모르겠음 // 디코더에 넣을떄 질문 부분을 패딩으로 채워주기 위함?
+# 질문과 대답 문장들을 하나로 합침 //
 sentences = []
 sentences.extend(question)
 sentences.extend(answer)
@@ -110,15 +114,7 @@ words = []
 # 단어들의 배열을 생성?? 위에 형태소 분석 할 때 같이 안 하고 따로 하는 이유?
 for sentence in sentences:
     for word in sentence.split():
-
-        if len(word) <= 0:
-            print('길이가 0인 단어? 가 있음 !!!!') # // 없는 듯?
-
         words.append(word)
-
-        # 형태소를 기준으로 한 문장 시퀀스의 최대 길이를 같이 지정 하기 위해 넣어봄
-        if max_sequences <= len(sentence.split()):
-            max_sequences = len(sentence.split())
 
 # 길이가 0인 단어는 삭제 // 길이가 0일 수 있나? 
 words = [word for word in words if len(word) > 0]
@@ -150,7 +146,7 @@ def convert_text_to_index(sentences, vocabulary, type):
 
         # 디코더 입력일 경우 맨 앞에 START 태그 추가
         if type == decoder_input:
-            sentence_index.extend([vocabulary[STA]]) # append 안쓰고 extend인 이유? 리스트가 벚겨져서 들어가냐 그냥 들어가냐의 차이?
+            sentence_index.extend([vocabulary[STA]]) # append 안쓰고 extend인 이유? 리스트가 벗겨져서 들어가냐 그냥 들어가냐의 차이?
         
         # 문장의 단어들을 띄어쓰기로 분리
         for word in sentence.split():
@@ -201,6 +197,19 @@ invers_index_to_text(x_decoder[2])
 y_decoder = convert_text_to_index(answer, word_to_index, decoder_target)
 print(f'y_decoder : {y_decoder[2]}')
 invers_index_to_text(y_decoder[2])
+
+# 원핫인코딩 초기화
+one_hot_data = np.zeros((len(y_decoder), max_sequences, len(words)))
+
+# 디코더 목표를 원핫인코딩으로 변환
+# 학습시 입력은 인덱스 이지만, 풀력은 원핫 인코딩 형식임
+for i, sequence in enumerate(y_decoder):
+    for j, index in enumerate(sequence):
+        one_hot_data[i, j, index] = 1
+    
+# 디코더 목표 설정
+y_decoder = one_hot_data
+y_decoder[2]
 
 # 훈현 모델의 인코더 정의 -----------------------------------
 
@@ -307,7 +316,9 @@ def convert_index_to_text(indexs, vocabulary):
 
 for epoch in range(20): # 이거 하는 이유가 예측 때문인가??
     print('Total Epoch :', epoch + 1)
-
+    print(f'x_encoder : {x_encoder.shape}')
+    print(f'x_decoder : {x_decoder.shape}')
+    print(f'y_decoder : {y_decoder.shape}')
     history = model.fit([x_encoder, x_decoder],
                             y_decoder,
                             epochs=100, # 여기서 epochs를 주는데 위에서 반복문을 쓰는 이유는?
