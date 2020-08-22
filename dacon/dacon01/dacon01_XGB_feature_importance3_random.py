@@ -101,7 +101,7 @@ x_pred_na = scaler.transform(x_pred_na)
 parameters = [{'colsample_bytree':list(np.arange(0.6,0.9,0.1)),
               'max_depth': [4,5,6],
               'n_estimators': list(np.arange(150,400,20)),
-              'learning_rate': list(np.arange(0.01,0.5,0.05)),
+              'learning_rate': list(np.arange(0.1,0.5,0.1)),
               'colsample_bylevel': list(np.arange(0.6,0.9,0.1))}
 ]
 
@@ -134,8 +134,6 @@ def fit_pred(x_train, y_train, x_test, y_test,x_pred,i):
     # create submit DataFrame 
     tmp_dic[name_ls[i]] = y_pred
     # print(f"feature importance : {model.feature_importances_}")
-    print(f"feature estimator : {model.best_estimator_}")
-    print(f"feature param : {model.best_params_}")
     # plot_importance(model)
 
     # plt.show()
