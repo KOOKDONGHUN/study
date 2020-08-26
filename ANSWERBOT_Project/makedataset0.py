@@ -27,7 +27,7 @@ def select_data(tablename, col1, col2, col3, col4):
 
     return rows
 
-tablename = 'KDH_Certificate'
+tablename = 'KDH_Certificate3'
 col_ls = ['id', 'que', 'que_detail', 'ans_detail']
 
 origin_data = select_data(tablename, col1='id', col2='que', col3='que_detail', col4='ans_detail')
@@ -57,6 +57,8 @@ def convert_dict(origin_data):
         # print(data[0])
         if data[2] == 'Null':
             t1 = replace_str(data[1])
+            col1_ls.append(t1)
+
             # if len(t1) > 200 or len(t1) <= 5:
             #     col1_ls.append('')
             # else : 
@@ -69,13 +71,19 @@ def convert_dict(origin_data):
             #     col1_ls.append('')
             # else : 
             #     col1_ls.append(t2[:])
+            col1_ls.append(t2)
+
         t3 = data[-1] # 답변
         t3 = replace_str(t3) # 답변에 대해서 내가 설정한 필터링 실행
-        if len(t3) > 200 or len(t3) <= 5:
-            col2_ls.append('')
-        else : 
-            col2_ls.append(t3[:])
+        col2_ls.append(t3)
+        # if len(t3) > 200 or len(t3) <= 5:
+        #     col2_ls.append('')
+        # else : 
+        #     col2_ls.append(t3[:])
     
+    print('1 : ', len(col1_ls))
+    print('2 : ', len(col2_ls))
+
     data_dic['Q'] = col1_ls
     data_dic['A'] = col2_ls
     data_dic['label'] = [0 for i in range(len(col2_ls))]
@@ -93,4 +101,4 @@ converted_origin_data = convert_dict(origin_data)
 import pandas as pd
 
 df = pd.DataFrame(converted_origin_data)
-df.to_csv('./ANSWERBOT_Project/data/ChatbotData.csv',index=None)
+df.to_csv('./ANSWERBOT_Project/data/ChatbotData_computer.csv',index=None)
