@@ -1,7 +1,8 @@
-import pandas as pd
+from konlpy.tag import Kkma
+from konlpy.utils import pprint
+kkma = Kkma()
+print(kkma.sentences(u'JPype 설치 너무 까다롭습니다. 몇 시간을 날렸어요.'))
 
-data = pd.read_csv("D:/Study/ANSWERBOT_Project/data/urls_Certificate2.txt",sep=',')
-print(data)
+print(kkma.nouns(u'JPype 설치 너무 까다롭습니다. 몇 시간을 날렸어요.'))
 
-data = data.drop_duplicates()
-print(data)
+print(kkma.pos(u'JPype 설치 너무 까다롭습니다. 몇 시간을 날렸어요.'))
