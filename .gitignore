@@ -13,6 +13,7 @@
 *.zip
 *.log
 *.ipynb
+.DS_Store
 
 ## directory
 .vscode/
