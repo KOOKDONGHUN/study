@@ -27,7 +27,7 @@ def select_data(tablename, col1, col2, col3, col4):
 
     return rows
 
-tablename = 'KDH_Certificate3'
+tablename = 'KDH_Certificate_test'
 col_ls = ['id', 'que', 'que_detail', 'ans_detail']
 
 origin_data = select_data(tablename, col1='id', col2='que', col3='que_detail', col4='ans_detail')
@@ -55,6 +55,9 @@ def convert_dict(origin_data):
 
     for data in origin_data:
         # print(data[0])
+        t1 = ''
+        t2 = ''
+        t3 = ''
         if data[2] == 'Null':
             t1 = replace_str(data[1])
             col1_ls.append(t1)
@@ -101,4 +104,4 @@ converted_origin_data = convert_dict(origin_data)
 import pandas as pd
 
 df = pd.DataFrame(converted_origin_data)
-df.to_csv('./ANSWERBOT_Project/data/ChatbotData_computer.csv',index=None)
+df.to_csv('./ANSWERBOT_Project/data/ChatbotData_electrnic.csv',index=None)
