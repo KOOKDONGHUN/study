@@ -50,7 +50,7 @@ question, answer = list(chatbot_data['Q']), list(chatbot_data['A'])
 def pos_tag(sentences):
     
     # KoNLPy 형태소분석기 설정 // 다른 형태소 분석기도 사용해 보자 // 좋습니다 ~~~
-    tagger = Okt()
+    tagger = Kkma()
     
     # 문장 품사 변수 초기화
     sentences_pos = []
