@@ -1,11 +1,11 @@
 import pymssql as ms
 print(ms.__version__)
 
-conn = ms.connect(server='192.168.0.176', user='bit2', password='1234',database='bitdb')
+conn = ms.connect(server='192.168.0.127', user='bit2', password='1234',database='bitdb')
 
 cursor = conn.cursor()
 
-cursor.execute('SELECT * from credit_card_data;')
+cursor.execute('SELECT * from KDH_Certificate;')
 
 row = cursor.fetchone()
 
