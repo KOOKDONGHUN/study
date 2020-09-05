@@ -13,6 +13,8 @@
 *.zip
 *.log
 *.ipynb
+*.ckpt
+
 .DS_Store
 
 ## directory
@@ -22,3 +24,4 @@ LightGBM/
 mnist_data/
 logs/
 training_checkpoints/
+ANSWERBOT_Project/model_chk/
