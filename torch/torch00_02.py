@@ -12,8 +12,8 @@ x = torch.randn(N, D_in,device=device, dtype=dtype)
 y = torch.randn(N, D_out,device=device, dtype=dtype)
 
 # 무작위로 가중치를 초기화 한다.
-w1 = torch.random.randn(D_in, H, device=device, dtype=dtype)
-w2 = torch.random.randn(H, D_out, device=device, dtype=dtype)
+w1 = torch.randn(D_in, H, device=device, dtype=dtype)
+w2 = torch.randn(H, D_out, device=device, dtype=dtype)
 
 learning_rate = 1e-06
 for time_step in range(500):
@@ -22,7 +22,7 @@ for time_step in range(500):
     # 순전파 단계 : 예측값 y를 계산한다.???
     h = x.mm(w1) # x와 w1의 행렬곱 matmul
     # print(f'h : {h}')
-
+    
     h_relu = h.clamp(min=0) # h에 0이하인 값도 있네 그래서 최소가 0이 되는데 그게 relu취해주는거랑 같네 ...
     # print(f'h_relu : {h_relu}')
 
