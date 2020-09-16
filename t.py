@@ -1,12 +1,13 @@
-from keras.layers import LSTM, Embedding
-from keras.models import Sequential, Model, Input
+import cv2
+import numpy as np
 
+def showimage():
+    imgfile = r'D:\1.png'
+    img = cv2.imread(imgfile,cv2.IMREAD_COLOR)
 
-input1 = Input(shape=(None,))
-embedding = Embedding(6406, 100, input_length=None)(input1) # (None, 79, 100) 
-lstm1 = LSTM(128,
-            dropout=0.1,
-            recurrent_dropout=0.5)(embedding)
+    print(img)
+    print(img.shape)
+    # cv2.imshow('model', img)
+    # cv2.waitKey(0)
 
-model = Model([input1], [lstm1])
-model.summary()
+showimage()
