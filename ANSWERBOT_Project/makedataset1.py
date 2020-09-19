@@ -1,7 +1,7 @@
 import pymssql as ms
 
 def select_data(tablename, col1, col2, col3, col4):
-    conn = ms.connect(server='192.168.0.176', user='bit2', password='1234',database='bitdb')
+    conn = ms.connect(server='127.0.0.1', user='bit2', password='1234',database='bitdb')
     # conn = ms.connect(server='127.0.0.1', user='bit2', password='1234',database='bitdb')
     cursor = conn.cursor()
     sql = f'SELECT {col1}, {col2}, {col3}, {col4} FROM {tablename}'
@@ -33,14 +33,52 @@ col_ls = ['id', 'que', 'que_detail', 'ans_detail']
 origin_data = select_data(tablename, col1='id', col2='que', col3='que_detail', col4='ans_detail')
 
 def replace_str(data):
+    data = data.replace('답변 -> ','')
+    data = data.replace('※ E-TEST','')
+    data = data.replace('※ 한국사 문제집','')
+    data = data.replace('※ 모스마스터','')
+    data = data.replace('www.ybmit.com','')
+    data = data.replace('-----------------------------------------------------------------------','')
+    data = data.replace('license.kpc.or.kr','')
+    data = data.replace('답변 부탁드립니다','')
+    data = data.replace('※ kpc 자격','')
+    data = data.replace('메인화면','')
+    data = data.replace('book.naver.com','')
+    data = data.replace('※ ITQ 엑셀 ','')
+    data = data.replace('※ 시나공 책','')
+    data = data.replace('확실하게 아시는 분들만 답변 해주세요','')
+    data = data.replace('(컴맹이고 액셀은 사용할 줄 모름)','')
+    data = data.replace('(갱신 필요 없음)','')
+    data = data.replace('※ 컴퓨터 분야별 자격증들','')
+    data = data.replace('♣IT관련 자격증♣','')
+    data = data.replace('www.q-net.or.kr','')
+    data = data.replace('※ 시험버전','')
+    data = data.replace('(급수 무관)','')
+    data = data.replace('만점이 500 이면요?','')
+    data = data.replace('※ 신청 방법','')
+    data = data.replace('※ 비서1급 필기 과목 ','')
+    data = data.replace('※ 비서1급 필기 합격기준','')
+    data = data.replace('※ 원서접수 경로','')
+    data = data.replace('※ 엑셀로 시험을 보는 자격증 ','')
+    data = data.replace('문의번호 : 1577-9402','')
+    data = data.replace('※ 준비기간 (하루 3시간 ~ 4시간)','')
+    data = data.replace('www.ihd.or.kr','')
+    data = data.replace('※ kpc 자격 (itq 자격증 취득 조회)','')
+    data = data.replace('※ ITQ 파워포인트 이공자 교재','')
+    data = data.replace('※ 난이도 ','')
+    data = data.replace('※ MOS 2010','')
+    data = data.replace('※ itq 시험','')
+    data = data.replace('※ OA 자격증 ','')
+    data = data.replace('※ diat 시험','')
+    data = data.replace('※ ITQ 엑셀 (2010 버전 시나공)','')
+    data = data.replace('※ 컴활2급 (시나공 총정리 책, 실기 기본서 책)','')
+    data = data.replace('※','')
+
     data = data.replace('\n',' ')
     data = data.replace('//','')
     data = data.replace('ㅠ','')
     data = data.replace('ㅋ','')
 
-    data = data.split('.')[:2]
-
-    data = ' '.join(data)
     data = data.replace('  ',' ')
     data = data.replace('  ',' ')
 

@@ -1,13 +1,9 @@
-import cv2
-import numpy as np
+import pandas as pd
 
-def showimage():
-    imgfile = r'D:\1.png'
-    img = cv2.imread(imgfile,cv2.IMREAD_COLOR)
+data = pd.read_csv('./raw.txt', sep='\n', encoding='CP949')
+print(data)
 
-    print(img)
-    print(img.shape)
-    # cv2.imshow('model', img)
-    # cv2.waitKey(0)
-
-showimage()
+data = data.drop_duplicates()
+print(data)
+data.to_csv('./raw.csv',index=None)
+print(__file__)

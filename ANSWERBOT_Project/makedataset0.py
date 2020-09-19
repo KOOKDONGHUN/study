@@ -1,7 +1,7 @@
 import pymssql as ms
 
 def select_data(tablename, col1, col2, col3, col4):
-    conn = ms.connect(server='192.168.0.176', user='bit2', password='1234',database='bitdb')
+    conn = ms.connect(server='127.0.0.1', user='bit2', password='1234',database='bitdb')
     # conn = ms.connect(server='127.0.0.1', user='bit2', password='1234',database='bitdb')
     cursor = conn.cursor()
     sql = f'SELECT {col1}, {col2}, {col3}, {col4} FROM {tablename}'
