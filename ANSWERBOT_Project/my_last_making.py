@@ -76,12 +76,12 @@ def check_duplicate(data):
 
 origin_data2 = check_duplicate(origin_data2)
 for i in origin_data2:
-    with open('./raw.txt','a') as f:
+    with open('./raw2.txt','a') as f:
         f.write(str(i)+'\n')
 
 origin_data3 = check_duplicate(origin_data3)
 for i in origin_data3:
-    with open('./raw.txt','a') as f:
+    with open('./raw3.txt','a') as f:
         f.write(str(i)+'\n')
 
 import pandas as pd
