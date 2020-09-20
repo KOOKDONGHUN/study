@@ -48,7 +48,9 @@ def replace_str(data):
     data = data.replace('\n',' ')
     data = data.replace('//','')
     data = data.replace('ㅠ','')
+    data = data.replace('ㅜ','')
     data = data.replace('ㅠㅠ','')
+    data = data.replace('ㅜㅜ','')
     data = data.replace('ㅋ','')
 
     data = data.replace('  ',' ')
