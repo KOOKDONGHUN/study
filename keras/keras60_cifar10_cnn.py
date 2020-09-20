@@ -1,7 +1,7 @@
-from keras.datasets import cifar10
+from tensorflow.keras.datasets import cifar10
 from keras.utils import np_utils
-from keras.models import Sequential, Model
-from keras.layers import Dense, Conv2D, LSTM , Flatten, Dropout, MaxPooling2D , Input
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Dense, Conv2D, LSTM , Flatten, Dropout, MaxPooling2D , Input
 import matplotlib.pyplot as plt
 
 (x_train, y_train),(x_test, y_test) = cifar10.load_data()
@@ -28,16 +28,16 @@ x_test = x_test.reshape(10000,32,32,3).astype('float32')/255
 # 2. 모델구성
 input1 = Input(shape=(32,32,3))
 
-dense1 = (Conv2D(32,(3,3),activation='relu'))(input1)
+dense1 = (Conv2D(256,(3,3),activation='relu'))(input1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 
-dense1 = (Conv2D(32,(3,3)))(dense1)
+dense1 = (Conv2D(256,(3,3)))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
-dense1 = (Conv2D(64,(3,3)))(dense1)
+dense1 = (Conv2D(128,(3,3)))(dense1)
 dense1 = (MaxPooling2D(pool_size=2))(dense1)
 
-dense1 = (Conv2D(64,(3,3)))(dense1)
+dense1 = (Conv2D(128,(3,3)))(dense1)
 dense1 = Dropout(0.3)(dense1)
 
 dense1 = (Conv2D(128,(3,3),padding='same'))(dense1)
@@ -56,16 +56,16 @@ model.summary()
 # 3. 컴파일(훈련준비),실행(훈련)
 model.compile(optimizer='adam',loss = 'categorical_crossentropy', metrics = ['acc'])
 
-hist = model.fit(x_train,y_train,epochs=30,batch_size=80,callbacks=[],verbose=2)
+hist = model.fit(x_train,y_train,epochs=200000,batch_size=32,callbacks=[],verbose=2)
 
-plt.plot(hist.history['loss'])
-plt.plot(hist.history['acc'])
-
-plt.title('keras60 loss plot')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train loss','train acc'])
-plt.show()
+# plt.plot(hist.history['loss'])
+# plt.plot(hist.history['acc'])
+#
+# plt.title('keras60 loss plot')
+# plt.ylabel('loss')
+# plt.xlabel('epoch')
+# plt.legend(['train loss','train acc'])
+# plt.show()
 
 # 4. 평가, 예측
 loss,acc = model.evaluate(x_test,y_test,batch_size=80)
