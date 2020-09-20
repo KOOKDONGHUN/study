@@ -1,6 +1,6 @@
 import tensorflow as tf
-from keras.applications import Xception
-from keras.utils import multi_gpu_model
+from tensorflow.keras.applications import Xception
+from tensorflow.keras.utils import multi_gpu_model
 import numpy as np
 import datetime
 
