@@ -28,12 +28,12 @@ def convnet_ham(img, kernels,stride):
     # print(k_len) 4
 
     input_ch = len(img) # 2
-    output_ch = int(len(kernels)/input_ch)  # 3
+    output_ch = int(len(kernels)/input_ch)  # 3 커널 사이즈 나누기 인풋 이미지 채널 ?
     # channels_size = int(len(kernels)/len(img)) # 3
     
-    img_len = int(img_len**0.5) #
-    k_len = int(k_len**0.5)
-    feat_len = int(((img_len - k_len) / stride) + 1)
+    img_len = int(img_len**0.5) # 3
+    k_len = int(k_len**0.5) # 4
+    feat_len = int(((img_len - k_len) / stride) + 1) # 
     # print(channels_size)
 
     features = [[0 for j in range(feat_len**2)] for i in range(output_ch)]
