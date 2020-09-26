@@ -17,3 +17,17 @@ for i in range(4):
         feature[i][j] = s
 
 print(feature)
+
+def basic_Conv2D(data, kernel, featur_map, stride=1):
+    
+    for i in range(len(featur_map[0])):
+        for j in range(len(featur_map[0])):
+            s = 0
+            for k in range(len(kernel[0])):
+                for e in range(len(kernel[0])):
+                    s += image[i+k][j+e]*kernel[k][e]
+            feature[i][j] = s
+
+    print(feature)
+
+basic_Conv2D(image,kernel,feature)
