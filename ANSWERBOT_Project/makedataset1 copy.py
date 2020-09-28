@@ -27,7 +27,7 @@ def select_data(tablename, col1, col2, col3, col4):
 
     return rows
 
-tablename = 'KDH_Certificate'
+tablename = 'KDH_Certificate2'
 col_ls = ['id', 'que', 'que_detail', 'ans_detail']
 
 origin_data = select_data(tablename, col1='id', col2='que', col3='que_detail', col4='ans_detail')
@@ -43,7 +43,11 @@ def replace_str(data):
     data = data.replace('??','?')
     data = data.replace('!','')
     data = data.replace('(내공100)','')
-
+    data = data.replace('전화번호 : 1644-8000?','')
+    data = data.replace('한국산업인력관리공단 홈페이지 : http://www.q-net.or.kr/isr001.do?id=isr00101&gSite=Q&gId=&depth=0503','')
+    data = data.replace('자격증재발급기관 홈페이지 :http://www.q-net.or.kr/isr001.do?id=isr00101&gSite=Q&gId=','')
+    data = data.replace('내공은 30 드리겠습니다...','')
+    
 
     data = data.replace('\n',' ')
     data = data.replace('//','')
@@ -105,4 +109,4 @@ converted_origin_data = convert_dict(origin_data)
 import pandas as pd
 
 df = pd.DataFrame(converted_origin_data)
-df.to_csv('./ANSWERBOT_Project/data/ChatbotData.csv',index=None)
+df.to_csv('./ANSWERBOT_Project/data/ChatbotData2.csv',index=None)

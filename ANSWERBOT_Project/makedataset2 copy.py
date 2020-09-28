@@ -1,6 +1,6 @@
 import pandas as pd
 
-data = pd.read_csv('./ANSWERBOT_Project/data/ChatbotData.csv')
+data = pd.read_csv('./ANSWERBOT_Project/data/ChatbotData2.csv')
 print(data)
 
 data = data.dropna()
