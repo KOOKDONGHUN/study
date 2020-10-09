@@ -28,3 +28,4 @@ logs/
 training_checkpoints/
 ANSWERBOT_Project/model_chk/
 .idea/
+data/
