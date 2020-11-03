@@ -18,6 +18,6 @@ for i in range(3):
             for e in range(3):
 
                 s += image[i*stride+k][j*stride+e]*kernel[k][e]
-
+                
         feature[i][j] = s
 print(feature)
